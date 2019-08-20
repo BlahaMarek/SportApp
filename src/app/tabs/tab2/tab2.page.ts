@@ -1,4 +1,5 @@
-import {AfterContentInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, NgZone} from '@angular/core';
+
 declare var google;
 
 @Component({
@@ -7,37 +8,20 @@ declare var google;
   styleUrls: ['tab2.page.scss']
 
 })
-export class Tab2Page implements OnInit, AfterContentInit {
-  map;
+export class Tab2Page {
   // @ts-ignore
-  @ViewChild('mapElement') mapElement;
-  autocomplete: any;
-  GoogleAutocomplete: any;
-  autocompleteItems: any;
-  zone: any;
-  geocoder: any;
-  markers: any;
-  clearMarkers: any;
-  position: any;
-  marker: any;
-  constructor() {
+  GoogleAutocomplete: google.maps.places.AutocompleteService;
+  autocomplete: { input: string; };
+  autocompleteItems: any[];
+  location: any;
+  placeid: any;
+  constructor(
+      public zone: NgZone,
+  ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocomplete = { input: '' };
     this.autocompleteItems = [];
-    // tslint:disable-next-line:new-parens
-    this.geocoder = new google.maps.Geocoder;
-    this.markers = [];
   }
-  ngOnInit(): void {
-  }
-  ngAfterContentInit(): void {
-    this.map = new google.maps.Map(
-        this.mapElement.nativeElement, {
-      center: { lat: -34.9011, lng: -56.1645 },
-      zoom: 15
-    });
-  }
-
 
   updateSearchResults() {
     if (this.autocomplete.input === '') {
@@ -54,24 +38,13 @@ export class Tab2Page implements OnInit, AfterContentInit {
           });
         });
   }
-
   selectSearchResult(item) {
-    this.clearMarkers();
-    this.autocompleteItems = [];
-
-    this.geocoder.geocode({placeId: item.place_id}, (results, status) => {
-      if ( status === 'OK' && results[0]) {
-        const position = {
-          lat: results[0].geometry.location.lat,
-          lng: results[0].geometry.location.lng
-        };
-        const marker = new google.maps.Marker({
-          position: results[0].geometry.location,
-          map: this.map,
-        });
-        this.markers.push(marker);
-        this.map.setCenter(results[0].geometry.location);
-      }
-    });
+    console.log(item)
+    this.location = item
+    this.placeid = this.location.place_id
+    console.log('placeid' + this.placeid);
   }
-}
+
+
+
+ }
