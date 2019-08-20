@@ -8,6 +8,7 @@
     --padding-top: 25vh;
     h1 {
         margin-bottom: 15;
+        color: #12b562;
     }
 }
 .center {
@@ -17,4 +18,8 @@
     height: 1px;
     width: 100%;
     border-bottom: 1px solid rgba(0,0,0,0.5)
+}
+
+ion-input {
+    color: #12b562;
 }
