@@ -6,30 +6,31 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-  <ion-item>
-    <ion-label>Výber športu</ion-label>
-    <ion-select placeholder="Select One">
-      <ion-select-option value="f">Futbal</ion-select-option>
-      <ion-select-option value="m">Hokej</ion-select-option>
-      <ion-select-option value="a">A dalsie sa mi nechce pridavat</ion-select-option>
+  <form [formGroup]="activityForm">
+    <div formGroupName="sport">
+      <ion-item>
+        <ion-label>Výber športu</ion-label>
+        <ion-select formControlName="sportType" placeholder="Select One">
+          <ion-select-option *ngFor="let val of sportOptions">
+            {{ val.value }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+    <ion-input
+            type="pocet"
+            text-left
+            formControlName="peopleCount"
+            placeholder="Zadaj pocet ludi"
+    ></ion-input>
+    <ion-input
+            type="miesto"
+            formControlName="place"
+            text-left
+            placeholder="Konkretizuj miesto"
+    ></ion-input>
+  </form>
 
-    </ion-select>
-  </ion-item>
-  <ion-input type="pocet" text-left maxLength="20" placeholder="Zadaj pocet ludi" [(ngModel)]="pocet"></ion-input>
-  <ion-input type="miesto" text-left maxLength="20" placeholder="Konkretizuj miesto" [(ngModel)]="miesto"></ion-input>
-
-
-  <button ion-button large full color="dark" (click)="refresh()">Pridaj aktivitu</button>
-  <br>
-  <ion-label color="dark">{{sport1}}</ion-label>
-  <br>
-  <ion-label color="dark">{{pocet1}}</ion-label>
-  <br>
-  <ion-label color="dark">{{miesto1}}</ion-label>
-
-
-
-
+  {{ activityForm.value | json }}
 </ion-content>
