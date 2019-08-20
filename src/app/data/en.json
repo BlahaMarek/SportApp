@@ -1,0 +1,30 @@
+{
+    "data": {
+        "sports": {
+            "1": {
+                "sportType": 1,
+                "sportName": "Tennis"
+            },
+            "2": {
+                "sportType": 2,
+                "sportName": "Table tennis"
+            },
+            "3": {
+                "sportType": 3,
+                "sportName": "Squash"
+            },
+            "4": {
+                "sportType": 4,
+                "sportName": "Bedminton"
+            },
+            "5": {
+                "sportType": 5,
+                "sportName": "Soccer"
+            },
+            "6": {
+                "sportType": 6,
+                "sportName": "Hockey"
+            }
+        }
+    }
+}

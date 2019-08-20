@@ -18,21 +18,10 @@
     </ion-select>
   </ion-item>
   <ion-input type="pocet" text-left maxLength="20" placeholder="Zadaj pocet ludi" [(ngModel)]="pocet"></ion-input>
-
-  <ion-toolbar color="primary">
-    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
-  </ion-toolbar>
-  <ion-list [hidden]="autocompleteItems.length == 0">
-    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-      {{ item.description }}
-    </ion-item>
-
-
-  </ion-list>
+  <ion-input type="miesto" text-left maxLength="20" placeholder="Konkretizuj miesto" [(ngModel)]="miesto"></ion-input>
 
 
   <button ion-button large full color="dark" (click)="refresh()">Pridaj aktivitu</button>
-  <ion-button (click)="GoTo()" >Go To Selected Location</ion-button>
   <br>
   <ion-label color="dark">{{sport1}}</ion-label>
   <br>
