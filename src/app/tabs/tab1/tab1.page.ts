@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-tab1',
@@ -8,7 +8,7 @@ import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class Tab1Page {
   
-  sportOptions = [{value:0, label:'A'},{value:1, label: 'B'}];
+  sportOptions = [{value: 0, label: 'A'}, {value: 1, label: 'B'}];
   constructor(private fb: FormBuilder) {}
 
   activityForm = this.fb.group({
