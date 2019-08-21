@@ -48,7 +48,12 @@ export class Tab1Page {
     console.log('ja som item' + item);
     this.location = item;
     this.placeid = this.location.place_id;
-    this.autocomplete.input = item;    // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
-    console.log('placeid' +  this.placeid);
+    JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
+    this.autocomplete.input = JSON.stringify(item, [ 'description']);
+    console.log('placeid' +  JSON.stringify(this.placeid));
+    console.log('item' +  JSON.stringify(item));
+    console.log('location' +  JSON.stringify(this.location));
+    console.log('autocompleteinput' +  JSON.stringify(this.autocomplete.input));
+
   }
 }
