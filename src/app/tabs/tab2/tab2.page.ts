@@ -1,4 +1,4 @@
-import {Component, NgZone} from '@angular/core';
+import {AfterContentInit, Component, NgZone, OnInit, ViewChild} from '@angular/core';
 
 declare var google;
 
@@ -8,43 +8,22 @@ declare var google;
   styleUrls: ['tab2.page.scss']
 
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit, AfterContentInit {
+  map;
   // @ts-ignore
-  GoogleAutocomplete: google.maps.places.AutocompleteService;
-  autocomplete: { input: string; };
-  autocompleteItems: any[];
-  location: any;
-  placeid: any;
-  constructor(
-      public zone: NgZone,
-  ) {
-    this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
-    this.autocomplete = { input: '' };
-    this.autocompleteItems = [];
+  @ViewChild('mapElement') mapElement;
+  constructor() {
   }
 
-  updateSearchResults() {
-    if (this.autocomplete.input === '') {
-      this.autocompleteItems = [];
-      return;
-    }
-    this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
-        (predictions, status) => {
-          this.autocompleteItems = [];
-          this.zone.run(() => {
-            predictions.forEach((prediction) => {
-              this.autocompleteItems.push(prediction);
-            });
-          });
+  ngAfterContentInit(): void {
+    this.map = new google.maps.Map(
+        this.mapElement.nativeElement,
+        {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
         });
   }
-  selectSearchResult(item) {
-    console.log(item)
-    this.location = item
-    this.placeid = this.location.place_id
-    console.log('placeid' + this.placeid);
+
+  ngOnInit(): void {
   }
-
-
-
  }
