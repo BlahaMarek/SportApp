@@ -29,6 +29,7 @@ export class Tab1Page {
       sportType: [''],
     }),
   });
+  private objekt: any;
   updateSearchResults() {
     if (this.autocomplete.input === '') {
       this.autocompleteItems = [];
@@ -50,10 +51,10 @@ export class Tab1Page {
     this.placeid = this.location.place_id;
     JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
     this.autocomplete.input = JSON.stringify(item, [ 'description']);
-    console.log('placeid' +  JSON.stringify(this.placeid));
-    console.log('item' +  JSON.stringify(item));
-    console.log('location' +  JSON.stringify(this.location));
-    console.log('autocompleteinput' +  JSON.stringify(this.autocomplete.input));
-
+    this.objekt = JSON.parse(this.autocomplete.input);
+    this.autocomplete.input = this.objekt.description;
+    for (let i = 0; i < 6 ; i++ ) {
+      this.autocompleteItems.pop();
+    }
   }
 }
