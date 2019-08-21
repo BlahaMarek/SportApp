@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
@@ -7,9 +7,19 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  
+  // @ts-ignore
+  GoogleAutocomplete: google.maps.places.AutocompleteService;
+  autocomplete: { input: string; };
+  autocompleteItems: any[];
+  location: any;
+  placeid: any;
   sportOptions = [{value: 0, label: 'A'}, {value: 1, label: 'B'}];
-  constructor(private fb: FormBuilder) {}
+  constructor(public zone: NgZone, private fb: FormBuilder) {
+    // @ts-ignore
+    this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+    this.autocomplete = { input: '' };
+    this.autocompleteItems = [];
+  }
 
   activityForm = this.fb.group({
     peopleCount: [''],
@@ -19,4 +29,26 @@ export class Tab1Page {
       sportType: [''],
     }),
   });
+  updateSearchResults() {
+    if (this.autocomplete.input === '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+        (predictions, status) => {
+          this.autocompleteItems = [];
+          this.zone.run(() => {
+            predictions.forEach((prediction) => {
+              this.autocompleteItems.push(prediction);
+            });
+          });
+        });
+  }
+  selectSearchResult(item) {
+    console.log('ja som item' + item);
+    this.location = item;
+    this.placeid = this.location.place_id;
+    this.autocomplete.input = item;    // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
+    console.log('placeid' +  this.placeid);
+  }
 }

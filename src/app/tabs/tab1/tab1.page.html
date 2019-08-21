@@ -16,8 +16,10 @@
             {{ val.value }}
           </ion-select-option>
         </ion-select>
+
       </ion-item>
     </div>
+
     <ion-input
             type="pocet"
             text-left
@@ -33,4 +35,18 @@
   </form>
 
   {{ activityForm.value | json }}
+
+  <ion-toolbar color="primary">
+    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
+  </ion-toolbar>
+  <ion-list [hidden]="autocompleteItems.length == 0">
+    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+      {{ item.description}}
+
+<!--      tu treba priradit item.description do autocomplete.input-->
+
+
+    </ion-item>
+  </ion-list>
+
 </ion-content>
