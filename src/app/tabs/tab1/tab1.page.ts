@@ -1,60 +1,92 @@
-import { Component, NgZone } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {ModalController} from '@ionic/angular';
+import {ActivityNewComponent} from '../../components/activity-new/activity-new.component';
+import {ActivityService} from '../../services/activity.service';
+import {Activity} from '../../models/activity';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+    selector: 'app-tab1',
+    templateUrl: 'tab1.page.html',
+    styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
-  // @ts-ignore
-  GoogleAutocomplete: google.maps.places.AutocompleteService;
-  autocomplete: { input: string; };
-  autocompleteItems: any[];
-  location: any;
-  placeid: any;
-  sportOptions = [{value: 0, label: 'A'}, {value: 1, label: 'B'}];
-  constructor(public zone: NgZone, private fb: FormBuilder) {
-    // @ts-ignore
-    this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
-    this.autocomplete = { input: '' };
-    this.autocompleteItems = [];
-  }
+export class Tab1Page implements OnInit {
+    activityList: Activity[] = [];
 
-  activityForm = this.fb.group({
-    peopleCount: [''],
-    place: [''],
-    topActivity: [''],
-    sport: this.fb.group({
-      sportType: [''],
-    }),
-  });
-  private objekt: any;
-  updateSearchResults() {
-    if (this.autocomplete.input === '') {
-      this.autocompleteItems = [];
-      return;
+    // @ts-ignore
+    GoogleAutocomplete: google.maps.places.AutocompleteService;
+    autocomplete: { input: string; };
+    autocompleteItems: any[];
+    location: any;
+    placeid: any;
+
+    constructor(
+        public zone: NgZone,
+        private fb: FormBuilder,
+        private modalController: ModalController,
+        private cd: ChangeDetectorRef,
+        private activityService: ActivityService,
+    ) {
+        // @ts-ignore
+        this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+        this.autocomplete = {input: ''};
+        this.autocompleteItems = [];
     }
-    this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
-        (predictions, status) => {
-          this.autocompleteItems = [];
-          this.zone.run(() => {
-            predictions.forEach((prediction) => {
-              this.autocompleteItems.push(prediction);
+
+    ngOnInit() {
+        this.activityList = this.activityService.getAllActivities;
+    }
+
+    ionViewWillEnter() {
+        this.activityList = this.activityService.getAllActivities;
+        this.cd.markForCheck();
+        console.log('enter');
+    }
+
+
+    private objekt: any;
+
+    updateSearchResults() {
+        if (this.autocomplete.input === '') {
+            this.autocompleteItems = [];
+            return;
+        }
+        this.GoogleAutocomplete.getPlacePredictions({input: this.autocomplete.input},
+            (predictions, status) => {
+                this.autocompleteItems = [];
+                this.zone.run(() => {
+                    predictions.forEach((prediction) => {
+                        this.autocompleteItems.push(prediction);
+                    });
+                });
             });
-          });
-        });
-  }
-  selectSearchResult(item) {
-    console.log('ja som item' + item);
-    this.location = item;
-    this.placeid = this.location.place_id;
-    JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
-    this.autocomplete.input = JSON.stringify(item, [ 'description']);
-    this.objekt = JSON.parse(this.autocomplete.input);
-    this.autocomplete.input = this.objekt.description;
-    for (let i = 0; i < 6 ; i++ ) {
-      this.autocompleteItems.pop();
     }
-  }
+
+    selectSearchResult(item) {
+        console.log('ja som item' + item);
+        this.location = item;
+        this.placeid = this.location.place_id;
+        JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
+        this.autocomplete.input = JSON.stringify(item, ['description']);
+        this.objekt = JSON.parse(this.autocomplete.input);
+        this.autocomplete.input = this.objekt.description;
+        for (let i = 0; i < 6; i++) {
+            this.autocompleteItems.pop();
+        }
+    }
+
+    presentModal() {
+        this.modalController
+            .create({component: ActivityNewComponent})
+            .then(modalEl => {
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+                console.log(result);
+                console.log(this.activityService.getAllActivities);
+                this.cd.markForCheck();
+                // this.activityList = this.activityService.getAllActivities;
+            });
+    }
 }

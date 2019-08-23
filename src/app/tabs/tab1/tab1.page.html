@@ -1,54 +1,37 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      SportApp
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>My Navigation Bar</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+
+
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="activityForm">
-    <div formGroupName="sport">
-      <ion-item>
-        <ion-label>Výber športu</ion-label>
-        <ion-select formControlName="sportType" placeholder="Select One">
-          <ion-select-option *ngFor="let val of sportOptions">
-            {{ val.value }}
-          </ion-select-option>
-        </ion-select>
 
-      </ion-item>
-    </div>
-
-    <ion-input
-            type="pocet"
-            text-left
-            formControlName="peopleCount"
-            placeholder="Zadaj pocet ludi"
-    ></ion-input>
-    <ion-input
-            type="miesto"
-            formControlName="place"
-            text-left
-            placeholder="Konkretizuj miesto"
-    ></ion-input>
-  </form>
-
-  {{ activityForm.value | json }}
-
-  <ion-toolbar color="primary">
-    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place">
-
-    </ion-searchbar>
-  </ion-toolbar>
-  <ion-list [hidden]="autocompleteItems.length == 0">
-    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-      {{ item.description}}
-
-<!--      tu treba priradit item.description do autocomplete.input-->
+    <app-activity-list [activityList]="activityList" ></app-activity-list>
 
 
-    </ion-item>
-  </ion-list>
+
+
+    <!--  <ion-toolbar color="primary">-->
+    <!--    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place">-->
+
+    <!--    </ion-searchbar>-->
+    <!--  </ion-toolbar>-->
+    <!--  <ion-list [hidden]="autocompleteItems.length == 0">-->
+    <!--    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">-->
+    <!--      {{ item.description}}-->
+
+    <!--&lt;!&ndash;      tu treba priradit item.description do autocomplete.input&ndash;&gt;-->
+
+
+    <!--    </ion-item>-->
+    <!--  </ion-list>-->
 
 </ion-content>
