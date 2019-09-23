@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Sport} from '../models/sport';
 
 @Injectable({
     providedIn: 'root'
@@ -8,48 +9,72 @@ export class DataService {
     constructor() {
     }
 
-    getSportsSk(){
+    getSportsSk(): Sport[] {
         return [
             {
                 label: 'Tenis',
-                value: 1
+                value: 1,
+                tag: 1,
+                icon: 'tennis',
+
             },
             {
                 label: 'Squash',
-                value: 2
+                value: 2,
+                tag: 1,
+                icon: 'squash'
             },
             {
                 label: 'Stolný tenis',
-                value: 3
+                value: 3,
+                tag: 1,
+                icon: 'ping-pong'
             },
             {
                 label: 'Futbal',
-                value: 4
+                value: 4,
+                tag: 1,
+                icon: 'soccer'
             },
             {
                 label: 'Florbal',
-                value: 5
+                value: 5,
+                tag: 1,
+                icon: 'tennisball'
             },
             {
                 label: 'Hokej',
-                value: 6
+                value: 6,
+                tag: 1,
+                icon: 'hockey'
             },
             {
                 label: 'Volejbal',
-                value: 7
+                value: 7,
+                tag: 1,
+                icon: 'tennisball'
             },
             {
                 label: 'Basketball',
-                value: 8
+                value: 8,
+                tag: 1,
+                icon: 'tennisball'
             },
             {
                 label: 'Nohejbal',
-                value: 9
+                value: 9,
+                tag: 1,
+                icon: 'tennisball'
             }
         ];
     }
+
     getSportNameByValue(val: number): string {
-      return this.getSportsSk().find(item => item.value == val).label;
+        return this.getSportsSk().find(item => item.value == val).label;
+    }
+
+    getSportIconByValue(val: number): string {
+        return this.getSportsSk().find(item => item.value == val).icon;
     }
 }
 

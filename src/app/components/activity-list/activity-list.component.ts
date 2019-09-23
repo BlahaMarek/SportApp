@@ -3,6 +3,8 @@ import {ActivityService} from '../../services/activity.service';
 import {Activity} from '../../models/activity';
 import {ModalController} from '@ionic/angular';
 import {ActivityDetailComponent} from '../activity-detail/activity-detail.component';
+import {Sport} from '../../models/sport';
+import {DataService} from '../../data/data.service';
 
 @Component({
     selector: 'app-activity-list',
@@ -11,15 +13,18 @@ import {ActivityDetailComponent} from '../activity-detail/activity-detail.compon
 })
 export class ActivityListComponent implements OnInit {
     activityList: Activity[];
+    sportOptions: Sport[] = [];
     constructor(
         private activityService: ActivityService,
-        private modalController: ModalController
-    ) {}
+        private modalController: ModalController,
+        private dataService: DataService,
+    ) {
+        this.sportOptions = dataService.getSportsSk();
+    }
 
     ngOnInit() {
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
-            console.log(list);
         })
     }
 

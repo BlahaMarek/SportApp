@@ -1,4 +1,6 @@
 export class Sport {
-    sportType: number;
-    sportName: string;
+    value: number;
+    label: string;
+    tag: number;
+    icon?: string;
 }

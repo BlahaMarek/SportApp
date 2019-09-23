@@ -4,6 +4,7 @@ import {ModalController} from '@ionic/angular';
 import {ActivityService} from '../../services/activity.service';
 import {Activity} from '../../models/activity';
 import {DataService} from '../../data/data.service';
+import {Sport} from '../../models/sport';
 
 @Component({
     selector: 'app-activity-new',
@@ -11,7 +12,7 @@ import {DataService} from '../../data/data.service';
     styleUrls: ['./activity-new.component.scss'],
 })
 export class ActivityNewComponent implements OnInit {
-    sportOptions = [];
+    sportOptions: Sport[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -48,8 +49,9 @@ export class ActivityNewComponent implements OnInit {
         return{
             id: this.activityService.allActivitiesCount + 1,
             sport: {
-                sportName: this.dataService.getSportNameByValue(this.activityForm.get('sport.sportType').value),
-                sportType: this.activityForm.get('sport.sportType').value
+                label: this.dataService.getSportNameByValue(this.activityForm.get('sport.sportType').value),
+                value: this.activityForm.get('sport.sportType').value,
+                tag: 1
             },
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,

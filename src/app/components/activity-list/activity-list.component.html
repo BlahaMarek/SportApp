@@ -8,7 +8,10 @@
       </ion-item-options>
 
       <ion-item (click)="onActivityClicked(activity.id)">
-        <ion-label>Sport: {{activity.sport.sportName}}</ion-label>
+        <ion-label>
+          <img src="../../../assets/sports/{{dataService.getSportIconByValue(activity.sport.value)}}.svg" alt="sport icon" >
+          {{activity.sport.label}}
+        </ion-label>
       </ion-item>
 
       <ion-item-options side="end">

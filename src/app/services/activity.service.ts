@@ -12,8 +12,9 @@ export class ActivityService {
             peopleCount: 10,
             place: 'Bratislava',
             sport: {
-                sportName: 'Hokej',
-                sportType: 2
+                label: 'Hokej',
+                value: 6,
+                tag: 1
             },
             topActivity: false
         },
@@ -22,8 +23,9 @@ export class ActivityService {
             peopleCount: 1,
             place: 'Bratislava',
             sport: {
-                sportName: 'Tenis',
-                sportType: 2
+                label: 'Tenis',
+                value: 1,
+                tag: 1
             },
             topActivity: false
         },
@@ -32,8 +34,9 @@ export class ActivityService {
             peopleCount: 5,
             place: 'Nitra',
             sport: {
-                sportName: 'Volejbal',
-                sportType: 2
+                label: 'Futbal',
+                value: 4,
+                tag: 1,
             },
             topActivity: false
         },
@@ -42,8 +45,9 @@ export class ActivityService {
             peopleCount: 10,
             place: 'Bratislava',
             sport: {
-                sportName: 'Hokej',
-                sportType: 2
+                label: 'Hokej',
+                value: 6,
+                tag: 1
             },
             topActivity: false
         }, {
@@ -51,8 +55,9 @@ export class ActivityService {
             peopleCount: 1,
             place: 'Bratislava',
             sport: {
-                sportName: 'Squash',
-                sportType: 2
+                label: 'Squash',
+                value: 2,
+                tag: 1
             },
             topActivity: false
         },
@@ -61,8 +66,9 @@ export class ActivityService {
             peopleCount: 1,
             place: 'Bratislava',
             sport: {
-                sportName: 'Squash',
-                sportType: 2
+                label: 'Squash',
+                value: 2,
+                tag: 1
             },
             topActivity: false
         }]);
