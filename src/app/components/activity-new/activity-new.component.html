@@ -9,7 +9,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
     <form [formGroup]="activityForm">
         <div formGroupName="sport">
             <ion-item>
@@ -48,8 +48,7 @@
         </ion-item>
     </form>
 
-    <ion-button (click)="onFormSubmit()">
-        <ion-icon name="add"></ion-icon>
+    <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline">
         Pridaj aktivitu
     </ion-button>
 
