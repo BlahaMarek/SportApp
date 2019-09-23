@@ -15,7 +15,9 @@ import {AuthService} from '../../auth/auth.service';
 export class ActivityListComponent implements OnInit {
     activityList: Activity[];
     activityListByUser: Activity[];
+    filteredList : Activity[];
     sportOptions: Sport[] = [];
+
     constructor(
         private activityService: ActivityService,
         private modalController: ModalController,
@@ -28,11 +30,11 @@ export class ActivityListComponent implements OnInit {
     ngOnInit() {
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
+            this.filteredList = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth);
         })
     }
 
     onActivityClicked(id: number) {
-        console.log(id);
         this.modalController
             .create({
                 component: ActivityDetailComponent,
@@ -48,16 +50,21 @@ export class ActivityListComponent implements OnInit {
     }
 
     onFilterUpdate(event: CustomEvent) {
-        console.log(event.detail.value);
         if (event.detail.value === 'others') {
-           this.activityListByUser = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth)
+           this.activityListByUser = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth);
+           this.filteredList = this.activityListByUser;
         }
         else if (event.detail.value === 'mine') {
-            this.activityListByUser = this.activityList.filter(activity => activity.sport.userId === this.authService.userIdAuth)
+            this.activityListByUser = this.activityList.filter(activity => activity.sport.userId === this.authService.userIdAuth);
+            this.filteredList = this.activityListByUser;
         }
     }
 
     onSearchUpdate(event: CustomEvent) {
-        console.log(event.detail.value);
+        if (event.detail.value === "") {
+            this.filteredList = this.activityListByUser;
+            return;
+        }
+        this.filteredList = this.activityListByUser.filter(activity => activity.sport.label.toUpperCase().includes(event.detail.value.toUpperCase()));
     }
 }

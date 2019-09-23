@@ -6,7 +6,7 @@
     </ion-segment>
 
 
-    <ion-virtual-scroll [items]="activityListByUser" approxItemHeight="20px">
+    <ion-virtual-scroll [items]="filteredList" approxItemHeight="20px">
         <ion-item-sliding *virtualItem="let activity">
 
             <ion-item-options side="start">
