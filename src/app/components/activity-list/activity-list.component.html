@@ -20,6 +20,7 @@
                          alt="sport icon">
                     {{activity.sport.label}}
                 </ion-label>
+                <ion-badge color="medium" *ngIf="activity.topActivity">TOP</ion-badge>
             </ion-item>
 
             <ion-item-options side="end">

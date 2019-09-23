@@ -15,7 +15,7 @@ import {AuthService} from '../../auth/auth.service';
 export class ActivityListComponent implements OnInit {
     activityList: Activity[];
     activityListByUser: Activity[];
-    filteredList : Activity[];
+    filteredList: Activity[];
     sportOptions: Sport[] = [];
 
     constructor(
@@ -30,6 +30,7 @@ export class ActivityListComponent implements OnInit {
     ngOnInit() {
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
+            this.activityList = this.activityList.sort((x, y) => (x.topActivity === y.topActivity) ? 0 : x.topActivity ? -1 : 1);
             this.filteredList = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth);
         })
     }
@@ -51,17 +52,16 @@ export class ActivityListComponent implements OnInit {
 
     onFilterUpdate(event: CustomEvent) {
         if (event.detail.value === 'others') {
-           this.activityListByUser = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth);
-           this.filteredList = this.activityListByUser;
-        }
-        else if (event.detail.value === 'mine') {
+            this.activityListByUser = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth);
+            this.filteredList = this.activityListByUser;
+        } else if (event.detail.value === 'mine') {
             this.activityListByUser = this.activityList.filter(activity => activity.sport.userId === this.authService.userIdAuth);
             this.filteredList = this.activityListByUser;
         }
     }
 
     onSearchUpdate(event: CustomEvent) {
-        if (event.detail.value === "") {
+        if (event.detail.value === '') {
             this.filteredList = this.activityListByUser;
             return;
         }

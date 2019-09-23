@@ -29,7 +29,7 @@ export class ActivityService {
                 tag: 1,
                 userId: 'xxx'
             },
-            topActivity: false
+            topActivity: true
         },
         {
             id: 1,
@@ -64,7 +64,7 @@ export class ActivityService {
                 tag: 1,
             userId: 'abc'
             },
-            topActivity: false
+            topActivity: true
         },
         {
             id: 5,
