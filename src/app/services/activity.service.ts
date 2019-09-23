@@ -14,7 +14,8 @@ export class ActivityService {
             sport: {
                 label: 'Hokej',
                 value: 6,
-                tag: 1
+                tag: 1,
+                userId: 'xxx'
             },
             topActivity: false
         },
@@ -25,7 +26,8 @@ export class ActivityService {
             sport: {
                 label: 'Tenis',
                 value: 1,
-                tag: 1
+                tag: 1,
+                userId: 'xxx'
             },
             topActivity: false
         },
@@ -37,6 +39,7 @@ export class ActivityService {
                 label: 'Futbal',
                 value: 4,
                 tag: 1,
+            userId: 'abc',
             },
             topActivity: false
         },
@@ -47,7 +50,8 @@ export class ActivityService {
             sport: {
                 label: 'Hokej',
                 value: 6,
-                tag: 1
+                tag: 1,
+                userId: 'abc'
             },
             topActivity: false
         }, {
@@ -57,7 +61,8 @@ export class ActivityService {
             sport: {
                 label: 'Squash',
                 value: 2,
-                tag: 1
+                tag: 1,
+            userId: 'abc'
             },
             topActivity: false
         },
@@ -68,7 +73,8 @@ export class ActivityService {
             sport: {
                 label: 'Squash',
                 value: 2,
-                tag: 1
+                tag: 1,
+                userId: 'abc'
             },
             topActivity: false
         }]);

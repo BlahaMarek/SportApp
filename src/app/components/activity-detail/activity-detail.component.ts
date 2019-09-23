@@ -19,4 +19,5 @@ export class ActivityDetailComponent implements OnInit {
   onCancel() {
     this.modalController.dismiss({message: 'ActivityDetail closed'}, 'cancel');
   }
+
 }

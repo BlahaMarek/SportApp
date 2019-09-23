@@ -51,7 +51,8 @@ export class ActivityNewComponent implements OnInit {
             sport: {
                 label: this.dataService.getSportNameByValue(this.activityForm.get('sport.sportType').value),
                 value: this.activityForm.get('sport.sportType').value,
-                tag: 1
+                tag: 1,
+                userId: 'abc'
             },
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,

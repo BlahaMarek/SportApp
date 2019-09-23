@@ -17,54 +17,63 @@ export class DataService {
                 tag: 1,
                 icon: 'tennis',
 
+                userId: 'abc'
             },
             {
                 label: 'Squash',
                 value: 2,
                 tag: 1,
-                icon: 'squash'
+                icon: 'squash',
+                userId: 'abc'
             },
             {
                 label: 'Stolný tenis',
                 value: 3,
                 tag: 1,
-                icon: 'ping-pong'
+                icon: 'ping-pong',
+                userId: 'xxx'
             },
             {
                 label: 'Futbal',
                 value: 4,
                 tag: 1,
-                icon: 'soccer'
+                icon: 'soccer',
+                userId: 'xxx'
             },
             {
                 label: 'Florbal',
                 value: 5,
                 tag: 1,
-                icon: 'tennisball'
+                icon: 'tennisball',
+                userId: 'xxx'
             },
             {
                 label: 'Hokej',
                 value: 6,
                 tag: 1,
-                icon: 'hockey'
+                icon: 'hockey',
+                userId: 'xxx'
             },
             {
                 label: 'Volejbal',
                 value: 7,
                 tag: 1,
-                icon: 'tennisball'
+                icon: 'tennisball',
+                userId: 'xxx'
             },
             {
                 label: 'Basketball',
                 value: 8,
                 tag: 1,
-                icon: 'tennisball'
+                icon: 'tennisball',
+                userId: 'xxx'
             },
             {
                 label: 'Nohejbal',
                 value: 9,
                 tag: 1,
-                icon: 'tennisball'
+                icon: 'tennisball',
+                userId: 'xxx'
             }
         ];
     }

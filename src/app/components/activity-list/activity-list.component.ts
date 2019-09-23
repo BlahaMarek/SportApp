@@ -43,4 +43,12 @@ export class ActivityListComponent implements OnInit {
                 console.log(result);
             });
     }
+
+    onFilterUpdate(event: CustomEvent) {
+        console.log(event);
+    }
+
+    onSearchUpdate(event: CustomEvent) {
+        console.log(event);
+    }
 }

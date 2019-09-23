@@ -3,4 +3,5 @@ export class Sport {
     label: string;
     tag: number;
     icon?: string;
+    userId: string;
 }
