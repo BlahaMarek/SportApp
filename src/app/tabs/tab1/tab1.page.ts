@@ -1,6 +1,6 @@
 import {Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {ModalController} from '@ionic/angular';
+import {ModalController, ToastController} from '@ionic/angular';
 import {ActivityNewComponent} from '../../components/activity-new/activity-new.component';
 
 @Component({
@@ -21,6 +21,7 @@ export class Tab1Page implements OnInit {
         public zone: NgZone,
         private fb: FormBuilder,
         private modalController: ModalController,
+        private toastController: ToastController,
     ) {
         // @ts-ignore
         this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -40,7 +41,16 @@ export class Tab1Page implements OnInit {
             })
             .then(result => {
                 console.log(result);
+                this.presentToast();
             });
+    }
+    async presentToast() {
+        const toast = await this.toastController.create({
+            message: 'Aktivita bola úspešne pridaná.',
+            duration: 2000,
+            color: 'medium'
+        });
+        toast.present();
     }
 
 

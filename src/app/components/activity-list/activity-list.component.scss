@@ -1,4 +1,10 @@
-img {
-  width: 25px;
-  padding-right: 10px;
+ion-thumbnail {
+  width: 30px;
+  img {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 10px;
+  }
 }
+

@@ -6,4 +6,5 @@ export class Activity {
     peopleCount: number;
     place: string;
     topActivity: boolean;
+    date: Date;
 }

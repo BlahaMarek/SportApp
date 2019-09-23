@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivityService} from '../../services/activity.service';
 import {Activity} from '../../models/activity';
-import {ModalController} from '@ionic/angular';
+import {ModalController, ToastController} from '@ionic/angular';
 import {ActivityDetailComponent} from '../activity-detail/activity-detail.component';
 import {Sport} from '../../models/sport';
 import {DataService} from '../../data/data.service';
@@ -21,6 +21,7 @@ export class ActivityListComponent implements OnInit {
     constructor(
         private activityService: ActivityService,
         private modalController: ModalController,
+        private toastController: ToastController,
         private dataService: DataService,
         private authService: AuthService
     ) {
@@ -66,5 +67,9 @@ export class ActivityListComponent implements OnInit {
             return;
         }
         this.filteredList = this.activityListByUser.filter(activity => activity.sport.label.toUpperCase().includes(event.detail.value.toUpperCase()));
+    }
+
+    onFabClicked(event: MouseEvent) {
+        alert('Sem pojde filter !');
     }
 }

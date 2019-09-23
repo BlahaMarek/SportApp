@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 import {ModalController} from '@ionic/angular';
 import {ActivityService} from '../../services/activity.service';
 import {Activity} from '../../models/activity';
@@ -26,16 +26,16 @@ export class ActivityNewComponent implements OnInit {
     }
 
     activityForm = this.fb.group({
-        peopleCount: [''],
-        place: [''],
+        peopleCount: ['', Validators.required],
+        place: ['', Validators.required],
         topActivity: [false],
+        date: ['', Validators.required],
         sport: this.fb.group({
-            sportType: [''],
+            sportType: ['', Validators.required],
         }),
     });
 
     ngOnInit() {
-        console.log(this.sportOptions);
     }
 
     onCancel() {
@@ -58,7 +58,8 @@ export class ActivityNewComponent implements OnInit {
             },
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
-            peopleCount: this.activityForm.get('peopleCount').value
+            peopleCount: this.activityForm.get('peopleCount').value,
+            date: this.activityForm.get('date').value
         };
     }
 }

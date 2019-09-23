@@ -17,7 +17,8 @@ export class ActivityService {
                 tag: 1,
                 userId: 'xxx'
             },
-            topActivity: false
+            topActivity: false,
+            date: new Date('2019-12-24')
         },
         {
             id: 2,
@@ -29,7 +30,8 @@ export class ActivityService {
                 tag: 1,
                 userId: 'xxx'
             },
-            topActivity: true
+            topActivity: true,
+            date: new Date('2019-08-17')
         },
         {
             id: 1,
@@ -41,7 +43,8 @@ export class ActivityService {
                 tag: 1,
             userId: 'abc',
             },
-            topActivity: false
+            topActivity: false,
+            date: new Date('2019-01-02')
         },
         {
             id: 3,
@@ -53,7 +56,8 @@ export class ActivityService {
                 tag: 1,
                 userId: 'abc'
             },
-            topActivity: false
+            topActivity: false,
+            date: new Date('2019-09-14')
         }, {
             id: 4,
             peopleCount: 1,
@@ -64,7 +68,8 @@ export class ActivityService {
                 tag: 1,
             userId: 'abc'
             },
-            topActivity: true
+            topActivity: true,
+            date: new Date('2019-04-09')
         },
         {
             id: 5,
@@ -76,7 +81,8 @@ export class ActivityService {
                 tag: 1,
                 userId: 'abc'
             },
-            topActivity: false
+            topActivity: false,
+            date: new Date('2019-01-05')
         }]);
     readonly activities$ = this._activities.asObservable();
 

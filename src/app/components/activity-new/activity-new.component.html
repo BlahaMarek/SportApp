@@ -13,8 +13,8 @@
     <form [formGroup]="activityForm">
         <div formGroupName="sport">
             <ion-item>
-                <ion-label position="stacked" >Výber športu</ion-label>
-                <ion-select formControlName="sportType" placeholder="Select One">
+                <ion-label position="stacked" >Výber športu *</ion-label>
+                <ion-select formControlName="sportType" placeholder="Vyberte šport">
                     <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
                         {{ val.label }}
                     </ion-select-option>
@@ -24,20 +24,26 @@
         </div>
 
         <ion-item>
-            <ion-label position="stacked" >Počet ľudí?</ion-label>
+            <ion-label position="stacked" >Počet ľudí? *</ion-label>
             <ion-input
                     type="pocet"
                     text-left
                     formControlName="peopleCount"
+                    placeholder="Zadajte počet osôb"
             ></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label position="stacked" >Kde?</ion-label>
+            <ion-label position="stacked" >Kde? *</ion-label>
             <ion-input
                     type="miesto"
                     formControlName="place"
                     text-left
+                    placeholder="Zadajte miesto"
             ></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked" >Kedy? *</ion-label>
+            <ion-datetime placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
         </ion-item>
         <ion-item>
             <ion-label position="stacked" >Topovať aktivitu?</ion-label>
@@ -47,10 +53,7 @@
             ></ion-toggle>
         </ion-item>
     </form>
-
-    <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline">
+    <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline" disabled="{{!activityForm.valid}}">
         Pridaj aktivitu
     </ion-button>
-
-    {{ activityForm.value | json }}
 </ion-content>

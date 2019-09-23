@@ -15,10 +15,13 @@
             </ion-item-options>
 
             <ion-item (click)="onActivityClicked(activity.id)">
-                <ion-label>
+                <ion-thumbnail slot="start">
                     <img src="../../../assets/sports/{{dataService.getSportIconByValue(activity.sport.value)}}.svg"
                          alt="sport icon">
-                    {{activity.sport.label}}
+                </ion-thumbnail>
+                <ion-label>
+                    <h3>{{activity.sport.label}}</h3>
+                    <p>{{activity.date | date}}, {{activity.place}}</p>
                 </ion-label>
                 <ion-badge color="medium" *ngIf="activity.topActivity">TOP</ion-badge>
             </ion-item>
@@ -29,4 +32,9 @@
 
         </ion-item-sliding>
     </ion-virtual-scroll>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="flame" color="medium" (click)="onFabClicked($event)"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>

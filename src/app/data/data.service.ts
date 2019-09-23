@@ -16,7 +16,6 @@ export class DataService {
                 value: 1,
                 tag: 1,
                 icon: 'tennis',
-
                 userId: 'abc'
             },
             {
