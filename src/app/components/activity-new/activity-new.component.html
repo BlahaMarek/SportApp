@@ -13,9 +13,9 @@
     <form [formGroup]="activityForm">
         <div formGroupName="sport">
             <ion-item>
-                <ion-label>Výber športu</ion-label>
+                <ion-label position="stacked" >Výber športu</ion-label>
                 <ion-select formControlName="sportType" placeholder="Select One">
-                    <ion-select-option *ngFor="let val of sportOptions">
+                    <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
                         {{ val.label }}
                     </ion-select-option>
                 </ion-select>
@@ -23,23 +23,29 @@
             </ion-item>
         </div>
 
-        <ion-input
-                type="pocet"
-                text-left
-                formControlName="peopleCount"
-                placeholder="Počet ľudí?"
-        ></ion-input>
-        <ion-input
-                type="miesto"
-                formControlName="place"
-                text-left
-                placeholder="Kde?"
-        ></ion-input>
-        <ion-toggle
-                formControlName="topActivity"
-                text-left
-                placeholder="Topovať aktivitu?"
-        ></ion-toggle>
+        <ion-item>
+            <ion-label position="stacked" >Počet ľudí?</ion-label>
+            <ion-input
+                    type="pocet"
+                    text-left
+                    formControlName="peopleCount"
+            ></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked" >Kde?</ion-label>
+            <ion-input
+                    type="miesto"
+                    formControlName="place"
+                    text-left
+            ></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked" >Topovať aktivitu?</ion-label>
+            <ion-toggle
+                    formControlName="topActivity"
+                    text-left
+            ></ion-toggle>
+        </ion-item>
     </form>
 
     <ion-button (click)="onFormSubmit()">
