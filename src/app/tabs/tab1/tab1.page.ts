@@ -1,9 +1,7 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ModalController} from '@ionic/angular';
 import {ActivityNewComponent} from '../../components/activity-new/activity-new.component';
-import {ActivityService} from '../../services/activity.service';
-import {Activity} from '../../models/activity';
 
 @Component({
     selector: 'app-tab1',
@@ -11,7 +9,6 @@ import {Activity} from '../../models/activity';
     styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-    activityList: Activity[] = [];
 
     // @ts-ignore
     GoogleAutocomplete: google.maps.places.AutocompleteService;
@@ -24,8 +21,6 @@ export class Tab1Page implements OnInit {
         public zone: NgZone,
         private fb: FormBuilder,
         private modalController: ModalController,
-        private cd: ChangeDetectorRef,
-        private activityService: ActivityService,
     ) {
         // @ts-ignore
         this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -34,45 +29,6 @@ export class Tab1Page implements OnInit {
     }
 
     ngOnInit() {
-        this.activityList = this.activityService.getAllActivities;
-    }
-
-    ionViewWillEnter() {
-        this.activityList = this.activityService.getAllActivities;
-        this.cd.markForCheck();
-        console.log('enter');
-    }
-
-
-    private objekt: any;
-
-    updateSearchResults() {
-        if (this.autocomplete.input === '') {
-            this.autocompleteItems = [];
-            return;
-        }
-        this.GoogleAutocomplete.getPlacePredictions({input: this.autocomplete.input},
-            (predictions, status) => {
-                this.autocompleteItems = [];
-                this.zone.run(() => {
-                    predictions.forEach((prediction) => {
-                        this.autocompleteItems.push(prediction);
-                    });
-                });
-            });
-    }
-
-    selectSearchResult(item) {
-        console.log('ja som item' + item);
-        this.location = item;
-        this.placeid = this.location.place_id;
-        JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
-        this.autocomplete.input = JSON.stringify(item, ['description']);
-        this.objekt = JSON.parse(this.autocomplete.input);
-        this.autocomplete.input = this.objekt.description;
-        for (let i = 0; i < 6; i++) {
-            this.autocompleteItems.pop();
-        }
     }
 
     presentModal() {
@@ -84,9 +40,45 @@ export class Tab1Page implements OnInit {
             })
             .then(result => {
                 console.log(result);
-                console.log(this.activityService.getAllActivities);
-                this.cd.markForCheck();
-                // this.activityList = this.activityService.getAllActivities;
             });
     }
+
+
+
+
+
+
+
+
+
+    // private objekt: any;
+
+    // updateSearchResults() {
+    //     if (this.autocomplete.input === '') {
+    //         this.autocompleteItems = [];
+    //         return;
+    //     }
+    //     this.GoogleAutocomplete.getPlacePredictions({input: this.autocomplete.input},
+    //         (predictions, status) => {
+    //             this.autocompleteItems = [];
+    //             this.zone.run(() => {
+    //                 predictions.forEach((prediction) => {
+    //                     this.autocompleteItems.push(prediction);
+    //                 });
+    //             });
+    //         });
+    // }
+    //
+    // selectSearchResult(item) {
+    //     console.log('ja som item' + item);
+    //     this.location = item;
+    //     this.placeid = this.location.place_id;
+    //     JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
+    //     this.autocomplete.input = JSON.stringify(item, ['description']);
+    //     this.objekt = JSON.parse(this.autocomplete.input);
+    //     this.autocomplete.input = this.objekt.description;
+    //     for (let i = 0; i < 6; i++) {
+    //         this.autocompleteItems.pop();
+    //     }
+    // }
 }

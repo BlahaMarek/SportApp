@@ -3,7 +3,7 @@ import {FormBuilder} from '@angular/forms';
 import {ModalController} from '@ionic/angular';
 import {ActivityService} from '../../services/activity.service';
 import {Activity} from '../../models/activity';
-import {Sport} from '../../models/sport';
+import {DataService} from '../../data/data.service';
 
 @Component({
     selector: 'app-activity-new',
@@ -11,13 +11,15 @@ import {Sport} from '../../models/sport';
     styleUrls: ['./activity-new.component.scss'],
 })
 export class ActivityNewComponent implements OnInit {
-    sportOptions = [{value: 0, label: 'A'}, {value: 1, label: 'B'}];
+    sportOptions = [];
 
     constructor(
         private fb: FormBuilder,
         private modalController: ModalController,
         private activityService: ActivityService,
+        private dataService: DataService,
     ) {
+        this.sportOptions = this.dataService.getSportsSk();
     }
 
     activityForm = this.fb.group({
@@ -30,6 +32,7 @@ export class ActivityNewComponent implements OnInit {
     });
 
     ngOnInit() {
+        console.log(this.sportOptions);
     }
 
     onCancel() {
@@ -42,13 +45,15 @@ export class ActivityNewComponent implements OnInit {
     }
 
     assignValueToActivity(): Activity {
-        const activity: Activity = {
+        return{
             id: this.activityService.allActivitiesCount + 1,
-            sport: {sportName: '', sportType: null},
+            sport: {
+                sportName: '',
+                sportType: this.activityForm.get('sport.sportType').value
+            },
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value
         };
-        return activity;
     }
 }

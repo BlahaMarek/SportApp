@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivityService} from '../../services/activity.service';
 import {Activity} from '../../models/activity';
 import {ModalController} from '@ionic/angular';
@@ -10,13 +10,18 @@ import {ActivityDetailComponent} from '../activity-detail/activity-detail.compon
     styleUrls: ['./activity-list.component.scss'],
 })
 export class ActivityListComponent implements OnInit {
-    @Input() activityList: Activity[];
+    activityList: Activity[];
     constructor(
         private activityService: ActivityService,
         private modalController: ModalController
     ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.activityService.activities$.subscribe(list => {
+            this.activityList = list;
+            console.log(list);
+        })
+    }
 
     onActivityClicked(id: number) {
         console.log(id);
