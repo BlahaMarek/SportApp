@@ -5,6 +5,7 @@ import {ModalController} from '@ionic/angular';
 import {ActivityDetailComponent} from '../activity-detail/activity-detail.component';
 import {Sport} from '../../models/sport';
 import {DataService} from '../../data/data.service';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
     selector: 'app-activity-list',
@@ -13,11 +14,13 @@ import {DataService} from '../../data/data.service';
 })
 export class ActivityListComponent implements OnInit {
     activityList: Activity[];
+    activityListByUser: Activity[];
     sportOptions: Sport[] = [];
     constructor(
         private activityService: ActivityService,
         private modalController: ModalController,
         private dataService: DataService,
+        private authService: AuthService
     ) {
         this.sportOptions = dataService.getSportsSk();
     }
@@ -45,10 +48,16 @@ export class ActivityListComponent implements OnInit {
     }
 
     onFilterUpdate(event: CustomEvent) {
-        console.log(event);
+        console.log(event.detail.value);
+        if (event.detail.value === 'others') {
+           this.activityListByUser = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth)
+        }
+        else if (event.detail.value === 'mine') {
+            this.activityListByUser = this.activityList.filter(activity => activity.sport.userId === this.authService.userIdAuth)
+        }
     }
 
     onSearchUpdate(event: CustomEvent) {
-        console.log(event);
+        console.log(event.detail.value);
     }
 }
