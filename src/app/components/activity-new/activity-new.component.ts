@@ -5,6 +5,7 @@ import {ActivityService} from '../../services/activity.service';
 import {Activity} from '../../models/activity';
 import {DataService} from '../../data/data.service';
 import {Sport} from '../../models/sport';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
     selector: 'app-activity-new',
@@ -19,6 +20,7 @@ export class ActivityNewComponent implements OnInit {
         private modalController: ModalController,
         private activityService: ActivityService,
         private dataService: DataService,
+        private authService: AuthService
     ) {
         this.sportOptions = this.dataService.getSportsSk();
     }
@@ -52,7 +54,7 @@ export class ActivityNewComponent implements OnInit {
                 label: this.dataService.getSportNameByValue(this.activityForm.get('sport.sportType').value),
                 value: this.activityForm.get('sport.sportType').value,
                 tag: 1,
-                userId: 'abc'
+                userId: this.authService.userIdAuth
             },
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
