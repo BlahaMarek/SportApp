@@ -10,9 +10,10 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MenuComponent} from './components/menu/menu.component';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, MenuComponent],
     entryComponents: [],
     imports: [
         BrowserModule,

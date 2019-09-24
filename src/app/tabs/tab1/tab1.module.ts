@@ -20,7 +20,7 @@ import {ActivityDetailComponent} from '../../components/activity-detail/activity
       Tab1Page,
       ActivityListComponent,
       ActivityNewComponent,
-      ActivityDetailComponent
+      ActivityDetailComponent,
   ],
   entryComponents: [
     ActivityNewComponent,
