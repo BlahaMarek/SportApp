@@ -10,8 +10,8 @@
         <ion-item-sliding *virtualItem="let activity">
 
             <ion-item-options side="start">
-                <ion-item-option>Favorite</ion-item-option>
-                <ion-item-option color="danger">Share</ion-item-option>
+                <ion-item-option><ion-icon name="settings"></ion-icon></ion-item-option>
+                <ion-item-option><ion-icon name="heart"></ion-icon></ion-item-option>
             </ion-item-options>
 
             <ion-item (click)="onActivityClicked(activity.id)">
@@ -27,7 +27,7 @@
             </ion-item>
 
             <ion-item-options side="end">
-                <ion-item-option>Unread</ion-item-option>
+                <ion-item-option><ion-icon name="trash"></ion-icon></ion-item-option>
             </ion-item-options>
 
         </ion-item-sliding>
