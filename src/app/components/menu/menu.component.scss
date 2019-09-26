@@ -1,3 +1,30 @@
 ion-title {
   text-align: center;
 }
+
+.languages {
+  text-align: center;
+  margin-top: 30vh;
+  margin-bottom: 5vh;
+  img {
+    width: 45px;
+    padding: 7px;
+    display: inline;
+    margin: auto;
+  }
+}
+
+.logout {
+  width: 100%;
+}
+
+.active {
+  background: #19191938;
+  border-radius: 5px;
+  transition: 0.5s all linear;
+}
+
+.none {
+  background: none;
+}
+

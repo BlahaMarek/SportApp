@@ -1,28 +1,44 @@
-<ion-menu side="start"  menuId="main" contentId="content">
-  <ion-header>
-    <ion-toolbar translucent>
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-menu side="start" menuId="main" contentId="content">
+    <ion-header>
+        <ion-toolbar translucent>
+            <ion-title>Menu</ion-title>
+        </ion-toolbar>
+    </ion-header>
 
-  <ion-content>
-    <ion-list>
-      <ion-item lines="none">
-        <ion-icon name="home" slot="start"></ion-icon>
-        <ion-label>Home</ion-label>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-icon name="person" slot="start"></ion-icon>
-        <ion-label>Profile</ion-label>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-icon name="chatbubbles" slot="start"></ion-icon>
-        <ion-label>Messages</ion-label>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-icon name="settings" slot="start"></ion-icon>
-        <ion-label>Settings</ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+    <ion-content>
+        <ion-list>
+            <ion-menu-toggle auto-hide="true">
+                <ion-item [routerLink]="'/profile'" lines="none">
+                    <ion-icon name="person" slot="start"></ion-icon>
+                    <ion-label>Profil</ion-label>
+                </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="true">
+                <ion-item [routerLink]="'/stats'" lines="none">
+                    <ion-icon name="stats" slot="start"></ion-icon>
+                    <ion-label>Štatistiky</ion-label>
+                </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="true">
+                <ion-item [routerLink]="'/events'" lines="none">
+                    <ion-icon name="trophy" slot="start"></ion-icon>
+                    <ion-label>Podujatia</ion-label>
+                </ion-item>
+            </ion-menu-toggle>
+            <ion-menu-toggle auto-hide="true">
+                <ion-item [routerLink]="'/messages'" lines="none">
+                    <ion-icon name="chatboxes" slot="start"></ion-icon>
+                    <ion-label>Správy</ion-label>
+                </ion-item>
+            </ion-menu-toggle>
+            <ion-item lines="none" class="languages">
+                <img #sk src="../../../assets/sk.svg" alt="sk" (click)="onLanguageIconClicked('sk')">
+                <img #en src="../../../assets/en.svg" alt="en" (click)="onLanguageIconClicked('en')">
+            </ion-item>
+            <ion-item lines="none">
+                <ion-button class="logout" size="medium" (click)="onLogout()" expand="block" fill="outline">Odhlásiť
+                </ion-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-menu>

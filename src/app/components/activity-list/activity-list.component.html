@@ -7,14 +7,14 @@
 
 
     <ion-virtual-scroll [items]="filteredList" approxItemHeight="20px">
-        <ion-item-sliding *virtualItem="let activity">
+        <ion-item-sliding  *virtualItem="let activity">
 
             <ion-item-options side="start">
                 <ion-item-option><ion-icon name="settings"></ion-icon></ion-item-option>
                 <ion-item-option><ion-icon name="heart"></ion-icon></ion-item-option>
             </ion-item-options>
 
-            <ion-item (click)="onActivityClicked(activity.id)">
+            <ion-item lines="none" (click)="onActivityClicked(activity.id)">
                 <ion-thumbnail slot="start">
                     <img src="../../../assets/sports/{{dataService.getSportIconByValue(activity.sport.value)}}.svg"
                          alt="sport icon">
