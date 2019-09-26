@@ -1,5 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {IonImg} from '@ionic/angular';
+import {LanguageService} from '../../services/language.service';
+import {Storage} from '@ionic/storage';
 
 @Component({
   selector: 'app-menu',
@@ -12,12 +14,27 @@ export class MenuComponent implements OnInit {
   @ViewChild('sk') sk: ElementRef;
   // @ts-ignore
   @ViewChild('en') en: ElementRef;
-  constructor() { }
+  constructor(
+      private languageService: LanguageService,
+      private storage: Storage
+  ) { }
 
   ngOnInit() {
-    console.log(this.sk);
-    console.log(this.en);
-    this.sk.nativeElement.className = 'active';
+    this.storage.get(this.languageService.getLangKey).then(lang => {
+      if (lang === 'sk') {
+        this.sk.nativeElement.className = 'active';
+        this.en.nativeElement.className = 'none';
+      }
+      else if (lang === 'en') {
+        this.sk.nativeElement.className = 'none';
+        this.en.nativeElement.className = 'active';
+      }
+      else {
+        this.sk.nativeElement.className = 'active';
+        this.en.nativeElement.className = 'none';
+        this.languageService.setLanguage('sk');
+      }
+    })
   }
 
   onLogout() {
@@ -26,15 +43,14 @@ export class MenuComponent implements OnInit {
 
   onLanguageIconClicked(lang: String) {
     if (lang === 'sk') {
-      console.log('SK clicked');
-      console.log(this.sk);
       this.sk.nativeElement.className = 'active';
       this.en.nativeElement.className = 'none';
+      this.languageService.setLanguage('sk');
     }
     else {
-      console.log('EN clicked');
       this.sk.nativeElement.className = 'none';
       this.en.nativeElement.className = 'active';
+      this.languageService.setLanguage('en');
     }
   }
 }

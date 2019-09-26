@@ -11,6 +11,14 @@ import {AppComponent} from './app.component';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MenuComponent} from './components/menu/menu.component';
+import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {IonicStorageModule} from '@ionic/storage';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+}
 
 @NgModule({
     declarations: [AppComponent, MenuComponent],
@@ -21,6 +29,16 @@ import {MenuComponent} from './components/menu/menu.component';
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
+        HttpClientModule,
+        IonicStorageModule.forRoot(),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        })
+
     ],
     providers: [
         StatusBar,

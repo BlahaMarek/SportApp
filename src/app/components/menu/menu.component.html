@@ -31,10 +31,12 @@
                     <ion-label>Správy</ion-label>
                 </ion-item>
             </ion-menu-toggle>
-            <ion-item lines="none" class="languages">
-                <img #sk src="../../../assets/sk.svg" alt="sk" (click)="onLanguageIconClicked('sk')">
-                <img #en src="../../../assets/en.svg" alt="en" (click)="onLanguageIconClicked('en')">
-            </ion-item>
+            <ion-menu-toggle auto-hide="true">
+                <ion-item lines="none" class="languages">
+                    <img #sk src="../../../assets/sk.svg" alt="sk" (click)="onLanguageIconClicked('sk')">
+                    <img #en src="../../../assets/en.svg" alt="en" (click)="onLanguageIconClicked('en')">
+                </ion-item>
+            </ion-menu-toggle>
             <ion-item lines="none">
                 <ion-button class="logout" size="medium" (click)="onLogout()" expand="block" fill="outline">Odhlásiť
                 </ion-button>

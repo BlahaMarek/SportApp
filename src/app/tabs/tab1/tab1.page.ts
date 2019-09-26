@@ -2,6 +2,7 @@ import {Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MenuController, ModalController, ToastController} from '@ionic/angular';
 import {ActivityNewComponent} from '../../components/activity-new/activity-new.component';
+import {LanguageService} from '../../services/language.service';
 
 @Component({
     selector: 'app-tab1',
@@ -22,14 +23,21 @@ export class Tab1Page implements OnInit {
         private fb: FormBuilder,
         private modalController: ModalController,
         private toastController: ToastController,
+        private languageService: LanguageService,
     ) {
         // @ts-ignore
         this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
         this.autocomplete = {input: ''};
         this.autocompleteItems = [];
+
+        this.initApp();
     }
 
     ngOnInit() {
+    }
+
+    initApp() {
+        this.languageService.setInitialAppLanguage();
     }
 
     presentModal() {
