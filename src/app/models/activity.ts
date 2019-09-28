@@ -7,4 +7,5 @@ export class Activity {
     place: string;
     topActivity: boolean;
     date: Date;
+    bookedBy?: string;
 }

@@ -40,7 +40,10 @@ export class ActivityListComponent implements OnInit {
         this.modalController
             .create({
                 component: ActivityDetailComponent,
-                componentProps: {selectedActivity: this.activityService.getActivityById(id)}
+                componentProps: {
+                    selectedActivity: this.activityService.getActivityById(id),
+                    bookable: !(this.activityService.getActivityById(id).sport.userId === this.authService.userIdAuth)
+                }
             })
             .then(modalEl => {
                 modalEl.present();

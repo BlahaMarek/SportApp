@@ -41,10 +41,11 @@ export class ActivityService {
                 label: 'Futbal',
                 value: 4,
                 tag: 1,
-            userId: 'abc',
+                userId: 'abc',
             },
             topActivity: false,
-            date: new Date('2019-01-02')
+            date: new Date('2019-01-02'),
+            bookedBy: 'xxx'
         },
         {
             id: 3,
@@ -66,7 +67,7 @@ export class ActivityService {
                 label: 'Squash',
                 value: 2,
                 tag: 1,
-            userId: 'abc'
+                userId: 'abc'
             },
             topActivity: true,
             date: new Date('2019-04-09')
