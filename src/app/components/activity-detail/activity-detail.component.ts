@@ -38,6 +38,7 @@ export class ActivityDetailComponent implements OnInit {
 
     ngOnInit() {
         this.sportOptions = this.dataService.getSportsSk();
+        // this.activityForm.setValue(this.selectedActivity);
         this.assignValueToForm();
 
         console.log(this.selectedActivity);
@@ -45,8 +46,7 @@ export class ActivityDetailComponent implements OnInit {
 
         if (this.bookable) {
             this.activityForm.disable();
-        }
-        else {
+        } else {
             this.activityForm.enable()
         }
     }
@@ -54,6 +54,11 @@ export class ActivityDetailComponent implements OnInit {
     onCancel() {
         this.modalController.dismiss({message: 'ActivityDetail closed'}, 'cancel');
     }
+
+    compareWithFn = (o1, o2) => {
+        return o1 && o2 ? o1.value === o2.value : o1 === o2;
+    };
+    compareWith = this.compareWithFn;
 
     assignValueToForm() {
         this.activityForm.get('peopleCount').patchValue(this.selectedActivity.peopleCount);
@@ -63,6 +68,7 @@ export class ActivityDetailComponent implements OnInit {
         this.activityForm.get('sport.sportType').setValue(this.selectedActivity.sport.value, {onlySelf: true});
 
         this.activityForm.updateValueAndValidity();
+        console.log(this.activityForm);
     }
 
     onFormSubmit() {
@@ -71,14 +77,14 @@ export class ActivityDetailComponent implements OnInit {
     }
 
     assignValueToActivity(): Activity {
-        return{
+        return {
             id: this.activityService.allActivitiesCount + 1,
             sport: {
                 label: this.dataService.getSportNameByValue(this.activityForm.get('sport.sportType').value),
                 value: this.activityForm.get('sport.sportType').value,
                 tag: 1,
-                userId: this.authService.userIdAuth
             },
+            createdBy: this.authService.userIdAuth,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,

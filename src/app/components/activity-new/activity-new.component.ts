@@ -24,12 +24,11 @@ export class ActivityNewComponent implements OnInit {
         private dataService: DataService,
         private authService: AuthService,
         public zone: NgZone,
-
     ) {
         this.sportOptions = this.dataService.getSportsSk();
         // @ts-ignore
         this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
-        this.autocomplete = { input: '' };
+        this.autocomplete = {input: ''};
         this.autocompleteItems = [];
     }
 
@@ -62,26 +61,27 @@ export class ActivityNewComponent implements OnInit {
     }
 
     assignValueToActivity(): Activity {
-        return{
+        return {
             id: this.activityService.allActivitiesCount + 1,
             sport: {
                 label: this.dataService.getSportNameByValue(this.activityForm.get('sport.sportType').value),
                 value: this.activityForm.get('sport.sportType').value,
                 tag: 1,
-                userId: this.authService.userIdAuth
             },
+            createdBy: this.authService.userIdAuth,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
             date: this.activityForm.get('date').value
         };
     }
+
     updateSearchResults() {
         if (this.autocomplete.input === '') {
             this.autocompleteItems = [];
             return;
         }
-        this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+        this.GoogleAutocomplete.getPlacePredictions({input: this.autocomplete.input},
             (predictions, status) => {
                 this.autocompleteItems = [];
                 this.zone.run(() => {
@@ -91,6 +91,7 @@ export class ActivityNewComponent implements OnInit {
                 });
             });
     }
+
     selectSearchResult(item) {
         // let place: google.maps.places.PlaceResult = this.GoogleAutocomplete.getPlacePredictions();
         console.log(item);

@@ -8,4 +8,5 @@ export class Activity {
     topActivity: boolean;
     date: Date;
     bookedBy?: string;
+    createdBy: string;     //todo premiestni do activity, neviem co to tu robi je to picovina
 }

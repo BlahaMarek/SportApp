@@ -15,8 +15,8 @@ export class ActivityService {
                 label: 'Hokej',
                 value: 6,
                 tag: 1,
-                userId: 'xxx'
             },
+            createdBy: 'xxx',
             topActivity: false,
             date: new Date('2019-12-24')
         },
@@ -28,8 +28,8 @@ export class ActivityService {
                 label: 'Tenis',
                 value: 1,
                 tag: 1,
-                userId: 'xxx'
             },
+            createdBy: 'xxx',
             topActivity: true,
             date: new Date('2019-08-17')
         },
@@ -41,11 +41,10 @@ export class ActivityService {
                 label: 'Futbal',
                 value: 4,
                 tag: 1,
-                userId: 'abc',
             },
+            createdBy: 'abc',
             topActivity: false,
             date: new Date('2019-01-02'),
-            bookedBy: 'xxx'
         },
         {
             id: 3,
@@ -55,8 +54,8 @@ export class ActivityService {
                 label: 'Hokej',
                 value: 6,
                 tag: 1,
-                userId: 'abc'
             },
+            createdBy: 'abc',
             topActivity: false,
             date: new Date('2019-09-14')
         }, {
@@ -67,8 +66,8 @@ export class ActivityService {
                 label: 'Squash',
                 value: 2,
                 tag: 1,
-                userId: 'abc'
             },
+            createdBy: 'abc',
             topActivity: true,
             date: new Date('2019-04-09')
         },
@@ -80,8 +79,8 @@ export class ActivityService {
                 label: 'Squash',
                 value: 2,
                 tag: 1,
-                userId: 'abc'
             },
+            createdBy: 'abc',
             topActivity: false,
             date: new Date('2019-01-05')
         }]);

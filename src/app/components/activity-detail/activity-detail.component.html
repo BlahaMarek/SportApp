@@ -15,9 +15,9 @@
         <div formGroupName="sport">
             <ion-item>
                 <ion-label position="stacked" >Výber športu *</ion-label>
-                <ion-select formControlName="sportType" placeholder="Vyberte šport">
-                    <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
-                        {{ val.value }}
+                <ion-select [compareWith]="compareWith" formControlName="sportType" placeholder="Vyberte šport">
+                    <ion-select-option  value="{{val.value}}" *ngFor="let val of sportOptions">
+                        {{ val.label }}
                     </ion-select-option>
                 </ion-select>
 
@@ -76,7 +76,4 @@
     <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline" disabled="{{!activityForm.valid}}">
         {{bookable ? "Rezervuj miesto" :"Uprav aktivitu"}}
     </ion-button>
-
-    {{bookable}}
-
 </ion-content>
