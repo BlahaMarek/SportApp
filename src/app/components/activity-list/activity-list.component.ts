@@ -32,7 +32,7 @@ export class ActivityListComponent implements OnInit {
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
             this.activityList = this.activityList.sort((x, y) => (x.topActivity === y.topActivity) ? 0 : x.topActivity ? -1 : 1);
-            this.filteredList = this.activityList.filter(activity => activity.createdBy !== this.authService.userIdAuth);
+            this.filteredList = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth);
         })
     }
 
@@ -40,10 +40,7 @@ export class ActivityListComponent implements OnInit {
         this.modalController
             .create({
                 component: ActivityDetailComponent,
-                componentProps: {
-                    selectedActivity: this.activityService.getActivityById(id),
-                    bookable: !(this.activityService.getActivityById(id).createdBy === this.authService.userIdAuth)
-                }
+                componentProps: {selectedActivity: this.activityService.getActivityById(id)}
             })
             .then(modalEl => {
                 modalEl.present();
@@ -56,10 +53,10 @@ export class ActivityListComponent implements OnInit {
 
     onFilterUpdate(event: CustomEvent) {
         if (event.detail.value === 'others') {
-            this.activityListByUser = this.activityList.filter(activity => activity.createdBy !== this.authService.userIdAuth);
+            this.activityListByUser = this.activityList.filter(activity => activity.sport.userId !== this.authService.userIdAuth);
             this.filteredList = this.activityListByUser;
         } else if (event.detail.value === 'mine') {
-            this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.authService.userIdAuth);
+            this.activityListByUser = this.activityList.filter(activity => activity.sport.userId === this.authService.userIdAuth);
             this.filteredList = this.activityListByUser;
         }
     }

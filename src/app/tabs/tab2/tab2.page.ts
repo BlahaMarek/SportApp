@@ -16,6 +16,8 @@ export class Tab2Page implements OnInit, AfterContentInit {
 
     constructor(
     ) {
+        //tu inportnut 1. z ts
+        //vytvorit list aktivit
     }
 
     ngAfterContentInit(): void {

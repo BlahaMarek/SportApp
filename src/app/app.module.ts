@@ -15,6 +15,8 @@ import {HttpClientModule, HttpClient} from '@angular/common/http';
 import {IonicStorageModule} from '@ionic/storage';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
+import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -41,6 +43,8 @@ export function createTranslateLoader(http: HttpClient) {
 
     ],
     providers: [
+        Geolocation,
+        NativeGeocoder,
         StatusBar,
         SplashScreen,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}

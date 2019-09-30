@@ -6,6 +6,12 @@ import {Activity} from '../../models/activity';
 import {DataService} from '../../data/data.service';
 import {Sport} from '../../models/sport';
 import {AuthService} from '../../auth/auth.service';
+// import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
+import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
+import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
+
+
 
 
 @Component({
@@ -16,8 +22,10 @@ import {AuthService} from '../../auth/auth.service';
 export class ActivityNewComponent implements OnInit {
     sportOptions: Sport[] = [];
     private objekt: any;
-
+    lat: number;
+    longt: number;
     constructor(
+        private nativeGeocoder: NativeGeocoder,
         private fb: FormBuilder,
         private modalController: ModalController,
         private activityService: ActivityService,
@@ -105,5 +113,17 @@ export class ActivityNewComponent implements OnInit {
         for (let i = 0; i < 6; i++) {
             this.autocompleteItems.pop();
         }
+        const options: NativeGeocoderOptions = {
+            useLocale: true,
+            maxResults: 5
+        };
+        this.nativeGeocoder.forwardGeocode('Berlin', options)
+            .then((result: NativeGeocoderResult[]) => console.log('The coordinates are latitude=' +
+                result[0].latitude + ' and longitude=' + result[0].longitude))
+            .catch((error: any) => console.log('Moj eror' + error));
+        console.log('kurwa co to nejde');
+        // this.nativeGeocoder.reverseGeocode(52.5072095, 13.1452818, options)
+        //     .then((result: NativeGeocoderReverseResult[]) => console.log(JSON.stringify(result[0])))
+        //     .catch((error: any) => console.log(error));
     }
 }
