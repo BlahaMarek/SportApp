@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouteReuseStrategy} from '@angular/router';
 
-import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy, ToastController} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 
@@ -17,6 +17,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
+import {Toast} from '@ionic-native/toast';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -47,6 +48,7 @@ export function createTranslateLoader(http: HttpClient) {
         NativeGeocoder,
         StatusBar,
         SplashScreen,
+        ToastController,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]

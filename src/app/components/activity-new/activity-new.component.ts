@@ -10,8 +10,7 @@ import {AuthService} from '../../auth/auth.service';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
-
-
+import { ToastController} from '@ionic/angular';
 
 
 @Component({
@@ -25,6 +24,7 @@ export class ActivityNewComponent implements OnInit {
     lat: number;
     longt: number;
     constructor(
+        public toastController: ToastController,
         private nativeGeocoder: NativeGeocoder,
         private fb: FormBuilder,
         private modalController: ModalController,
@@ -110,6 +110,7 @@ export class ActivityNewComponent implements OnInit {
         this.autocomplete.input = JSON.stringify(item, ['description']);
         this.objekt = JSON.parse(this.autocomplete.input);
         this.autocomplete.input = this.objekt.description;
+        console.log('toto je mesto omg' + this.autocomplete.input);
         for (let i = 0; i < 6; i++) {
             this.autocompleteItems.pop();
         }
@@ -117,13 +118,20 @@ export class ActivityNewComponent implements OnInit {
             useLocale: true,
             maxResults: 5
         };
-        this.nativeGeocoder.forwardGeocode('Berlin', options)
-            .then((result: NativeGeocoderResult[]) => console.log('The coordinates are latitude=' +
-                result[0].latitude + ' and longitude=' + result[0].longitude))
-            .catch((error: any) => console.log('Moj eror' + error));
+        this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
+            .then((result: NativeGeocoderResult[]) => this.openToast('The coordinates are latitude=' +
+                result[0].latitude + ' and longitude=' +  result[0].longitude)) // tu je sirka a vyska
+            .catch((error: any) => this.openToast('Toto sa dosralo'));
+
         console.log('kurwa co to nejde');
         // this.nativeGeocoder.reverseGeocode(52.5072095, 13.1452818, options)
         //     .then((result: NativeGeocoderReverseResult[]) => console.log(JSON.stringify(result[0])))
         //     .catch((error: any) => console.log(error));
+    }
+    async openToast(msg) {
+        const toast = await  this.toastController.create({
+            message: msg , duration: 2000
+        });
+        toast.present();
     }
 }
