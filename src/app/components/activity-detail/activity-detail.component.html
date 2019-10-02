@@ -35,32 +35,33 @@
         </ion-item>
 <!--        TODO: Lukas sprav autocomplete aj sem pls-->
         <ion-item>
-                        <ion-label position="stacked" >Kde? *</ion-label>
-                        <ion-input
-                                type="miesto"
-                                formControlName="place"
-                                text-left
-                                placeholder="Zadajte miesto"
-                        ></ion-input>
-<!--            <ion-label position="stacked" >Kde *</ion-label>-->
+            <!--            <ion-label position="stacked" >Kde? *</ion-label>-->
+            <!--            <ion-input-->
+            <!--                    type="miesto"-->
+            <!--                    formControlName="place"-->
+            <!--                    text-left-->
+            <!--                    placeholder="Zadajte miesto"-->
+            <!--            ></ion-input>-->
+            <ion-label position="stacked" >Kde *</ion-label>
 
-<!--            <ion-input [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()"-->
-<!--                       placeholder="Zadajte miesto"-->
-<!--                       type="miesto"-->
-<!--                       formControlName="place"-->
-<!--                       text-left>-->
+            <ion-input [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()"
+                       placeholder="Zadajte miesto"
+                       type="miesto"
+                       formControlName="place"
+                       text-left>
 
-<!--            </ion-input>-->
-<!--            <ion-list [hidden]="autocompleteItems.length == 0">-->
-<!--                <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">-->
-<!--                    {{ item.description}}-->
+            </ion-input>
+            <ion-list [hidden]="autocompleteItems.length == 0">
+                <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+                    {{ item.description}}
 
-<!--                    &lt;!&ndash;      tu treba priradit item.description do autocomplete.input&ndash;&gt;-->
+                    <!--      tu treba priradit item.description do autocomplete.input-->
 
 
-<!--                </ion-item>-->
-<!--            </ion-list>-->
+                </ion-item>
+            </ion-list>
         </ion-item>
+
         <ion-item>
             <ion-label position="stacked" >Kedy? *</ion-label>
             <ion-datetime placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
@@ -74,6 +75,11 @@
         </ion-item>
     </form>
     <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline" disabled="{{!activityForm.valid}}">
-        {{bookable ? "Rezervuj miesto" :"Uprav aktivitu"}}
+        {{bookable ? "Rezervuj miesto" : "Uprav aktivitu"}}
     </ion-button>
+
+
+        <div #mapElement class="map"></div>
+
+
 </ion-content>
