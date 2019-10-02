@@ -34,19 +34,6 @@ export class ActivityService {
             date: new Date('2019-08-17')
         },
         {
-            id: 1,
-            peopleCount: 5,
-            place: 'Nitra',
-            sport: {
-                label: 'Futbal',
-                value: 4,
-                tag: 1,
-            },
-            createdBy: 'abc',
-            topActivity: false,
-            date: new Date('2019-01-02'),
-        },
-        {
             id: 3,
             peopleCount: 10,
             place: 'Bratislava',
@@ -83,7 +70,21 @@ export class ActivityService {
             createdBy: 'abc',
             topActivity: false,
             date: new Date('2019-01-05')
-        }]);
+        },
+        {
+            id: 6,
+            peopleCount: 5,
+            place: 'Nitra',
+            sport: {
+                label: 'Futbal',
+                value: 4,
+                tag: 1,
+            },
+            createdBy: 'abc',
+            topActivity: false,
+            date: new Date('2019-01-02'),
+        }
+        ]);
     readonly activities$ = this._activities.asObservable();
 
     // get activity list

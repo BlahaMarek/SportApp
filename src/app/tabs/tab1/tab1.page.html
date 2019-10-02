@@ -11,24 +11,19 @@
 </ion-header>
 
 <ion-content>
-    <app-activity-list></app-activity-list>
 
+    <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>
+    <ion-segment (ionChange)="onFilterUpdate($event)">
+        <ion-segment-button value="others" checked>Iné aktivity</ion-segment-button>
+        <ion-segment-button value="mine">Moje aktivity</ion-segment-button>
+    </ion-segment>
 
+    <app-activity-list [filteredList]="filteredList" ></app-activity-list>
 
-
-    <!--  <ion-toolbar color="primary">-->
-    <!--    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place">-->
-
-    <!--    </ion-searchbar>-->
-    <!--  </ion-toolbar>-->
-    <!--  <ion-list [hidden]="autocompleteItems.length == 0">-->
-    <!--    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">-->
-    <!--      {{ item.description}}-->
-
-    <!--&lt;!&ndash;      tu treba priradit item.description do autocomplete.input&ndash;&gt;-->
-
-
-    <!--    </ion-item>-->
-    <!--  </ion-list>-->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="flame" color="medium" (click)="onFabClicked($event)"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 
 </ion-content>

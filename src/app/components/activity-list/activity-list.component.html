@@ -1,11 +1,4 @@
 <ion-content>
-    <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>
-    <ion-segment (ionChange)="onFilterUpdate($event)">
-        <ion-segment-button value="others" checked>Iné aktivity</ion-segment-button>
-        <ion-segment-button value="mine">Moje aktivity</ion-segment-button>
-    </ion-segment>
-
-
     <ion-virtual-scroll [items]="filteredList" approxItemHeight="20px">
         <ion-item-sliding  *virtualItem="let activity">
 
@@ -32,9 +25,4 @@
 
         </ion-item-sliding>
     </ion-virtual-scroll>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
-            <ion-icon name="flame" color="medium" (click)="onFabClicked($event)"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
 </ion-content>

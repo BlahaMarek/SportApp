@@ -3,6 +3,10 @@ import {FormBuilder} from '@angular/forms';
 import {MenuController, ModalController, ToastController} from '@ionic/angular';
 import {ActivityNewComponent} from '../../components/activity-new/activity-new.component';
 import {LanguageService} from '../../services/language.service';
+import {Activity} from '../../models/activity';
+import {ActivityService} from '../../services/activity.service';
+import {AuthService} from '../../auth/auth.service';
+import {DataService} from '../../data/data.service';
 
 @Component({
     selector: 'app-tab1',
@@ -10,34 +14,57 @@ import {LanguageService} from '../../services/language.service';
     styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-
-    // @ts-ignore
-    GoogleAutocomplete: google.maps.places.AutocompleteService;
-    autocomplete: { input: string; };
-    autocompleteItems: any[];
-    location: any;
-    placeid: any;
-
+    activityList: Activity[];
+    activityListByUser: Activity[];
+    filteredList: Activity[];
+    sportOptions
     constructor(
         public zone: NgZone,
         private fb: FormBuilder,
         private modalController: ModalController,
         private toastController: ToastController,
         private languageService: LanguageService,
+        private activityService: ActivityService,
+        private authService: AuthService,
+        private dataService: DataService,
     ) {
-        // @ts-ignore
-        this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
-        this.autocomplete = {input: ''};
-        this.autocompleteItems = [];
-
+        this.sportOptions = dataService.getSportsSk();
         this.initApp();
     }
 
     ngOnInit() {
+        this.activityService.activities$.subscribe(list => {
+            this.activityList = list;
+            this.activityList = this.activityList.sort((x, y) => (x.topActivity === y.topActivity) ? 0 : x.topActivity ? -1 : 1);
+            this.filteredList = this.activityList.filter(activity => activity.createdBy !== this.authService.userIdAuth);
+        });
     }
 
     initApp() {
         this.languageService.setInitialAppLanguage();
+    }
+
+    onFilterUpdate(event: CustomEvent) {
+        if (event.detail.value === 'others') {
+            this.activityListByUser = this.activityList.filter(activity => activity.createdBy !== this.authService.userIdAuth);
+            this.filteredList = this.activityListByUser;
+        } else if (event.detail.value === 'mine') {
+            this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.authService.userIdAuth);
+            this.filteredList = this.activityListByUser;
+        }
+    }
+
+    onSearchUpdate(event: CustomEvent) {
+        if (event.detail.value === '') {
+            this.filteredList = this.activityListByUser;
+            return;
+        }
+        this.filteredList = this.activityListByUser.filter(activity => activity.sport.label.toUpperCase()
+            .includes(event.detail.value.toUpperCase()));
+    }
+
+    onFabClicked(event: MouseEvent) {
+        alert('Sem pojde filter !');
     }
 
     presentModal() {
@@ -62,43 +89,4 @@ export class Tab1Page implements OnInit {
         });
         toast.present();
     }
-
-
-
-
-
-
-
-
-
-    // private objekt: any;
-
-    // updateSearchResults() {
-    //     if (this.autocomplete.input === '') {
-    //         this.autocompleteItems = [];
-    //         return;
-    //     }
-    //     this.GoogleAutocomplete.getPlacePredictions({input: this.autocomplete.input},
-    //         (predictions, status) => {
-    //             this.autocompleteItems = [];
-    //             this.zone.run(() => {
-    //                 predictions.forEach((prediction) => {
-    //                     this.autocompleteItems.push(prediction);
-    //                 });
-    //             });
-    //         });
-    // }
-    //
-    // selectSearchResult(item) {
-    //     console.log('ja som item' + item);
-    //     this.location = item;
-    //     this.placeid = this.location.place_id;
-    //     JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
-    //     this.autocomplete.input = JSON.stringify(item, ['description']);
-    //     this.objekt = JSON.parse(this.autocomplete.input);
-    //     this.autocomplete.input = this.objekt.description;
-    //     for (let i = 0; i < 6; i++) {
-    //         this.autocompleteItems.pop();
-    //     }
-    // }
 }

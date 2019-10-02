@@ -8,6 +8,7 @@ import {ActivityListComponent} from '../../components/activity-list/activity-lis
 import {ActivityNewComponent} from '../../components/activity-new/activity-new.component';
 import {ActivityDetailComponent} from '../../components/activity-detail/activity-detail.component';
 import {TranslateModule} from '@ngx-translate/core';
+import {SharedModule} from '../../modules/shared/shared.module';
 
 @NgModule({
     imports: [
@@ -16,13 +17,13 @@ import {TranslateModule} from '@ngx-translate/core';
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forChild([{path: '', component: Tab1Page}]),
-        TranslateModule
+        TranslateModule,
+        SharedModule,
     ],
     declarations: [
         Tab1Page,
-        ActivityListComponent,
-        ActivityNewComponent,
-        ActivityDetailComponent,
+    ],
+    exports: [
     ],
     entryComponents: [
         ActivityNewComponent,

@@ -136,6 +136,11 @@ ion-menu-button {
   color: var(--ion-color-secondary);
   font-size: 20px;
 }
+.tab-selected {
+  ion-icon, ion-label {
+    color: var(--ion-color-medium);
+  }
+}
 
 
 

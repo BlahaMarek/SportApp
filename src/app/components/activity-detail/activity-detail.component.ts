@@ -41,9 +41,6 @@ export class ActivityDetailComponent implements OnInit {
         // this.activityForm.setValue(this.selectedActivity);
         this.assignValueToForm();
 
-        console.log(this.selectedActivity);
-        console.log(this.activityForm.value);
-
         if (this.bookable) {
             this.activityForm.disable();
         } else {
@@ -56,7 +53,7 @@ export class ActivityDetailComponent implements OnInit {
     }
 
     compareWithFn = (o1, o2) => {
-        return o1 && o2 ? o1.value === o2.value : o1 === o2;
+        return o1 && o2 ? o1.value == o2.value : o1 == o2;
     };
     compareWith = this.compareWithFn;
 
@@ -64,11 +61,9 @@ export class ActivityDetailComponent implements OnInit {
         this.activityForm.get('peopleCount').patchValue(this.selectedActivity.peopleCount);
         this.activityForm.get('place').patchValue(this.selectedActivity.place);
         this.activityForm.get('topActivity').patchValue(this.selectedActivity.topActivity);
-        this.activityForm.get('date').patchValue(this.selectedActivity.date.toISOString());
-        this.activityForm.get('sport.sportType').setValue(this.selectedActivity.sport.value, {onlySelf: true});
-
+        this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
+        this.activityForm.get('sport.sportType').setValue(this.selectedActivity.sport.value);
         this.activityForm.updateValueAndValidity();
-        console.log(this.activityForm);
     }
 
     onFormSubmit() {
