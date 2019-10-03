@@ -36,7 +36,7 @@ export class Tab1Page implements OnInit {
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
             this.activityList = this.activityList.sort((x, y) => (x.topActivity === y.topActivity) ? 0 : x.topActivity ? -1 : 1);
-            this.filteredList = this.activityList.filter(activity => activity.createdBy !== this.authService.userIdAuth);
+            this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length) && !activity.bookedBy.includes(this.authService.userIdAuth)));
         });
     }
 
