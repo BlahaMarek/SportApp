@@ -11,10 +11,10 @@
 
 <ion-content padding>
     <form [formGroup]="activityForm">
-        <div formGroupName="sport">
+        <div >
             <ion-item>
                 <ion-label position="stacked" >Výber športu *</ion-label>
-                <ion-select formControlName="sportType" placeholder="Vyberte šport">
+                <ion-select formControlName="sport" placeholder="Vyberte šport">
                     <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
                         {{ val.label }}
                     </ion-select-option>

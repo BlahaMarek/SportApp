@@ -59,8 +59,7 @@ export class Tab1Page implements OnInit {
             this.filteredList = this.activityListByUser;
             return;
         }
-        this.filteredList = this.activityListByUser.filter(activity => activity.sport.label.toUpperCase()
-            .includes(event.detail.value.toUpperCase()));
+        this.filteredList = this.activityListByUser.filter(activity => this.dataService.getSportNameByValue(activity.sport).toUpperCase().includes(event.detail.value.toUpperCase()));
     }
 
     onFabClicked(event: MouseEvent) {

@@ -30,7 +30,6 @@ export class ActivityListComponent implements OnInit {
     }
 
     onActivityClicked(id: number) {
-        console.log(this.activityService.getActivityById(id));
         this.modalController
             .create({
                 component: ActivityDetailComponent,

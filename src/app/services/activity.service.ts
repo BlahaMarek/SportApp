@@ -11,11 +11,7 @@ export class ActivityService {
             id: 1,
             peopleCount: 10,
             place: 'Bratislava',
-            sport: {
-                label: 'Hokej',
-                value: 6,
-                tag: 1,
-            },
+            sport: 6,
             createdBy: 'xxx',
             topActivity: false,
             date: new Date('2019-12-24')
@@ -24,11 +20,7 @@ export class ActivityService {
             id: 2,
             peopleCount: 1,
             place: 'Bratislava',
-            sport: {
-                label: 'Tenis',
-                value: 1,
-                tag: 1,
-            },
+            sport: 1,
             createdBy: 'xxx',
             topActivity: true,
             date: new Date('2019-08-17')
@@ -37,11 +29,7 @@ export class ActivityService {
             id: 3,
             peopleCount: 10,
             place: 'Bratislava',
-            sport: {
-                label: 'Hokej',
-                value: 6,
-                tag: 1,
-            },
+            sport: 6,
             createdBy: 'abc',
             topActivity: false,
             date: new Date('2019-09-14')
@@ -49,11 +37,7 @@ export class ActivityService {
             id: 4,
             peopleCount: 1,
             place: 'Bratislava',
-            sport: {
-                label: 'Squash',
-                value: 2,
-                tag: 1,
-            },
+            sport: 2,
             createdBy: 'abc',
             topActivity: true,
             date: new Date('2019-04-09')
@@ -62,11 +46,7 @@ export class ActivityService {
             id: 5,
             peopleCount: 1,
             place: 'Bratislava',
-            sport: {
-                label: 'Squash',
-                value: 2,
-                tag: 1,
-            },
+            sport: 2,
             createdBy: 'abc',
             topActivity: false,
             date: new Date('2019-01-05')
@@ -75,11 +55,7 @@ export class ActivityService {
             id: 6,
             peopleCount: 5,
             place: 'Nitra',
-            sport: {
-                label: 'Futbal',
-                value: 4,
-                tag: 1,
-            },
+            sport: 4,
             createdBy: 'abc',
             topActivity: false,
             date: new Date('2019-01-02'),

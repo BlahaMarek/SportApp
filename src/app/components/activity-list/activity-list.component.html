@@ -9,11 +9,11 @@
 
             <ion-item lines="none" (click)="onActivityClicked(activity.id)">
                 <ion-thumbnail slot="start">
-                    <img src="../../../assets/sports/{{dataService.getSportIconByValue(activity.sport.value)}}.svg"
+                    <img src="../../../assets/sports/{{dataService.getSportIconByValue(activity.sport)}}.svg"
                          alt="sport icon">
                 </ion-thumbnail>
                 <ion-label>
-                    <h3>{{activity.sport.label}}</h3>
+                    <h3>{{this.dataService.getSportNameByValue(activity.sport)}}</h3>
                     <p>{{activity.date | date}}, {{activity.place}}</p>
                 </ion-label>
                 <ion-badge color="medium" *ngIf="activity.topActivity">TOP</ion-badge>

@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>{{selectedActivity.sport.label}}</ion-title>
+        <ion-title>{{dataService.getSportNameByValue(selectedActivity.sport)}}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="onCancel()">
                 <ion-icon name="close"></ion-icon>
@@ -12,11 +12,11 @@
 <ion-content padding>
 
     <form [formGroup]="activityForm">
-        <div formGroupName="sport">
+        <div>
             <ion-item>
                 <ion-label position="stacked" >Výber športu *</ion-label>
-                <ion-select [compareWith]="compareWith" formControlName="sportType" placeholder="Vyberte šport">
-                    <ion-select-option  value="{{val.value}}" *ngFor="let val of sportOptions">
+                <ion-select [compareWith]="compareWith" formControlName="sport" placeholder="Vyberte šport">
+                    <ion-select-option  [value]="val.value" *ngFor="let val of sportOptions">
                         {{ val.label }}
                     </ion-select-option>
                 </ion-select>
@@ -35,29 +35,26 @@
         </ion-item>
 <!--        TODO: Lukas sprav autocomplete aj sem pls-->
         <ion-item>
-            <!--            <ion-label position="stacked" >Kde? *</ion-label>-->
-            <!--            <ion-input-->
-            <!--                    type="miesto"-->
-            <!--                    formControlName="place"-->
-            <!--                    text-left-->
-            <!--                    placeholder="Zadajte miesto"-->
-            <!--            ></ion-input>-->
-            <ion-label position="stacked" >Kde *</ion-label>
+                        <ion-label position="stacked" >Kde? *</ion-label>
+<!--                        <ion-input-->
+<!--                                type="miesto"-->
+<!--                                formControlName="place"-->
+<!--                                text-left-->
+<!--                                placeholder="Zadajte miesto"-->
+<!--                        ></ion-input>-->
 
-            <ion-input [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()"
-                       placeholder="Zadajte miesto"
+<!--            KVOLI TOMUTO NEJDE DOPLNANIE MIESTA -> PREROBIT NG-MODEL INAK NEPJDU REAKTIVNE FORMULARE-->
+            <ion-input [(ngModel)]="autocomplete.input"
+                       (ionInput)="updateSearchResults()"
                        type="miesto"
                        formControlName="place"
-                       text-left>
+                       text-left
+                       placeholder="Zadajte miesto">
 
             </ion-input>
             <ion-list [hidden]="autocompleteItems.length == 0">
                 <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
                     {{ item.description}}
-
-                    <!--      tu treba priradit item.description do autocomplete.input-->
-
-
                 </ion-item>
             </ion-list>
         </ion-item>

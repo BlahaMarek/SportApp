@@ -23,6 +23,10 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
     map;
     // @ts-ignore
     @ViewChild('mapElement') mapElement;
+    @Input() selectedActivity: Activity;
+    @Input() bookable: boolean;
+    sportOptions: Sport[] = [];
+    private objekt: any;
 
     constructor(
         public toastController: ToastController,
@@ -39,19 +43,14 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
         this.autocomplete = {input: ''};
         this.autocompleteItems = [];
     }
-    @Input() selectedActivity: Activity;
-    @Input() bookable: boolean;
-    sportOptions: Sport[] = [];
-    private objekt: any;
+
 
     activityForm = this.fb.group({
         peopleCount: ['', Validators.required],
         place: ['', Validators.required],
         topActivity: [false],
         date: ['', Validators.required],
-        sport: this.fb.group({
-            sportType: ['', Validators.required],
-        }),
+        sport: ['', Validators.required]
     });
     // @ts-ignore
     GoogleAutocomplete: google.maps.places.AutocompleteService;
@@ -64,7 +63,6 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
 
     ngOnInit() {
         this.sportOptions = this.dataService.getSportsSk();
-        // this.activityForm.setValue(this.selectedActivity);
         this.assignValueToForm();
 
         if (this.bookable) {
@@ -79,15 +77,15 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
     }
 
     compareWithFn = (o1, o2) => {
-        return o1 && o2 ? o1.value === o2.value : o1 === o2;
-    }
+        return o1.value == o2.value;
+    };
 
     assignValueToForm() {
         this.activityForm.get('peopleCount').patchValue(this.selectedActivity.peopleCount);
-        this.activityForm.get('place').patchValue(this.selectedActivity.place);
+        this.activityForm.get('place').setValue(this.selectedActivity.place);
         this.activityForm.get('topActivity').patchValue(this.selectedActivity.topActivity);
         this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
-        this.activityForm.get('sport.sportType').setValue(this.selectedActivity.sport.value);
+        this.activityForm.get('sport').setValue(this.selectedActivity.sport);
         this.activityForm.updateValueAndValidity();
     }
 
@@ -99,11 +97,7 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
     assignValueToActivity(): Activity {
         return {
             id: this.activityService.allActivitiesCount + 1,
-            sport: {
-                label: this.dataService.getSportNameByValue(this.activityForm.get('sport.sportType').value),
-                value: this.activityForm.get('sport.sportType').value,
-                tag: 1,
-            },
+            sport: this.activityForm.get('sport').value,
             createdBy: this.authService.userIdAuth,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,

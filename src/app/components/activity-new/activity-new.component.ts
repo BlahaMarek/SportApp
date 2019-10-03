@@ -51,9 +51,7 @@ export class ActivityNewComponent implements OnInit {
         place: ['', Validators.required],
         topActivity: [false],
         date: ['', Validators.required],
-        sport: this.fb.group({
-            sportType: ['', Validators.required],
-        }),
+        sport: ['', Validators.required],
     });
 
     ngOnInit() {
@@ -71,11 +69,7 @@ export class ActivityNewComponent implements OnInit {
     assignValueToActivity(): Activity {
         return {
             id: this.activityService.allActivitiesCount + 1,
-            sport: {
-                label: this.dataService.getSportNameByValue(this.activityForm.get('sport.sportType').value),
-                value: this.activityForm.get('sport.sportType').value,
-                tag: 1,
-            },
+            sport: this.activityForm.get('sport').value,
             createdBy: this.authService.userIdAuth,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
