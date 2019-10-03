@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MenuController, ModalController, ToastController} from '@ionic/angular';
 import {ActivityNewComponent} from '../../components/activity-new/activity-new.component';
@@ -14,10 +14,13 @@ import {DataService} from '../../data/data.service';
     styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
+    // @ts-ignore
+    @ViewChild('others') others: ElementRef;
     activityList: Activity[];
     activityListByUser: Activity[];
     filteredList: Activity[];
-    sportOptions
+    sportOptions: any;
+    segment: any;
     constructor(
         public zone: NgZone,
         private fb: FormBuilder,
@@ -28,6 +31,7 @@ export class Tab1Page implements OnInit {
         private authService: AuthService,
         private dataService: DataService,
     ) {
+        this.segment = "others";
         this.sportOptions = dataService.getSportsSk();
         this.initApp();
     }
@@ -39,6 +43,8 @@ export class Tab1Page implements OnInit {
             this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length) && !activity.bookedBy.includes(this.authService.userIdAuth)));
         });
     }
+
+
 
     initApp() {
         this.languageService.setInitialAppLanguage();
@@ -70,11 +76,13 @@ export class Tab1Page implements OnInit {
         this.modalController
             .create({component: ActivityNewComponent})
             .then(modalEl => {
+                this.segment = "others";
                 modalEl.present();
                 return modalEl.onDidDismiss();
             })
             .then(result => {
                 console.log(result);
+
                 if (result.role !== 'cancel') {
                     this.presentToast();
                 }

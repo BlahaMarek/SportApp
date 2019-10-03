@@ -13,8 +13,8 @@
 <ion-content>
 
     <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>
-    <ion-segment (ionChange)="onFilterUpdate($event)">
-        <ion-segment-button value="others" checked>Iné aktivity</ion-segment-button>
+    <ion-segment [(ngModel)]="segment" (ionChange)="onFilterUpdate($event)">
+        <ion-segment-button #others value="others" checked>Iné aktivity</ion-segment-button>
         <ion-segment-button value="mine">Moje aktivity</ion-segment-button>
     </ion-segment>
 
