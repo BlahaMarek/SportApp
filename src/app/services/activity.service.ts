@@ -14,7 +14,8 @@ export class ActivityService {
             sport: 6,
             createdBy: 'xxx',
             topActivity: false,
-            date: new Date('2019-12-24')
+            date: new Date('2019-12-24'),
+            bookedBy: []
         },
         {
             id: 2,
@@ -23,7 +24,8 @@ export class ActivityService {
             sport: 1,
             createdBy: 'xxx',
             topActivity: true,
-            date: new Date('2019-08-17')
+            date: new Date('2019-08-17'),
+            bookedBy: []
         },
         {
             id: 3,
@@ -32,15 +34,17 @@ export class ActivityService {
             sport: 6,
             createdBy: 'abc',
             topActivity: false,
-            date: new Date('2019-09-14')
+            date: new Date('2019-09-14'),
+            bookedBy: ["xxx"]
         }, {
             id: 4,
             peopleCount: 1,
-            place: 'Bratislava',
+            place: 'Bratislava Test',
             sport: 2,
             createdBy: 'abc',
             topActivity: true,
-            date: new Date('2019-04-09')
+            date: new Date('2019-04-09'),
+            bookedBy: ["xxx"]
         },
         {
             id: 5,
@@ -49,7 +53,8 @@ export class ActivityService {
             sport: 2,
             createdBy: 'abc',
             topActivity: false,
-            date: new Date('2019-01-05')
+            date: new Date('2019-01-05'),
+            bookedBy: []
         },
         {
             id: 6,
@@ -59,6 +64,7 @@ export class ActivityService {
             createdBy: 'abc',
             topActivity: false,
             date: new Date('2019-01-02'),
+            bookedBy: []
         }
         ]);
     readonly activities$ = this._activities.asObservable();
@@ -76,6 +82,16 @@ export class ActivityService {
     // get count of activities
     get allActivitiesCount(): number {
         return this._activities.getValue().length;
+    }
+
+    // add person, who booked activity to list of users, who booked
+    addBookerToActivity(id: number, userId: string) {
+        let activity: Activity = this.getActivityById(id);
+        activity.bookedBy.push(userId);
+        this.activities = [
+            ...this.activities.filter(activity=> activity.id !== id),
+            activity
+        ]
     }
 
     // get activity by id

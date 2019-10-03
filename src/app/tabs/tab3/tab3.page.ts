@@ -24,7 +24,7 @@ export class Tab3Page {
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
             this.activityList = this.activityList.sort((x, y) => (x.topActivity === y.topActivity) ? 0 : x.topActivity ? -1 : 1);
-            this.filteredList = this.activityList;
+            this.filteredList = this.activityList.filter(activity => activity.bookedBy.includes(this.authService.userIdAuth));
         });
     }
 

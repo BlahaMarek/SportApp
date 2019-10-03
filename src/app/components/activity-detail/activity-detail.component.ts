@@ -90,8 +90,16 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
     }
 
     onFormSubmit() {
-        this.activityService.addActivity(this.assignValueToActivity());
-        this.modalController.dismiss({message: 'Add new activity!'}, 'add');
+        if (!this.bookable) {
+            this.activityService.addActivity(this.assignValueToActivity());
+        } else {
+            this.activityService.addBookerToActivity(this.selectedActivity.id, this.authService.userIdAuth);
+        }
+        let data = {message: 'Add new activity!'};
+        if (this.bookable) {
+            data.message = "Booked activity";
+        }
+        this.modalController.dismiss(data, 'add');
     }
 
     assignValueToActivity(): Activity {
@@ -102,7 +110,8 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
-            date: this.activityForm.get('date').value
+            date: this.activityForm.get('date').value,
+            bookedBy: this.selectedActivity.bookedBy
         };
     }
     updateSearchResults() {

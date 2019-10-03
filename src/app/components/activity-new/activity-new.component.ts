@@ -74,7 +74,8 @@ export class ActivityNewComponent implements OnInit {
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
-            date: this.activityForm.get('date').value
+            date: this.activityForm.get('date').value,
+            bookedBy: []
         };
     }
 

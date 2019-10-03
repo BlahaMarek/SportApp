@@ -46,7 +46,7 @@ export class Tab1Page implements OnInit {
 
     onFilterUpdate(event: CustomEvent) {
         if (event.detail.value === 'others') {
-            this.activityListByUser = this.activityList.filter(activity => activity.createdBy !== this.authService.userIdAuth);
+            this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length) && !activity.bookedBy.includes(this.authService.userIdAuth)));
             this.filteredList = this.activityListByUser;
         } else if (event.detail.value === 'mine') {
             this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.authService.userIdAuth);
