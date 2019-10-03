@@ -107,6 +107,14 @@ export class ActivityService {
         ]
     }
 
+    // update activity
+    updateActivity(id: number, activity: Activity) {
+        this.activities = [
+            ...this.activities.filter(activity=> activity.id !== id),
+            activity
+        ]
+    }
+
     // delete existing activity
     deleteActivity(id: number) {
         this.activities = this.activities.filter(activity => activity.id !== id);

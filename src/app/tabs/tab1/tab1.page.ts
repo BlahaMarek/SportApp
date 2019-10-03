@@ -44,8 +44,6 @@ export class Tab1Page implements OnInit {
         });
     }
 
-
-
     initApp() {
         this.languageService.setInitialAppLanguage();
     }

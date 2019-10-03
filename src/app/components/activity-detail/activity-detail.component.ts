@@ -91,7 +91,7 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
 
     onFormSubmit() {
         if (!this.bookable) {
-            this.activityService.addActivity(this.assignValueToActivity());
+            this.activityService.updateActivity(this.selectedActivity.id ,this.assignValueToActivity());
         } else {
             this.activityService.addBookerToActivity(this.selectedActivity.id, this.authService.userIdAuth);
         }
