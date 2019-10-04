@@ -9,10 +9,22 @@ import {AuthService} from '../../auth/auth.service';
 import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import { ToastController} from '@ionic/angular';
+import {source} from '@angular-devkit/schematics';
+import 'ol/ol.css';
+import Feature from 'ol/Feature';
+import Geolocation from 'ol/Geolocation';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import Point from 'ol/geom/Point';
+import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
+import {OSM, Vector as VectorSource} from 'ol/source';
+import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 
 declare var google;
 let position;
 let marker;
+const positionFeature = new Feature();
+
 
 @Component({
     selector: 'app-activity-detail',
@@ -42,6 +54,20 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
         this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
         this.autocomplete = {input: ''};
         this.autocompleteItems = [];
+        // tslint:disable-next-line:no-shadowed-variable
+        const positionFeature = new Feature();
+        positionFeature.setStyle(new Style({
+            image: new CircleStyle({
+                radius: 6,
+                fill: new Fill({
+                    color: '#3399CC'
+                }),
+                stroke: new Stroke({
+                    color: '#fff',
+                    width: 2
+                })
+            })
+        }));
     }
 
 
@@ -77,8 +103,8 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
     }
 
     compareWithFn = (o1, o2) => {
-        return o1.value == o2.value;
-    };
+        return o1.value === o2.value;
+    }
 
     assignValueToForm() {
         this.activityForm.get('peopleCount').patchValue(this.selectedActivity.peopleCount);
@@ -91,13 +117,13 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
 
     onFormSubmit() {
         if (!this.bookable) {
-            this.activityService.updateActivity(this.selectedActivity.id ,this.assignValueToActivity());
+            this.activityService.updateActivity(this.selectedActivity.id , this.assignValueToActivity());
         } else {
             this.activityService.addBookerToActivity(this.selectedActivity.id, this.authService.userIdAuth);
         }
-        let data = {message: 'Add new activity!'};
+        const data = {message: 'Add new activity!'};
         if (this.bookable) {
-            data.message = "Booked activity";
+            data.message = 'Booked activity';
         }
         this.modalController.dismiss(data, 'add');
     }
@@ -154,19 +180,48 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
             .catch((error: any) => console.log('nejdze'));
 
         console.log('kurwa co to nejde');
-        // this.nativeGeocoder.reverseGeocode(52.5072095, 13.1452818, options)
-        //     .then((result: NativeGeocoderReverseResult[]) => console.log(JSON.stringify(result[0])))
-        //     .catch((error: any) => console.log(error));
     }
 
     ngAfterContentInit(): void {
-        this.map = new google.maps.Map(
-            this.mapElement.nativeElement,
-            {
-                center: {lat: 48.6980985, lng: 21.2340841}, // tu pojde pozicia z firebasu tiez
-                zoom: 12
-            });
-        this.addMarkersToMap();
+        // tslint:disable-next-line:no-unused-expression
+        new VectorLayer({
+            map: this.map = new Map({
+                layers: [
+                    new TileLayer({
+                        source: new OSM()
+                    })],
+                target: document.getElementById('map'),
+                view: new View({
+                    center: [0, 0],
+                    zoom: 3
+                }),
+            }),
+            source: new VectorSource({
+                features: [new Feature({
+                    geometry: new Point([48.69809, 21.23408])
+                }), positionFeature]
+            })
+        });
+        // this.map = new Map({
+        //     layers: [
+        //         new TileLayer({
+        //             source: new OSM()
+        //         })],
+        //     target: document.getElementById('map'),
+        //     view: new View({
+        //         center: [0, 0],
+        //         zoom: 3
+        //     }),
+        //     vectorLayer : new VectorLayer({
+        //         map: map,
+        //         source: new VectorSource({
+        //             features: [accuracyFeature, positionFeature]
+        //         })
+        //     })
+        // });
+        setTimeout(() => {
+            this.map.updateSize();
+        }, 500);
     }
     addMarkersToMap() {
          position = new google.maps.LatLng(48.6980985, 21.2340841); // tu pojde pozicia z firebasu
