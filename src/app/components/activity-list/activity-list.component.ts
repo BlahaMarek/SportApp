@@ -46,4 +46,8 @@ export class ActivityListComponent implements OnInit {
                 console.log(result);
             });
     }
+
+    getCssClass(activity: Activity) {
+        return "item-content " + this.dataService.getSportIconByValue(activity.sport);
+    }
 }

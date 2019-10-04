@@ -1,26 +1,32 @@
 <ion-content>
     <ion-virtual-scroll [items]="filteredList" approxItemHeight="20px">
-        <ion-item-sliding  *virtualItem="let activity">
+        <ion-item-sliding *virtualItem="let activity">
 
-            <ion-item-options side="start">
-                <ion-item-option><ion-icon name="settings"></ion-icon></ion-item-option>
-                <ion-item-option><ion-icon name="heart"></ion-icon></ion-item-option>
+            <ion-item-options side="start" style="margin-left: 10px">
+                <ion-item-option>
+                    <ion-icon name="settings"></ion-icon>
+                </ion-item-option>
+                <ion-item-option>
+                    <ion-icon name="heart"></ion-icon>
+                </ion-item-option>
             </ion-item-options>
 
             <ion-item lines="none" (click)="onActivityClicked(activity.id)">
-                <ion-thumbnail slot="start">
-                    <img src="../../../assets/sports/{{dataService.getSportIconByValue(activity.sport)}}.svg"
-                         alt="sport icon">
-                </ion-thumbnail>
-                <ion-label>
-                    <h3>{{this.dataService.getSportNameByValue(activity.sport)}}</h3>
-                    <p>{{activity.date | date}}, {{activity.place}}</p>
-                </ion-label>
-                <ion-badge color="medium" *ngIf="activity.topActivity">TOP</ion-badge>
+                <div [class]="getCssClass(activity)">
+                    <div class="wrapper">
+                        <ion-label>
+                            <h3 class="shade">{{this.dataService.getSportNameByValue(activity.sport)}}</h3>
+                            <p class="shade" >{{activity.date | date}}, {{activity.place}}</p>
+                        </ion-label>
+                        <ion-badge color="medium" *ngIf="activity.topActivity">TOP</ion-badge>
+                    </div>
+                </div>
             </ion-item>
 
-            <ion-item-options side="end">
-                <ion-item-option><ion-icon name="trash"></ion-icon></ion-item-option>
+            <ion-item-options side="end" style="margin-right: 10px">
+                <ion-item-option>
+                    <ion-icon name="trash"></ion-icon>
+                </ion-item-option>
             </ion-item-options>
 
         </ion-item-sliding>
