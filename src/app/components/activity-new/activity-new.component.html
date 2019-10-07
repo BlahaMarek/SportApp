@@ -42,7 +42,8 @@
 <!--            ></ion-input>-->
                 <ion-label position="stacked" >Kde *</ion-label>
 
-                <ion-input [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()"
+                <ion-input [(ngModel)]="autocomplete.input"
+                           (ionInput)="updateSearchResults()"
                                placeholder="Zadajte miesto"
                                type="miesto"
                                formControlName="place"

@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, Input, NgZone, OnInit, ViewChild} from '@angular/core';
 import {Activity} from '../../models/activity';
 import {ModalController} from '@ionic/angular';
 import {FormBuilder, Validators} from '@angular/forms';
@@ -12,17 +12,15 @@ import { ToastController} from '@ionic/angular';
 import {source} from '@angular-devkit/schematics';
 import 'ol/ol.css';
 import Feature from 'ol/Feature';
-import Geolocation from 'ol/Geolocation';
+import {fromLonLat} from 'ol/proj';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Point from 'ol/geom/Point';
-import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {OSM, Vector as VectorSource} from 'ol/source';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
+import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 
-declare var google;
-let position;
-let marker;
+
 const positionFeature = new Feature();
 
 
@@ -31,7 +29,7 @@ const positionFeature = new Feature();
     templateUrl: './activity-detail.component.html',
     styleUrls: ['./activity-detail.component.scss'],
 })
-export class ActivityDetailComponent implements OnInit, AfterContentInit {
+export class ActivityDetailComponent implements OnInit, AfterViewInit {
     map;
     // @ts-ignore
     @ViewChild('mapElement') mapElement;
@@ -117,7 +115,7 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
 
     onFormSubmit() {
         if (!this.bookable) {
-            this.activityService.updateActivity(this.selectedActivity.id , this.assignValueToActivity());
+            this.activityService.updateActivity(this.selectedActivity.id, this.assignValueToActivity());
         } else {
             this.activityService.addBookerToActivity(this.selectedActivity.id, this.authService.userIdAuth);
         }
@@ -140,6 +138,7 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
             bookedBy: this.selectedActivity.bookedBy
         };
     }
+
     updateSearchResults() {
         if (this.autocomplete.input === '') {
             this.autocompleteItems = [];
@@ -176,13 +175,13 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
         };
         this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
             .then((result: NativeGeocoderResult[]) => console.log('The coordinates are latitude=' +
-                result[0].latitude + ' and longitude=' +  result[0].longitude)) // tu je sirka a vyska
+                result[0].latitude + ' and longitude=' + result[0].longitude)) // tu je sirka a vyska
             .catch((error: any) => console.log('nejdze'));
 
         console.log('kurwa co to nejde');
     }
 
-    ngAfterContentInit(): void {
+    ngAfterViewInit(): void {
         // tslint:disable-next-line:no-unused-expression
         new VectorLayer({
             map: this.map = new Map({
@@ -192,40 +191,18 @@ export class ActivityDetailComponent implements OnInit, AfterContentInit {
                     })],
                 target: document.getElementById('map'),
                 view: new View({
-                    center: [0, 0],
-                    zoom: 3
+                    center: fromLonLat([21.23408, 48.69809]),
+                    zoom: 13
                 }),
             }),
             source: new VectorSource({
                 features: [new Feature({
-                    geometry: new Point([48.69809, 21.23408])
+                    geometry: new Point(fromLonLat([21.23408, 48.69809])) // tu pojdu vsetky aktivity
                 }), positionFeature]
             })
         });
-        // this.map = new Map({
-        //     layers: [
-        //         new TileLayer({
-        //             source: new OSM()
-        //         })],
-        //     target: document.getElementById('map'),
-        //     view: new View({
-        //         center: [0, 0],
-        //         zoom: 3
-        //     }),
-        //     vectorLayer : new VectorLayer({
-        //         map: map,
-        //         source: new VectorSource({
-        //             features: [accuracyFeature, positionFeature]
-        //         })
-        //     })
-        // });
         setTimeout(() => {
             this.map.updateSize();
         }, 500);
-    }
-    addMarkersToMap() {
-         position = new google.maps.LatLng(48.6980985, 21.2340841); // tu pojde pozicia z firebasu
-         marker = new google.maps.Marker({ position, title: 'Here' });
-         marker.setMap(this.map);
     }
 }
