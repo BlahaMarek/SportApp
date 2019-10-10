@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, Component, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
 import {Activity} from '../../models/activity';
 import {ModalController} from '@ionic/angular';
 import {FormBuilder, Validators} from '@angular/forms';
@@ -31,12 +31,11 @@ const positionFeature = new Feature();
 })
 export class ActivityDetailComponent implements OnInit, AfterViewInit {
     map;
-    // @ts-ignore
-    @ViewChild('mapElement') mapElement;
     @Input() selectedActivity: Activity;
     @Input() bookable: boolean;
     sportOptions: Sport[] = [];
     private objekt: any;
+    initialMapLoad = true;
 
     constructor(
         public toastController: ToastController,
@@ -189,7 +188,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                     new TileLayer({
                         source: new OSM()
                     })],
-                target: document.getElementById('map'),
+                target: document.getElementById('map2'),
                 view: new View({
                     center: fromLonLat([21.23408, 48.69809]),
                     zoom: 13
@@ -204,5 +203,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.map.updateSize();
         }, 500);
+        console.log('mapa idze ci nejdze');
     }
 }

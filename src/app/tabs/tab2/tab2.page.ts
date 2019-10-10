@@ -28,6 +28,8 @@ const washingtonLonLat = [21.23408, 48.69809];
 const washingtonWebMercator = fromLonLat(washingtonLonLat);
 let a1;
 let b1;
+let pocet;
+pocet = 0;
 @Component({
     selector: 'app-tab2',
     templateUrl: 'tab2.page.html',
@@ -86,10 +88,11 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         });
     }
     ngAfterViewInit(): void {
-        this.locate();
-        console.log('toto je a1' + a1);
-        console.log('toto je b1' + b1);
-
+        if (a1 == null) {
+            this.locate();
+            console.log('toto je a1' + a1);
+            console.log('toto je b1' + b1);
+        } else { console.log('kures fakt preskakuje null'); }
         // tslint:disable-next-line:no-unused-expression
         new VectorLayer({
             map: this.map = new Map({
@@ -113,6 +116,20 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         setTimeout(() => {
             this.map.updateSize();
         }, 500);
+        this.ionViewWillLeave();
+    }
+
+    // tslint:disable-next-line:use-lifecycle-interface
+    ionViewWillLeave() {
+        if (pocet > 0) {
+            console.log('ted to pujde ');
+            // this.map.setTarget(null); // toto to zavrie ale aj tak to nejde, gg
+            this.map = null;
+        }
+        if (pocet === 0) {
+            console.log('az teraz sa vypinam omg ');
+            pocet++;
+        }
     }
 
 
