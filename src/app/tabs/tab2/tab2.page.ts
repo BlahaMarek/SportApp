@@ -13,12 +13,15 @@ import {OSM, Vector as VectorSource} from 'ol/source';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 import {fromLonLat} from 'ol/proj';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import BingMaps from 'ol/source/BingMaps';
 
 
+
+declare var ol: any;
+// tslint:disable-next-line:prefer-const
 
 declare var vectorSource;
 declare var markerVectorLayer;
-declare var ol;
 
 const mapLat = -33.829357;
 const mapLng = 150.961761;
@@ -29,6 +32,8 @@ const washingtonWebMercator = fromLonLat(washingtonLonLat);
 let a1;
 let b1;
 let pocet;
+let markre: [];
+const markres = [];
 pocet = 0;
 @Component({
     selector: 'app-tab2',
@@ -88,6 +93,11 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         });
     }
     ngAfterViewInit(): void {
+        this.pridanieMarkerov();
+        console.log('toto su markre');
+        console.log(markre);
+        console.log('toto su markres');
+        console.log(markres);
         if (a1 == null) {
             this.locate();
             console.log('toto je a1' + a1);
@@ -102,23 +112,39 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     })],
                 target: document.getElementById('map'),
                 view: new View({
-                    center: fromLonLat([0, 0]),
+                    center: fromLonLat([a1, b1]),
                     zoom: 12
                 }),
             }),
             source: new VectorSource({
-                features: [new Feature({
-                    geometry: new Point(fromLonLat([21.23408, 48.69809])) // tu pojdu vsetky aktivity
-                }), positionFeature]
+                features: markres
             })
         });
+        // this.pridanieMarkerov();
         this.locate();
+        console.log('toto su markre');
+        console.log(markre);
         setTimeout(() => {
             this.map.updateSize();
         }, 500);
         this.ionViewWillLeave();
     }
+    pridanieMarkerov() {
+        const places = [
+            [29.17283, 40.89502],
+            [21.23408, 48.69809],
+            [7.17283, 17.50354],
+        ];
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < places.length ; i++) {
+            markre =  new Feature({
+                geometry: new Point(fromLonLat([places[i][0], places[i][1]])) // tu pojdu vsetky aktivity
+            });
+            console.log('udaje cislo kurna ' + places[i][1] + places[i][0]);
 
+            markres.push(markre);
+        }
+    }
     // tslint:disable-next-line:use-lifecycle-interface
     ionViewWillLeave() {
         if (pocet > 0) {
