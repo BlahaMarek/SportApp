@@ -8,6 +8,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import { FilePath } from '@ionic-native/file-path/ngx';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MenuComponent} from './components/menu/menu.component';
@@ -17,6 +18,8 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -47,6 +50,8 @@ export function createTranslateLoader(http: HttpClient) {
         NativeGeocoder,
         StatusBar,
         SplashScreen,
+        WebView,
+        FilePath,
         ToastController,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
