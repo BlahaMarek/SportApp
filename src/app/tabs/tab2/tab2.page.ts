@@ -161,9 +161,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     pridanieMarkerov() {
         const places = [
             [10.17283, 40.89502, "futbal"],
-            [11.17283, 48.69809, "hokej"],
+            [1, 1, "hokej"],
             [35.17283, 40.89502, "tenis"],
-            [30.17283, 40.89502, "futbal"],
+            [35.17283, 40.89502, "futbal"],
             [17.17283, 40.89502, "squash"]
 
 
@@ -261,62 +261,19 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     rovnaky=false;
                     if (places[o][0] == places[l][0]) {
                          //pomoc.push(places[1][0]); //tu si budem zapisovat hodnoty ktore sa rovnaju
-                        if (places[o][2] == "futbal") {
                             markiza = new Feature({
                                 geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                name: 'Futbal kurwa'
+                                name: 'Viacero športov'
                             });
                             markiza.setStyle(new Style({
                                 image: new Icon({
                                     color: '#8959A8',
                                     crossOrigin: 'anonymous',
-                                    src: 'assets/sports/soccer.svg',
-                                    scale: 0.4
+                                    src: 'assets/sports/multisport.png',
+                                    scale: 0.2
                                 })
                             }));
-                        }
-                        if (places[o][2] == "hokej") {
-                            markiza = new Feature({
-                                geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                name: 'Futbal kurwa'
-                            });
-                            markiza.setStyle(new Style({
-                                image: new Icon({
-                                    color: '#8959A8',
-                                    crossOrigin: 'anonymous',
-                                    src: 'assets/sports/hockey.svg',
-                                    scale: 0.4
-                                })
-                            }));
-                        }
-                        if (places[o][2] == "tenis") {
-                            markiza = new Feature({
-                                geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                name: 'Futbal kurwa'
-                            });
-                            markiza.setStyle(new Style({
-                                image: new Icon({
-                                    color: '#8959A8',
-                                    crossOrigin: 'anonymous',
-                                    src: 'assets/sports/tennis.svg',
-                                    scale: 0.4
-                                })
-                            }));
-                        }
-                        if (places[o][2] == "squash") {
-                            markiza = new Feature({
-                                geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                name: 'Futbal kurwa'
-                            });
-                            markiza.setStyle(new Style({
-                                image: new Icon({
-                                    color: '#8959A8',
-                                    crossOrigin: 'anonymous',
-                                    src: 'assets/sports/squash.svg',
-                                    scale: 0.4
-                                })
-                            }));
-                        }
+
 
                         markres.push(markiza);
                         break;
