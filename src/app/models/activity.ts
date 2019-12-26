@@ -1,7 +1,7 @@
 import { Sport } from './sport';
 
 export class Activity {
-    id: number;
+    id: string;
     sport: number;
     peopleCount: number;
     place: string;

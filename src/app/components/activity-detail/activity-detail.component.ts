@@ -85,6 +85,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     compareWith = this.compareWithFn;
 
     ngOnInit() {
+        console.log(this.selectedActivity);
         this.sportOptions = this.dataService.getSportsSk();
         this.assignValueToForm();
 
@@ -110,6 +111,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
         this.activityForm.get('sport').setValue(this.selectedActivity.sport);
         this.activityForm.updateValueAndValidity();
+        console.log(this.activityForm.value);
     }
 
     onFormSubmit() {
@@ -127,7 +129,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     assignValueToActivity(): Activity {
         return {
-            id: this.activityService.allActivitiesCount + 1,
+            // id: this.activityService.allActivitiesCount + 1,
+            id: "thiactivi",
             sport: this.activityForm.get('sport').value,
             createdBy: this.authService.userIdAuth,
             topActivity: this.activityForm.get('topActivity').value,

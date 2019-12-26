@@ -29,7 +29,7 @@ export class ActivityListComponent implements OnInit {
     ngOnInit() {
     }
 
-    onActivityClicked(id: number) {
+    onActivityClicked(id: string) {
         this.modalController
             .create({
                 component: ActivityDetailComponent,

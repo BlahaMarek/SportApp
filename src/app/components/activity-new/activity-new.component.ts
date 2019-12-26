@@ -11,6 +11,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import { ToastController} from '@ionic/angular';
+import {FirestoreService} from '../../services/firestore.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ActivityNewComponent implements OnInit {
     lat: number;
     longt: number;
     constructor(
+        private fireService: FirestoreService,
         public toastController: ToastController,
         private nativeGeocoder: NativeGeocoder,
         private fb: FormBuilder,
@@ -63,12 +65,14 @@ export class ActivityNewComponent implements OnInit {
 
     onFormSubmit() {
         this.activityService.addActivity(this.assignValueToActivity());
+        this.fireService.createSport(this.assignValueToActivity());
         this.modalController.dismiss({message: 'Add new activity!'}, 'add');
     }
 
     assignValueToActivity(): Activity {
         return {
-            id: this.activityService.allActivitiesCount + 1,
+            // id: this.activityService.allActivitiesCount + 1,
+            id: "ss",
             sport: this.activityForm.get('sport').value,
             createdBy: this.authService.userIdAuth,
             topActivity: this.activityForm.get('topActivity').value,
