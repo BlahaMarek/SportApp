@@ -12,7 +12,7 @@ export class ActivityService {
 
         fireService.readAllSports().subscribe(all => {
             console.log(all);
-            this.activities = all;
+            //this.activities = all;
         })
 
 

@@ -24,6 +24,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -50,9 +52,11 @@ export function createTranslateLoader(http: HttpClient) {
         }),
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFirestoreModule,
-        AngularFireDatabaseModule
+        AngularFireDatabaseModule,
+        AngularFireAuthModule
     ],
     providers: [
+        Facebook,
         Geolocation,
         NativeGeocoder,
         StatusBar,

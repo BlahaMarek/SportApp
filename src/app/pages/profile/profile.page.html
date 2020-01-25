@@ -1,12 +1,74 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Profil</ion-title>
+    <ion-title>
+      User Facebook Profile
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="facebook-bg">
+  <div *ngIf="user">
+    <ion-row>
+      <ion-col class="title">
+        {{user.displayName}}
+      </ion-col>
+    </ion-row>
+    <ion-img class="profile-image" [src]="user.photoURL"></ion-img>
+    <ion-row *ngIf="user.email">
+      <ion-col col-3 padding-left class="label">
+        Email
+      </ion-col>
+      <ion-col col-9>
+        {{user.email}}
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="user.phoneNumber">
+      <ion-col col-3 padding-left class="label">
+        phoneNumber
+      </ion-col>
+      <ion-col col-9>
+        {{user.phoneNumber}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-3 padding-left class="label">
+        Creation Time
+      </ion-col>
+      <ion-col col-9>
+        {{user.creationTime}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-3 padding-left class="label">
+        last Sign In Time
+      </ion-col>
+      <ion-col col-9>
+        {{user.lastSignInTime}}
+      </ion-col>
 
+    </ion-row>
+    <ion-row>
+      <ion-col col-3 padding-left class="label">
+        Is User Anonymous?
+      </ion-col>
+      <ion-col col-9>
+        {{user.isAnonymous}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-3 padding-left class="label">
+        Is Email Verified?
+      </ion-col>
+      <ion-col col-9>
+        {{user.emailVerified}}
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>
+<ion-footer (click)="logout()">
+  <ion-toolbar color="danger">
+    <ion-title>
+      Logout
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>
