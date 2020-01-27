@@ -9,4 +9,6 @@ export class Activity {
     date: Date;
     bookedBy: string[];
     createdBy: string;
+    lattitude: string;
+    longtitude: string;
 }

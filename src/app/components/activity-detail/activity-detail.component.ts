@@ -36,6 +36,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     sportOptions: Sport[] = [];
     private objekt: any;
     initialMapLoad = true;
+    private lattitudeFirebase: string;
+    private longtitudeFirebase: string;
 
     constructor(
         public toastController: ToastController,
@@ -73,7 +75,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         place: ['', Validators.required],
         topActivity: [false],
         date: ['', Validators.required],
-        sport: ['', Validators.required]
+        sport: ['', Validators.required],
+        latitude: [''],
+        longtitude: ['']
     });
     // @ts-ignore
     GoogleAutocomplete: google.maps.places.AutocompleteService;
@@ -137,7 +141,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
             date: this.activityForm.get('date').value,
-            bookedBy: this.selectedActivity.bookedBy
+            bookedBy: this.selectedActivity.bookedBy,
+            lattitude: this.lattitudeFirebase,
+            longtitude: this.longtitudeFirebase
         };
     }
 
@@ -180,7 +186,23 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                 result[0].latitude + ' and longitude=' + result[0].longitude)) // tu je sirka a vyska
             .catch((error: any) => console.log('nejdze'));
 
+        this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
+            .then((result: NativeGeocoderResult[]) =>
+                this.lattitudeFirebase = result[0].latitude) // tu je sirka a vyska
+            .catch((error: any) => this.openToast('Toto sa dosralo'));
+
+        this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
+            .then((result: NativeGeocoderResult[]) =>
+                this.longtitudeFirebase = result[0].longitude) // tu je sirka a vyska
+            .catch((error: any) => this.openToast('Toto sa dosralo'));
+
         console.log('kurwa co to nejde');
+    }
+    async openToast(msg) {
+        const toast = await  this.toastController.create({
+            message: msg , duration: 2000
+        });
+        toast.present();
     }
 
     ngAfterViewInit(): void {

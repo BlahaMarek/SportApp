@@ -1,21 +1,45 @@
 import {Injectable} from '@angular/core';
 import {Activity} from '../models/activity';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, from} from 'rxjs';
 import {FirestoreService} from './firestore.service';
+import { Observable } from 'rxjs';
+import {Sport} from "../models/sport";
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {map, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ActivityService {
+    private sports: Observable<Activity[]>;
+    private sportsCollection: AngularFirestoreCollection<Activity>;
 
     constructor( private fireService: FirestoreService ) {
 
+
+
         fireService.readAllSports().subscribe(all => {
+            console.log("Toto je all")
             console.log(all);
-            //this.activities = all;
-        })
 
 
+
+            this.activities =  all;
+        });
+
+
+    }
+    getFoodCollection() {
+        this.sportsCollection = this.fireService.collection<Activity>(`activities`);
+        this.sports = this.sportsCollection.snapshotChanges().pipe(
+            map(actions => {
+                return actions.map(a => {
+                    const data = a.payload.doc.data();
+                    const id = a.payload.doc.id;
+                    return {id, ...data};
+                });
+            })
+        );
     }
 
 

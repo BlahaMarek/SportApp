@@ -12,6 +12,7 @@ import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import { ToastController} from '@ionic/angular';
 import {FirestoreService} from '../../services/firestore.service';
+import * as firebase from "firebase";
 
 
 @Component({
@@ -24,6 +25,8 @@ export class ActivityNewComponent implements OnInit {
     private objekt: any;
     lat: number;
     longt: number;
+    lattitudeFirebase: string;
+    longtitudeFirebase: string;
     constructor(
         private fireService: FirestoreService,
         public toastController: ToastController,
@@ -46,6 +49,7 @@ export class ActivityNewComponent implements OnInit {
     GoogleAutocomplete: google.maps.places.AutocompleteService;
     autocomplete: { input: string; };
     autocompleteItems: any[];
+    userIdFire: string;
     location: any;
     placeid: any;
     activityForm = this.fb.group({
@@ -54,9 +58,20 @@ export class ActivityNewComponent implements OnInit {
         topActivity: [false],
         date: ['', Validators.required],
         sport: ['', Validators.required],
+        lattitudeFB: [''],
+        longtitudeFB: [''],
     });
 
     ngOnInit() {
+        firebase.auth().onAuthStateChanged((user)=>{
+            if (user){
+                console.log(user.uid);
+                this.userIdFire = user.uid;
+            }
+            else {
+                console.log("Nepodarilo sa nacitat uid usera")
+            }
+        });
     }
 
     onCancel() {
@@ -64,22 +79,35 @@ export class ActivityNewComponent implements OnInit {
     }
 
     onFormSubmit() {
+        firebase.auth().onAuthStateChanged((user)=>{
+            if (user){
+                console.log(user.uid);
+                this.userIdFire = user.uid;
+            }
+            else {
+                console.log("Nepodarilo sa nacitat uid usera")
+            }
+        });
         this.activityService.addActivity(this.assignValueToActivity());
         this.fireService.createSport(this.assignValueToActivity());
         this.modalController.dismiss({message: 'Add new activity!'}, 'add');
     }
 
     assignValueToActivity(): Activity {
+
         return {
             // id: this.activityService.allActivitiesCount + 1,
             id: "ss",
             sport: this.activityForm.get('sport').value,
-            createdBy: this.authService.userIdAuth,
+            createdBy: this.userIdFire,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
             date: this.activityForm.get('date').value,
-            bookedBy: []
+            bookedBy: [],
+            lattitude : this.lattitudeFirebase,
+            longtitude: this.longtitudeFirebase
+
         };
     }
 
@@ -118,8 +146,19 @@ export class ActivityNewComponent implements OnInit {
             maxResults: 5
         };
         this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
-            .then((result: NativeGeocoderResult[]) => this.openToast('The coordinates are latitude=' +
+            .then((result: NativeGeocoderResult[]) =>
+                this.openToast('The coordinates are latitude=' +
                 result[0].latitude + ' and longitude=' +  result[0].longitude)) // tu je sirka a vyska
+            .catch((error: any) => this.openToast('Toto sa dosralo'));
+
+        this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
+            .then((result: NativeGeocoderResult[]) =>
+                    this.lattitudeFirebase = result[0].latitude) // tu je sirka a vyska
+            .catch((error: any) => this.openToast('Toto sa dosralo'));
+
+        this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
+            .then((result: NativeGeocoderResult[]) =>
+                this.longtitudeFirebase = result[0].longitude) // tu je sirka a vyska
             .catch((error: any) => this.openToast('Toto sa dosralo'));
 
         console.log('kurwa co to nejde');

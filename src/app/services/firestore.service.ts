@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Activity} from '../models/activity';
 import {map} from 'rxjs/operators';
+
 
 @Injectable({
     providedIn: 'root'
@@ -27,11 +28,16 @@ export class FirestoreService {
         )
     }
 
+
     updateSport(sportId, sport) {
         this.firestore.doc('students/' + sportId).update(sport);
     }
 
     deleteSport(sportId) {
         this.firestore.doc('Students/' + sportId).delete();
+    }
+
+    collection<T>(s: string) {
+        return undefined;
     }
 }

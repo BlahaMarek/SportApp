@@ -6,6 +6,7 @@ import {ActivityDetailComponent} from '../activity-detail/activity-detail.compon
 import {Sport} from '../../models/sport';
 import {DataService} from '../../data/data.service';
 import {AuthService} from '../../auth/auth.service';
+import * as firebase from "firebase";
 
 @Component({
     selector: 'app-activity-list',
@@ -45,6 +46,14 @@ export class ActivityListComponent implements OnInit {
             .then(result => {
                 console.log(result);
             });
+    }
+
+    getDocument(){
+        firebase.firestore().collection("sports").get().then((queryDocumentSnapshot) => {
+            console.log(queryDocumentSnapshot);;
+        }).catch((err) => {
+            console.log(err);
+        })
     }
 
     getCssClass(activity: Activity) {

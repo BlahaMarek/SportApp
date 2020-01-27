@@ -19,6 +19,7 @@ import 'ol/ol.css';
 import Overlay from 'ol/Overlay';
 import TileJSON from 'ol/source/TileJSON';
 import {Icon, Style} from 'ol/style';
+import {FirestoreService} from "../../services/firestore.service";
 
 
 declare var ol: any;
@@ -60,13 +61,15 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     map: Map;
     image:any='';
     private win: any = window;
+    places : any;
 
     // // @ts-ignore
     // @ViewChild('mapElement') mapElement;
 
     constructor(
         private geolocation: Geolocation,
-        public toastController: ToastController
+        public toastController: ToastController,
+        private fireService: FirestoreService
 ) {
     }
     async presentToast(msg) {
@@ -183,22 +186,76 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         this.ionViewWillLeave();
     }
     pridanieMarkerov() {
-        const places = [
-            [0, 0, "nic", 0],
-            [15, 15, "futbal", 0],
-            [17.7, 1, "futbal", 1],
-            [0.7, 1, "hokej", 2],
-            [20, 20, "tenis", 3],
-            [20, 1, "futbal", 4],
-            [0.1, 0.1, "squash", 5]
+        this.fireService.readAllSports().subscribe(all => {
+            console.log("Toto je all prii mape")
+            console.log(all);
+
+            this.places = all;
+            console.log(typeof (this.places));
+            console.log("toto je zase places");
+            console.log(this.places);
+
+            const pole = Object.entries(all);
+            console.log("toto je zase pole stringyfgdgd");
+
+            console.log(JSON.stringify(pole));
+
+            console.log(this.places);
 
 
-        ];
+            let result = [] ;
+Object.values(this.places).forEach((e,i,arr) => {
+    if (!( i % 4 )){
+        result.push([e,arr[i+1]]);
+    }
+});
+            var res = [];
+            for (var x in all){
+                all.hasOwnProperty(x) && res.push(all[x])
+            }
+            console.log("toto je res");
+
+            console.log(res);
+
+            console.log(JSON.stringify(this.places[Object.keys(this.places)[1]]));
+            console.log(result);
+            console.log("a toto je key");
+            console.log("toto je objectttsdfs");
+            console.log(all[Object.keys(all)[0]]);
+            var objekttt = all[Object.keys(all)[0]];
+
+            var res = [];
+            for (var x in objekttt){
+                objekttt.hasOwnProperty(x) && res.push(objekttt[x]) //toto mi vytvara 1rozmerne pole , potrebujem 2 :(
+            }
+            console.log("res");
+
+            console.log(res);
+
+            console.log(res[2])
+
+
+
+            const hovno = [
+                [0, 0, "nic", 0],
+                [15, 15, "futbal", 0],
+                [17.7, 1, "futbal", 1],
+                [0.7, 1, "hokej", 2],
+                [20, 20, "tenis", 3],
+                [20, 1, "futbal", 4],
+                [0.1, 0.1, "squash", 5]
+
+
+            ];
+            console.log(hovno);
+        });
 
 
 
 
-        places.sort(sortFunction);
+
+
+        this.places.sort(sortFunction);
 
         function sortFunction(a, b) {
             if (a[0] === b[0]) {
@@ -210,32 +267,32 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         }
         console.log("Totot je pole");
 
-        console.log(places[0][0]);
-        console.log(places[0][1]);
-        console.log(places[1][0]);
-        console.log(places[1][1]);
-        console.log(places[2][0]);
-        console.log(places[2][1]);
+        console.log(this.places[0][0]);
+        console.log(this.places[0][1]);
+        console.log(this.places[1][0]);
+        console.log(this.places[1][1]);
+        console.log(this.places[2][0]);
+        console.log(this.places[2][1]);
 
 
-        for (let o = 0; o< places.length; o++) {
+        for (let o = 0; o< this.places.length; o++) {
             rovnaky = false;
             let zapisMultiMarka = [];
-            for (let forward = o+1; forward<places.length; forward++){
+            for (let forward = o+1; forward<this.places.length; forward++){
                 if (o > 0){
-                    if (places[o][0] != places[o-1][0]){
-                        if (places[o][0] == places[forward][0]) {
+                    if (this.places[o][0] != this.places[o-1][0]){
+                        if (this.places[o][0] == this.places[forward][0]) {
                             if (rovnaky == false) {
-                            zapisMultiMarka.push(places[o][3]);
+                            zapisMultiMarka.push(this.places[o][3]);
                             rovnaky = true;
                             }
-                            zapisMultiMarka.push(places[forward][3]);
-                            if (forward == places.length -1 && zapisMultiMarka.length >0){
+                            zapisMultiMarka.push(this.places[forward][3]);
+                            if (forward == this.places.length -1 && zapisMultiMarka.length >0){
 
                                 markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                    geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                     name: 'Viacero športov',
-                                    id: places[o][3],
+                                    id: this.places[o][3],
                                     idcka: zapisMultiMarka
                                 });
                                 markiza.setStyle(new Style({
@@ -249,11 +306,11 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                 markres.push(markiza);
                                 break;
                             }
-                            if (forward == places.length -1 && zapisMultiMarka.length < 1){
+                            if (forward == this.places.length -1 && zapisMultiMarka.length < 1){
 
-                                if (places[o][2] == "futbal") {
+                                if (this.places[o][2] == "futbal") {
                                     markiza = new Feature({
-                                        geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                        geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                         name: 'Futbal kurwa',
                                         id: 3
                                     });
@@ -266,9 +323,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         })
                                     }));
                                 }
-                                if (places[o][2] == "hokej") {
+                                if (this.places[o][2] == "hokej") {
                                     markiza = new Feature({
-                                        geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                        geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                         name: 'Futbal kurwa',
                                         id: 3
                                     });
@@ -281,9 +338,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         })
                                     }));
                                 }
-                                if (places[o][2] == "tenis") {
+                                if (this.places[o][2] == "tenis") {
                                     markiza = new Feature({
-                                        geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                        geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                         name: 'Futbal kurwa',
                                         id: 3
                                     });
@@ -296,9 +353,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         })
                                     }));
                                 }
-                                if (places[o][2] == "squash") {
+                                if (this.places[o][2] == "squash") {
                                     markiza = new Feature({
-                                        geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                        geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                         name: 'Futbal kurwa'
                                     });
                                     markiza.setStyle(new Style({
@@ -316,11 +373,11 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                             }
 
                         }
-                         if(places[o][0] != places[forward][0] && zapisMultiMarka.length >0){
+                         if(this.places[o][0] != this.places[forward][0] && zapisMultiMarka.length >0){
                             markiza = new Feature({
-                                geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                 name: 'Viacero športov',
-                                id: places[o][3],
+                                id: this.places[o][3],
                                 idcka: zapisMultiMarka
                             });
                             markiza.setStyle(new Style({
@@ -334,10 +391,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                             markres.push(markiza);
                             break;
                         }
-                         if(places[o][0] != places[forward][0] && zapisMultiMarka.length < 1){
-                             if (places[o][2] == "futbal") {
+                         if(this.places[o][0] != this.places[forward][0] && zapisMultiMarka.length < 1){
+                             if (this.places[o][2] == "futbal") {
                                  markiza = new Feature({
-                                     geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                     geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                      name: 'Futbal kurwa',
                                      id: 3
                                  });
@@ -350,9 +407,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                      })
                                  }));
                              }
-                             if (places[o][2] == "hokej") {
+                             if (this.places[o][2] == "hokej") {
                                  markiza = new Feature({
-                                     geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                     geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                      name: 'Futbal kurwa',
                                      id: 3
                                  });
@@ -365,9 +422,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                      })
                                  }));
                              }
-                             if (places[o][2] == "tenis") {
+                             if (this.places[o][2] == "tenis") {
                                  markiza = new Feature({
-                                     geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                     geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                      name: 'Futbal kurwa',
                                      id: 3
                                  });
@@ -380,9 +437,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                      })
                                  }));
                              }
-                             if (places[o][2] == "squash") {
+                             if (this.places[o][2] == "squash") {
                                  markiza = new Feature({
-                                     geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                     geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                      name: 'Futbal kurwa'
                                  });
                                  markiza.setStyle(new Style({
@@ -398,11 +455,11 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                              markres.push(markiza);
                              break;
                         }
-                          if ( o == places.length -1 && zapisMultiMarka.length >0){
+                          if ( o == this.places.length -1 && zapisMultiMarka.length >0){
                             markiza = new Feature({
-                                geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                 name: 'Viacero športov',
-                                id: places[o][3],
+                                id: this.places[o][3],
                                 idcka: zapisMultiMarka
                             });
                             markiza.setStyle(new Style({
@@ -416,10 +473,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                             markres.push(markiza);
                             break;
                         }
-                        else if ( o == places.length -1 && zapisMultiMarka.length < 1){
-                              if (places[o][2] == "futbal") {
+                        else if ( o == this.places.length -1 && zapisMultiMarka.length < 1){
+                              if (this.places[o][2] == "futbal") {
                                                   markiza = new Feature({
-                                                      geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                                      geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                                       name: 'Futbal kurwa',
                                                       id: 3
                                                   });
@@ -432,9 +489,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                                       })
                                                   }));
                                               }
-                                              if (places[o][2] == "hokej") {
+                                              if (this.places[o][2] == "hokej") {
                                                   markiza = new Feature({
-                                                      geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                                      geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                                       name: 'Futbal kurwa',
                                                       id: 3
                                                   });
@@ -447,9 +504,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                                       })
                                                   }));
                                               }
-                                              if (places[o][2] == "tenis") {
+                                              if (this.places[o][2] == "tenis") {
                                                   markiza = new Feature({
-                                                      geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                                      geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                                       name: 'Futbal kurwa',
                                                       id: 3
                                                   });
@@ -462,9 +519,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                                       })
                                                   }));
                                               }
-                                              if (places[o][2] == "squash") {
+                                              if (this.places[o][2] == "squash") {
                                                   markiza = new Feature({
-                                                      geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                                      geometry: new Point(fromLonLat([this.places[o][0], this.places[o][1]])),
                                                       name: 'Futbal kurwa'
                                                   });
                                                   markiza.setStyle(new Style({

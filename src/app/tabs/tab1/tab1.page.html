@@ -16,6 +16,7 @@
     <ion-segment [(ngModel)]="segment" (ionChange)="onFilterUpdate($event)">
         <ion-segment-button #others value="others" checked>Iné aktivity</ion-segment-button>
         <ion-segment-button value="mine">Moje aktivity</ion-segment-button>
+
     </ion-segment>
 
     <app-activity-list [filteredList]="filteredList" ></app-activity-list>
