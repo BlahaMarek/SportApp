@@ -6,14 +6,14 @@ import { Observable } from 'rxjs';
 import {Sport} from "../models/sport";
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {map, take} from 'rxjs/operators';
-
+import * as firebase from "firebase";
 @Injectable({
     providedIn: 'root'
 })
 export class ActivityService {
     private sports: Observable<Activity[]>;
     private sportsCollection: AngularFirestoreCollection<Activity>;
-
+    sports2: any[] =[];
     constructor( private fireService: FirestoreService ) {
 
 
@@ -21,11 +21,20 @@ export class ActivityService {
         fireService.readAllSports().subscribe(all => {
             console.log("Toto je all")
             console.log(all);
+            this.sports2 = all;
 
 
+            this.activities =  this.sports2;
+                firebase.firestore().collection("sports").get().then((query) => {
+                    console.log("a toto query");
+                    console.log(query.docs);
 
-            this.activities =  all;
+                    this.sports2 = query.docs;
+            });
         });
+        console.log("toto su sporty2");
+        console.log(this.sports2);
+        this.activities = this.sports2;
 
 
     }
@@ -62,13 +71,17 @@ export class ActivityService {
     }
 
     // add person, who booked activity to list of users, who booked
-    addBookerToActivity(id: string, userId: string) {
-        let activity: Activity = this.getActivityById(id);
+    addBookerToActivity(sport: Activity, userId: string): Promise<void> {
+        let activity: Activity = this.getActivityById(sport.id);
         activity.bookedBy.push(userId);
-        this.activities = [
-            ...this.activities.filter(activity=> activity.id !== id),
-            activity
-        ]
+        return this.sportsCollection.doc(sport.id).update({
+            bookedBy: sport.bookedBy
+        });
+
+        // this.activities = [
+        //     ...this.activities.filter(activity=> activity.id !== id),
+        //     activity
+        // ]
     }
 
     // get activity by id

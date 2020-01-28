@@ -48,13 +48,7 @@ export class ActivityListComponent implements OnInit {
             });
     }
 
-    getDocument(){
-        firebase.firestore().collection("sports").get().then((queryDocumentSnapshot) => {
-            console.log(queryDocumentSnapshot);;
-        }).catch((err) => {
-            console.log(err);
-        })
-    }
+
 
     getCssClass(activity: Activity) {
         return "item-content " + this.dataService.getSportIconByValue(activity.sport);

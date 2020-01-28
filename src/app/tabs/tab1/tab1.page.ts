@@ -7,6 +7,7 @@ import {Activity} from '../../models/activity';
 import {ActivityService} from '../../services/activity.service';
 import {AuthService} from '../../auth/auth.service';
 import {DataService} from '../../data/data.service';
+import * as firebase from "firebase";
 
 @Component({
     selector: 'app-tab1',
@@ -21,6 +22,7 @@ export class Tab1Page implements OnInit {
     filteredList: Activity[];
     sportOptions: any;
     segment: any;
+    products: any[] =[];
     constructor(
         public zone: NgZone,
         private fb: FormBuilder,

@@ -1,4 +1,14 @@
-import {AfterContentInit, AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {
+    AfterContentInit,
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Inject,
+    Input,
+    NgZone,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import {Activity} from '../../models/activity';
 import {ModalController} from '@ionic/angular';
 import {FormBuilder, Validators} from '@angular/forms';
@@ -31,6 +41,8 @@ const positionFeature = new Feature();
 })
 export class ActivityDetailComponent implements OnInit, AfterViewInit {
     map;
+    //activity: Activity;
+
     @Input() selectedActivity: Activity;
     @Input() bookable: boolean;
     sportOptions: Sport[] = [];
@@ -49,6 +61,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         private authService: AuthService,
         public zone: NgZone
     ) {
+        if (this.dataService)
         // @ts-ignore
         this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
         this.autocomplete = {input: ''};
@@ -122,11 +135,16 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         if (!this.bookable) {
             this.activityService.updateActivity(this.selectedActivity.id, this.assignValueToActivity());
         } else {
-            this.activityService.addBookerToActivity(this.selectedActivity.id, this.authService.userIdAuth);
+            this.activityService.addBookerToActivity(this.selectedActivity, this.authService.userIdAuth).then(()=>{
+                console.log("Tymto logom som nezisil nic");
+            });
         }
         const data = {message: 'Add new activity!'};
         if (this.bookable) {
             data.message = 'Booked activity';
+            console.log(this.selectedActivity.id);
+            console.log(this.authService.userIdAuth);
+
         }
         this.modalController.dismiss(data, 'add');
     }

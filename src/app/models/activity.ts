@@ -4,8 +4,9 @@ export class Activity {
     id: string;
     sport: number;
     peopleCount: number;
-    place: string;
     topActivity: boolean;
+
+    place: string;
     date: Date;
     bookedBy: string[];
     createdBy: string;
