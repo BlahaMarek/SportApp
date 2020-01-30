@@ -8,6 +8,7 @@ import {ActivityService} from '../../services/activity.service';
 import {AuthService} from '../../auth/auth.service';
 import {DataService} from '../../data/data.service';
 import * as firebase from "firebase";
+import {forEach} from "@angular-devkit/schematics";
 
 @Component({
     selector: 'app-tab1',
@@ -19,6 +20,7 @@ export class Tab1Page implements OnInit {
     @ViewChild('others') others: ElementRef;
     activityList: Activity[];
     activityListByUser: Activity[];
+
     filteredList: Activity[];
     sportOptions: any;
     segment: any;
@@ -50,13 +52,31 @@ export class Tab1Page implements OnInit {
         this.languageService.setInitialAppLanguage();
     }
 
+
     onFilterUpdate(event: CustomEvent) {
+
         if (event.detail.value === 'others') {
             this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length) && !activity.bookedBy.includes(this.authService.userIdAuth)));
             this.filteredList = this.activityListByUser;
         } else if (event.detail.value === 'mine') {
             this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.authService.userIdAuth);
             this.filteredList = this.activityListByUser;
+        }else if(event.detail.value === 'registered'){
+            let hovno = [];
+            let prihlaseny = this.authService.userIdAuth;
+            this.activityListByUser = this.activityList.filter(activity => activity.bookedBy.forEach(function(value) {
+                if (value === prihlaseny){
+                    hovno.push(activity);
+
+                    //this.hovno.push(activity);
+                    console.log(activity);
+                }
+                console.log("toto je moja value// " + value);
+
+            }));
+            this.filteredList = hovno;
+
+
         }
     }
 

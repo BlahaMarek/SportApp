@@ -7,39 +7,24 @@ import {Sport} from "../models/sport";
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {map, take} from 'rxjs/operators';
 import * as firebase from "firebase";
+import {AuthService} from '../auth/auth.service';
+
+
+
+
 @Injectable({
     providedIn: 'root'
 })
 export class ActivityService {
-    private sports: Observable<Activity[]>;
     private sportsCollection: AngularFirestoreCollection<Activity>;
-    sports2: any[] =[];
-    constructor( private fireService: FirestoreService ) {
+    private sports: Observable<Activity[]>;
+    activity: Activity;
+    sports2: any[] =[];routes;
+
+    constructor( private fireService: FirestoreService, private afs: AngularFirestore,private authService: AuthService) {
 
 
-
-        fireService.readAllSports().subscribe(all => {
-            console.log("Toto je all")
-            console.log(all);
-            this.sports2 = all;
-
-
-            this.activities =  this.sports2;
-                firebase.firestore().collection("sports").get().then((query) => {
-                    console.log("a toto query");
-                    console.log(query.docs);
-
-                    this.sports2 = query.docs;
-            });
-        });
-        console.log("toto su sporty2");
-        console.log(this.sports2);
-        this.activities = this.sports2;
-
-
-    }
-    getFoodCollection() {
-        this.sportsCollection = this.fireService.collection<Activity>(`activities`);
+        this.sportsCollection = this.afs.collection<any>('sports');
         this.sports = this.sportsCollection.snapshotChanges().pipe(
             map(actions => {
                 return actions.map(a => {
@@ -49,7 +34,34 @@ export class ActivityService {
                 });
             })
         );
+
+
+        fireService.readAllSports().subscribe(all => {
+            this.sports2 = all;
+
+
+            this.activities =  this.sports2;
+                firebase.firestore().collection(`sports`).get().then((query) => {
+                    this.sports2 = query.docs;
+            });
+        });
+
+        this.activities = this.sports2;
+
+
     }
+    // getFoodCollection(activityId: string) {
+    //     this.sportsCollection = this.fireService.collection<Activity>(`activities/${activityId}`);
+    //     this.sports = this.sportsCollection.snapshotChanges().pipe(
+    //         map(actions => {
+    //             return actions.map(a => {
+    //                 const data = a.payload.doc.data();
+    //                 const id = a.payload.doc.id;
+    //                 return {id, ...data};
+    //             });
+    //         })
+    //     );
+    // }
 
 
     private _activities = new BehaviorSubject<Activity[]>([]);
@@ -71,23 +83,36 @@ export class ActivityService {
     }
 
     // add person, who booked activity to list of users, who booked
-    addBookerToActivity(sport: Activity, userId: string): Promise<void> {
+    addBookerToActivity(sport: Activity) {
         let activity: Activity = this.getActivityById(sport.id);
-        activity.bookedBy.push(userId);
-        return this.sportsCollection.doc(sport.id).update({
-            bookedBy: sport.bookedBy
-        });
+        activity.bookedBy.push(this.authService.userIdAuth);
+        activity.peopleCount = activity.peopleCount -1;
+        return this.sportsCollection.doc(sport.id).update(activity);
 
-        // this.activities = [
-        //     ...this.activities.filter(activity=> activity.id !== id),
-        //     activity
-        // ]
     }
 
     // get activity by id
     getActivityById(id: string): Activity {
         return this._activities.getValue().find(activity => activity.id === id);
     }
+
+    getActivity() {
+        return this.sports
+    }
+    getActivities(id){
+
+        return this.sportsCollection.doc<Activity>(id).valueChanges();
+    }
+
+
+    // getActivities(): Observable<Activity>{
+    //     return this.activities;
+    // }
+
+    getActivityCollection(id: string) {
+
+    }
+
 
     // add new activity
     addActivity(activity: Activity) {

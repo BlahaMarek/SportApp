@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {Activity} from '../../models/activity';
 import {ModalController} from '@ionic/angular';
-import {FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Sport} from '../../models/sport';
 import {DataService} from '../../data/data.service';
 import {ActivityService} from '../../services/activity.service';
@@ -29,6 +29,7 @@ import Point from 'ol/geom/Point';
 import {OSM, Vector as VectorSource} from 'ol/source';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
+import {ActivatedRoute} from "@angular/router";
 
 
 const positionFeature = new Feature();
@@ -41,7 +42,9 @@ const positionFeature = new Feature();
 })
 export class ActivityDetailComponent implements OnInit, AfterViewInit {
     map;
-    //activity: Activity;
+    activity: Activity[];
+    validations_form: FormGroup;
+    sport2: any;
 
     @Input() selectedActivity: Activity;
     @Input() bookable: boolean;
@@ -50,7 +53,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     initialMapLoad = true;
     private lattitudeFirebase: string;
     private longtitudeFirebase: string;
-
+    sportId55 = null;
     constructor(
         public toastController: ToastController,
         private nativeGeocoder: NativeGeocoder,
@@ -59,7 +62,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         private activityService: ActivityService,
         private dataService: DataService,
         private authService: AuthService,
-        public zone: NgZone
+        public zone: NgZone,
+        private route: ActivatedRoute
     ) {
         if (this.dataService)
         // @ts-ignore
@@ -101,7 +105,18 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     // @ts-ignore
     compareWith = this.compareWithFn;
 
+
+
+
+
     ngOnInit() {
+
+        this.activityService.getActivity().subscribe(res => {
+            this.sport2 =res;
+        })
+
+
+
         console.log(this.selectedActivity);
         this.sportOptions = this.dataService.getSportsSk();
         this.assignValueToForm();
@@ -111,6 +126,14 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         } else {
             this.activityForm.enable();
         }
+    }
+    getData(){
+        this.route.data.subscribe(routeData => {
+            let data = routeData['data'];
+            if (data) {
+                this.sport2 = data;
+            }
+        });
     }
 
     onCancel() {
@@ -135,17 +158,20 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         if (!this.bookable) {
             this.activityService.updateActivity(this.selectedActivity.id, this.assignValueToActivity());
         } else {
-            this.activityService.addBookerToActivity(this.selectedActivity, this.authService.userIdAuth).then(()=>{
+            this.activityService.addBookerToActivity(this.selectedActivity).then(()=>{
                 console.log("Tymto logom som nezisil nic");
             });
         }
         const data = {message: 'Add new activity!'};
         if (this.bookable) {
-            data.message = 'Booked activity';
             console.log(this.selectedActivity.id);
             console.log(this.authService.userIdAuth);
+            data.message = 'Booked activity';
+
 
         }
+        console.log(this.selectedActivity.id);
+        console.log(this.authService.userIdAuth);
         this.modalController.dismiss(data, 'add');
     }
 

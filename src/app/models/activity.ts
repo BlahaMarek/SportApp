@@ -1,15 +1,15 @@
 import { Sport } from './sport';
 
 export class Activity {
-    id: string;
-    sport: number;
+    id?: string;
+    sport?: number;
     peopleCount: number;
-    topActivity: boolean;
+    topActivity?: boolean;
 
-    place: string;
-    date: Date;
-    bookedBy: string[];
-    createdBy: string;
-    lattitude: string;
-    longtitude: string;
+    place?: string;
+    date?: Date;
+    bookedBy?: string[];
+    createdBy?: string;
+    lattitude?: string;
+    longtitude?: string;
 }
