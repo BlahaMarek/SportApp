@@ -113,7 +113,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
         this.activityService.getActivity().subscribe(res => {
             this.sport2 =res;
-        })
+        });
 
 
 
@@ -127,14 +127,14 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             this.activityForm.enable();
         }
     }
-    getData(){
-        this.route.data.subscribe(routeData => {
-            let data = routeData['data'];
-            if (data) {
-                this.sport2 = data;
-            }
-        });
-    }
+    // getData(){
+    //     this.route.data.subscribe(routeData => {
+    //         let data = routeData['data'];
+    //         if (data) {
+    //             this.sport2 = data;
+    //         }
+    //     });
+    // }
 
     onCancel() {
         this.modalController.dismiss({message: 'ActivityDetail closed'}, 'cancel');
@@ -259,13 +259,13 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                     })],
                 target: document.getElementById('map2'),
                 view: new View({
-                    center: fromLonLat([21.23408, 48.69809]),
+                    center: fromLonLat([this.selectedActivity.longtitude, this.selectedActivity.lattitude]),
                     zoom: 13
                 }),
             }),
             source: new VectorSource({
                 features: [new Feature({
-                    geometry: new Point(fromLonLat([21.23408, 48.69809])) // tu pojdu vsetky aktivity
+                    geometry: new Point(fromLonLat([this.selectedActivity.longtitude, this.selectedActivity.lattitude])) // tu pojdu vsetky aktivity
                 }), positionFeature]
             })
         });

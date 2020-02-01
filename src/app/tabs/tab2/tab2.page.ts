@@ -204,6 +204,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         console.log("totototototooooooooooooooooooooooooooooooooooo");
 
         console.log(places);
+        console.log(places[0][0]);
+        console.log(places[0][2]);
+
         let hovno :string[][];
         // this.activityList = this.activityList.filter(activity => activity.bookedBy.forEach(function(value) {
         //
@@ -218,10 +221,14 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             this.activityList = list;
         });
         const res = Array.from(Object.values(this.activityList),
-            ({lattitude,longtitude,sport, id}) => [lattitude,longtitude,sport, id]);
+            ({lattitude,longtitude,sport, id}) => [parseFloat(lattitude),parseFloat(longtitude),sport, id]);
         console.log("moj array vysnivany");
         console.log(res);
-console.log(res[0][1]);
+        console.log("toto je 0 0" + res[0][0]);
+        console.log("toto je 0 1" + res[0][1]);
+        console.log("toto je 0 2" + res[0][2]);
+        console.log("toto je 0 3" + res[0][3]);
+
 
 
         places.sort(sortFunction);
@@ -243,24 +250,24 @@ console.log(res[0][1]);
         console.log(places[2][0]);
         console.log(places[2][1]);
 
-        for (let o = 0; o< places.length; o++) {
+        for (let o = 0; o< res.length; o++) {
             rovnaky = false;
             let zapisMultiMarka = [];
-            for (let forward = o+1; forward<places.length; forward++){
-                if (o > 0){
-                    if (places[o][0] != places[o-1][0]){
-                        if (places[o][0] == places[forward][0]) {
+            for (let forward = o+1; forward<res.length; forward++) {
+                if (o > 0) {
+                    if (res[o][0] != res[o - 1][0]) {
+                        if (res[o][0] == res[forward][0]) {
                             if (rovnaky == false) {
-                                zapisMultiMarka.push(places[o][3]);
+                                zapisMultiMarka.push(res[o][3]);
                                 rovnaky = true;
                             }
-                            zapisMultiMarka.push(places[forward][3]);
-                            if (forward == places.length -1 && zapisMultiMarka.length >0){
+                            zapisMultiMarka.push(res[forward][3]);
+                            if (forward == res.length - 1 && zapisMultiMarka.length > 0) {
 
                                 markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                    geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                     name: 'Viacero športov',
-                                    id: places[o][3],
+                                    id: res[o][3],
                                     idcka: zapisMultiMarka
                                 });
                                 markiza.setStyle(new Style({
@@ -274,13 +281,13 @@ console.log(res[0][1]);
                                 markres.push(markiza);
                                 break;
                             }
-                            if (forward == places.length -1 && zapisMultiMarka.length < 1){
+                            if (forward == res.length - 1 && zapisMultiMarka.length < 1) {
 
-                                if (places[o][2] == "futbal") {
+                                if (res[o][2] == "4") {
                                     markiza = new Feature({
-                                        geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                        geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                         name: 'Futbal kurwa',
-                                        id: 3
+                                        id: res[o][3]
                                     });
                                     markiza.setStyle(new Style({
                                         image: new Icon({
@@ -291,11 +298,12 @@ console.log(res[0][1]);
                                         })
                                     }));
                                 }
-                                if (places[o][2] == "hokej") {
+                                if (res[o][2] == "6") {
                                     markiza = new Feature({
-                                        geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                        geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                         name: 'Futbal kurwa',
-                                        id: 3
+                                        // @ts-ignore
+                                        id: res[o][3]
                                     });
                                     markiza.setStyle(new Style({
                                         image: new Icon({
@@ -306,11 +314,11 @@ console.log(res[0][1]);
                                         })
                                     }));
                                 }
-                                if (places[o][2] == "tenis") {
+                                if (res[o][2] == "1") {
                                     markiza = new Feature({
-                                        geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                        geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                         name: 'Futbal kurwa',
-                                        id: 3
+                                        id: res[o][3]
                                     });
                                     markiza.setStyle(new Style({
                                         image: new Icon({
@@ -321,10 +329,12 @@ console.log(res[0][1]);
                                         })
                                     }));
                                 }
-                                if (places[o][2] == "squash") {
+                                if (res[o][2] == "2") {
                                     markiza = new Feature({
-                                        geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                        name: 'Futbal kurwa'
+                                        geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
+                                        name: 'Futbal kurwa',
+                                        // @ts-ignore
+                                        id: res[o][3]
                                     });
                                     markiza.setStyle(new Style({
                                         image: new Icon({
@@ -341,11 +351,12 @@ console.log(res[0][1]);
                             }
 
                         }
-                        if(places[o][0] != places[forward][0] && zapisMultiMarka.length >0){
+                        if (res[o][0] != res[forward][0] && zapisMultiMarka.length > 0) {
                             markiza = new Feature({
-                                geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                // @ts-ignore
+                                geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                 name: 'Viacero športov',
-                                id: places[o][3],
+                                id: res[o][3],
                                 idcka: zapisMultiMarka
                             });
                             markiza.setStyle(new Style({
@@ -359,10 +370,110 @@ console.log(res[0][1]);
                             markres.push(markiza);
                             break;
                         }
-                        if(places[o][0] != places[forward][0] && zapisMultiMarka.length < 1){
-                            if (places[o][2] == "futbal") {
+                        if (res[o][0] != res[forward][0] && zapisMultiMarka.length < 1) {
+                            console.log("toto su chybove parametre");
+                            console.log(res[o][0]);
+                            console.log(res[o][1]);
+
+                            console.log(res[o][2]);
+                            console.log(res[o][3]);
+
+
+                            if (res[o][2] == "4") {
                                 markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                    // @ts-ignore
+                                    geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
+                                    name: 'Futbal kurwa',
+                                    id: res[o][3]
+                                });
+                                markiza.setStyle(new Style({
+                                    image: new Icon({
+                                        color: '#8959A8',
+                                        crossOrigin: 'anonymous',
+                                        src: 'assets/sports/soccer.svg',
+                                        scale: 0.2
+                                    })
+                                }));
+                            }
+                            if (res[o][2] == "6") {
+                                markiza = new Feature({
+                                    // @ts-ignore
+                                    geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
+                                    name: 'Futbal kurwa',
+                                    id: res[o][3]
+                                });
+                                markiza.setStyle(new Style({
+                                    image: new Icon({
+                                        color: '#8959A8',
+                                        crossOrigin: 'anonymous',
+                                        src: 'assets/sports/hockey.svg',
+                                        scale: 0.2
+                                    })
+                                }));
+                            }
+                            if (res[o][2] == "1") {
+                                markiza = new Feature({
+                                    // @ts-ignore
+                                    geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
+                                    name: 'Futbal kurwa',
+                                    id: res[o][3]
+                                });
+                                markiza.setStyle(new Style({
+                                    image: new Icon({
+                                        color: '#8959A8',
+                                        crossOrigin: 'anonymous',
+                                        src: 'assets/sports/tennis.svg',
+                                        scale: 0.2
+                                    })
+                                }));
+                            }
+                            if (res[o][2] == "2") {
+                                markiza = new Feature({
+                                    // @ts-ignore
+                                    geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
+                                    name: 'Futbal kurwa',
+                                    id: res[o][3]
+                                });
+                                markiza.setStyle(new Style({
+                                    image: new Icon({
+                                        color: '#8959A8',
+                                        crossOrigin: 'anonymous',
+                                        src: 'assets/sports/squash.svg',
+                                        scale: 0.2
+                                    })
+                                }));
+                            }
+                            console.log(markiza);
+                            if (markiza != undefined) {
+                                markres.push(markiza);
+                                markiza = undefined;
+
+                            }
+                            break;
+                        }
+                        if (o == res.length - 1 && zapisMultiMarka.length > 0) {
+                            markiza = new Feature({
+                                // @ts-ignore
+                                geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
+                                name: 'Viacero športov',
+                                id: res[o][3],
+                                idcka: zapisMultiMarka
+                            });
+                            markiza.setStyle(new Style({
+                                image: new Icon({
+                                    color: '#8959A8',
+                                    crossOrigin: 'anonymous',
+                                    src: 'assets/sports/multisport.png',
+                                    scale: 0.1
+                                })
+                            }));
+                            markres.push(markiza);
+                            break;
+                        } else if (o == res.length - 1 && zapisMultiMarka.length < 1) {
+                            if (res[o][2] == "4") {
+                                markiza = new Feature({
+                                    // @ts-ignore
+                                    geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
                                     name: 'Futbal kurwa',
                                     id: 3
                                 });
@@ -375,9 +486,10 @@ console.log(res[0][1]);
                                     })
                                 }));
                             }
-                            if (places[o][2] == "hokej") {
+                            if (res[o][2] == "6") {
                                 markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                    // @ts-ignore
+                                    geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
                                     name: 'Futbal kurwa',
                                     id: 3
                                 });
@@ -390,9 +502,10 @@ console.log(res[0][1]);
                                     })
                                 }));
                             }
-                            if (places[o][2] == "tenis") {
+                            if (res[o][2] == "1") {
                                 markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                    // @ts-ignore
+                                    geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
                                     name: 'Futbal kurwa',
                                     id: 3
                                 });
@@ -405,9 +518,12 @@ console.log(res[0][1]);
                                     })
                                 }));
                             }
-                            if (places[o][2] == "squash") {
+                            if (res[o][2] == "2") {
+
+
                                 markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
+                                    // @ts-ignore
+                                    geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
                                     name: 'Futbal kurwa'
                                 });
                                 markiza.setStyle(new Style({
@@ -422,373 +538,23 @@ console.log(res[0][1]);
 
                             markres.push(markiza);
                             break;
-                        }
-                        if ( o == places.length -1 && zapisMultiMarka.length >0){
-                            markiza = new Feature({
-                                geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                name: 'Viacero športov',
-                                id: places[o][3],
-                                idcka: zapisMultiMarka
-                            });
-                            markiza.setStyle(new Style({
-                                image: new Icon({
-                                    color: '#8959A8',
-                                    crossOrigin: 'anonymous',
-                                    src: 'assets/sports/multisport.png',
-                                    scale: 0.1
-                                })
-                            }));
-                            markres.push(markiza);
-                            break;
-                        }
-                        else if ( o == places.length -1 && zapisMultiMarka.length < 1){
-                            if (places[o][2] == "futbal") {
-                                markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                    name: 'Futbal kurwa',
-                                    id: 3
-                                });
-                                markiza.setStyle(new Style({
-                                    image: new Icon({
-                                        color: '#8959A8',
-                                        crossOrigin: 'anonymous',
-                                        src: 'assets/sports/soccer.svg',
-                                        scale: 0.2
-                                    })
-                                }));
-                            }
-                            if (places[o][2] == "hokej") {
-                                markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                    name: 'Futbal kurwa',
-                                    id: 3
-                                });
-                                markiza.setStyle(new Style({
-                                    image: new Icon({
-                                        color: '#8959A8',
-                                        crossOrigin: 'anonymous',
-                                        src: 'assets/sports/hockey.svg',
-                                        scale: 0.2
-                                    })
-                                }));
-                            }
-                            if (places[o][2] == "tenis") {
-                                markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                    name: 'Futbal kurwa',
-                                    id: 3
-                                });
-                                markiza.setStyle(new Style({
-                                    image: new Icon({
-                                        color: '#8959A8',
-                                        crossOrigin: 'anonymous',
-                                        src: 'assets/sports/tennis.svg',
-                                        scale: 0.2
-                                    })
-                                }));
-                            }
-                            if (places[o][2] == "squash") {
-                                markiza = new Feature({
-                                    geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                                    name: 'Futbal kurwa'
-                                });
-                                markiza.setStyle(new Style({
-                                    image: new Icon({
-                                        color: '#8959A8',
-                                        crossOrigin: 'anonymous',
-                                        src: 'assets/sports/squash.svg',
-                                        scale: 0.2
-                                    })
-                                }));
-                            }
-
-                            markres.push(markiza);
-                            break;
-                        }
-                        else {
+                        } else {
                             console.log("Neco se porantalo");
 
                         }
-                    }
-                    else {
+                    } else {
                         console.log("Nasiel som rovnakych dozadu");
                         break;
 
                     }
                 }
 
+            }}
+
+        console.log("toto je sringik");
 
 
 
-                ////
-                // if (places[o][0] == places[forward][0]) {
-                //     //if (rovnaky == false) {
-                //     zapisMultiMarka.push(places[o][3]);
-                //     // rovnaky = true;
-                //     // }
-                //     zapisMultiMarka.push(places[forward][3]);
-                // }
-                //     if (forward == places.length -1 ){
-                //         markiza = new Feature({
-                //             geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                //             name: 'Viacero športov',
-                //             id: places[o][3],
-                //             idcka: zapisMultiMarka
-                //         });
-                //         markiza.setStyle(new Style({
-                //             image: new Icon({
-                //                 color: '#8959A8',
-                //                 crossOrigin: 'anonymous',
-                //                 src: 'assets/sports/multisport.png',
-                //                 scale: 0.2
-                //             })
-                //         }));
-                //         markres.push(markiza);
-                //     }
-                //
-                //
-                // if (places[o][0] != places[forward][0]) {
-                //     markiza = new Feature({
-                //         geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-                //         name: 'Viacero športov',
-                //         id: places[o][3]
-                //        // idcka: zapisMultiMarka
-                //     });
-                //     markiza.setStyle(new Style({
-                //         image: new Icon({
-                //             color: '#8959A8',
-                //             crossOrigin: 'anonymous',
-                //             src: 'assets/sports/soccer.svg',
-                //             scale: 0.2
-                //         })
-                //     }));
-                //     markres.push(markiza);
-                // }
-
-            }
-        }
-
-        //     if (o == places.length-1){
-        //         console.log("Toto je dlzka palces");
-        //         console.log(places.length);
-        //         k=o-1;
-        //         rovnaky = false;
-        //         do {
-        //             //for (k = o - 1; k >= 0; k--) {
-        //                 //     console.log(pomoc[k])
-        //
-        //                 if (places[k][0] == places[o][0]) {
-        //                     rovnaky = true;
-        //                     console.log('kurwa mam rovnake obraky');
-        //                     console.log(k);
-        //                     console.log(o);
-        //                     k--;
-        //                 }
-        //                     k--;
-        //            // }
-        //         } while (k >= 0);
-        //         //}
-        //         //     console.log(pomoc[k])
-        //         if (rovnaky !=true) {
-        //             k--;
-        //             if (places[o][2] == "futbal") {
-        //                 markiza = new Feature({
-        //                     geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                     name: 'Futbal kurwa',
-        //                     id: 3
-        //                 });
-        //                 markiza.setStyle(new Style({
-        //                     image: new Icon({
-        //                         color: '#8959A8',
-        //                         crossOrigin: 'anonymous',
-        //                         src: 'assets/sports/soccer.svg',
-        //                         scale: 0.4
-        //                     })
-        //                 }));
-        //             }
-        //             if (places[o][2] == "hokej") {
-        //                 markiza = new Feature({
-        //                     geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                     name: 'Futbal kurwa',
-        //                     id: 3
-        //                 });
-        //                 markiza.setStyle(new Style({
-        //                     image: new Icon({
-        //                         color: '#8959A8',
-        //                         crossOrigin: 'anonymous',
-        //                         src: 'assets/sports/hockey.svg',
-        //                         scale: 0.4
-        //                     })
-        //                 }));
-        //             }
-        //             if (places[o][2] == "tenis") {
-        //                 markiza = new Feature({
-        //                     geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                     name: 'Futbal kurwa',
-        //                     id: 3
-        //                 });
-        //                 markiza.setStyle(new Style({
-        //                     image: new Icon({
-        //                         color: '#8959A8',
-        //                         crossOrigin: 'anonymous',
-        //                         src: 'assets/sports/tennis.svg',
-        //                         scale: 0.4
-        //                     })
-        //                 }));
-        //             }
-        //             if (places[o][2] == "squash") {
-        //                 markiza = new Feature({
-        //                     geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                     name: 'Futbal kurwa'
-        //                 });
-        //                 markiza.setStyle(new Style({
-        //                     image: new Icon({
-        //                         color: '#8959A8',
-        //                         crossOrigin: 'anonymous',
-        //                         src: 'assets/sports/squash.svg',
-        //                         scale: 0.4
-        //                     })
-        //                 }));
-        //             }
-        //
-        //             markres.push(markiza);
-        //         }
-        //     }
-        //
-        //
-        //     let pomocna = places[o][0];
-        //     let pomocna2 = places[o][1];
-        //     let zapisMultimarkerov = [];
-        //         for (let l = o+1; l < places.length; l++) {
-        //             rovnaky=false;
-        //             if (places[o][0] == places[l][0]) {
-        //                 // zapisMultimarkerov.push(places[o][0]);
-        //                 // zapisMultimarkerov.push(places[l][0]);
-        //                  //pomoc.push(places[1][0]); //tu si budem zapisovat hodnoty ktore sa rovnaju
-        //                     markiza = new Feature({
-        //                         geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                         name: 'Viacero športov',
-        //                         id: 3
-        //
-        //                     });
-        //                     markiza.setStyle(new Style({
-        //                         image: new Icon({
-        //                             color: '#8959A8',
-        //                             crossOrigin: 'anonymous',
-        //                             src: 'assets/sports/multisport.png',
-        //                             scale: 0.2
-        //                         })
-        //                     }));
-        //
-        //
-        //                 markres.push(markiza);
-        //                 break;
-        //
-        //             }
-        //             else { // daco treba dolati, nejde mi debug :(
-        //                // if (pomoc.length != null) {
-        //                     do {
-        //                         for (k = o - 1; k >= 0; k--) {
-        //                             //     console.log(pomoc[k])
-        //
-        //                             if (places[k][0] == places[o][0]) {
-        //                                 rovnaky = true;
-        //                                 console.log('kurwa mam rovnake obraky')
-        //                             }
-        //
-        //                         }
-        //                     } while (k >= 0);
-        //                 //}
-        //                 //     console.log(pomoc[k])
-        //                     if (rovnaky !=true && l == places.length-1) {
-        //                         k--;
-        //                         if (places[o][2] == "futbal") {
-        //                             markiza = new Feature({
-        //                                 geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                                 name: 'Futbal kurwa',
-        //                                 id: 3
-        //                             });
-        //                             markiza.setStyle(new Style({
-        //                                 image: new Icon({
-        //                                     color: '#8959A8',
-        //                                     crossOrigin: 'anonymous',
-        //                                     src: 'assets/sports/soccer.svg',
-        //                                     scale: 0.4
-        //                                 })
-        //                             }));
-        //                         }
-        //                         if (places[o][2] == "hokej") {
-        //                             markiza = new Feature({
-        //                                 geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                                 name: 'Futbal kurwa',
-        //                                 id: 3
-        //                             });
-        //                             markiza.setStyle(new Style({
-        //                                 image: new Icon({
-        //                                     color: '#8959A8',
-        //                                     crossOrigin: 'anonymous',
-        //                                     src: 'assets/sports/hockey.svg',
-        //                                     scale: 0.4
-        //                                 })
-        //                             }));
-        //                         }
-        //                         if (places[o][2] == "tenis") {
-        //                             markiza = new Feature({
-        //                                 geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                                 name: 'Futbal kurwa',
-        //                                 id: 3
-        //                             });
-        //                             markiza.setStyle(new Style({
-        //                                 image: new Icon({
-        //                                     color: '#8959A8',
-        //                                     crossOrigin: 'anonymous',
-        //                                     src: 'assets/sports/tennis.svg',
-        //                                     scale: 0.4
-        //                                 })
-        //                             }));
-        //                         }
-        //                         if (places[o][2] == "squash") {
-        //                             markiza = new Feature({
-        //                                 geometry: new Point(fromLonLat([places[o][0], places[o][1]])),
-        //                                 name: 'Futbal kurwa',
-        //                                 id: 3
-        //                             });
-        //                             markiza.setStyle(new Style({
-        //                                 image: new Icon({
-        //                                     color: '#8959A8',
-        //                                     crossOrigin: 'anonymous',
-        //                                     src: 'assets/sports/squash.svg',
-        //                                     scale: 0.4
-        //                                 })
-        //                             }));
-        //                         }
-        //
-        //                         markres.push(markiza);
-        //                     }
-        //
-        //             }
-        //         }
-        //
-        //
-        // }
-        // tslint:disable-next-line:prefer-for-of
-        // for (let i = 0; i < places.length ; i++) {
-        //     markiza = new Feature({
-        //        geometry: new Point(fromLonLat([places[i][0], places[i][1]])),
-        //         name: 'Futbal Chýbajú:2'
-        //    });
-        //     if (sportName === 'futbal' ) {
-        //         markiza.setStyle(new Style({
-        //             image: new Icon({
-        //                 color: '#8959A8',
-        //                 crossOrigin: 'anonymous',
-        //                 src: 'assets/sports/soccer.svg',
-        //                 scale: 0.4
-        //             })
-        //         }));
-        //     }
-        //     markres.push(markiza);
-        // }
     }
     // tslint:disable-next-line:use-lifecycle-interface
 
