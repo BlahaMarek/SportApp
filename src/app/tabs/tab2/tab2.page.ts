@@ -221,7 +221,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             this.activityList = list;
         });
         const res = Array.from(Object.values(this.activityList),
-            ({lattitude,longtitude,sport, id}) => [parseFloat(lattitude),parseFloat(longtitude),sport, id]);
+            ({lattitude,longtitude,sport, id}) => [parseFloat(longtitude),parseFloat(lattitude),sport, id]);
         console.log("moj array vysnivany");
         console.log(res);
         console.log("toto je 0 0" + res[0][0]);
@@ -230,8 +230,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         console.log("toto je 0 3" + res[0][3]);
 
 
-
+        res.sort(sortFunction);
         places.sort(sortFunction);
+        console.log(res);
 
         function sortFunction(a, b) {
             if (a[0] === b[0]) {
@@ -241,16 +242,8 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 return (a[0] < b[0]) ? -1 : 1;
             }
         }
-        console.log("Totot je pole");
 
-        console.log(places[0][0]);
-        console.log(places[0][1]);
-        console.log(places[1][0]);
-        console.log(places[1][1]);
-        console.log(places[2][0]);
-        console.log(places[2][1]);
-
-        for (let o = 0; o< res.length; o++) {
+        for (let o = 0; o< res.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
             rovnaky = false;
             let zapisMultiMarka = [];
             for (let forward = o+1; forward<res.length; forward++) {
@@ -283,7 +276,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                             }
                             if (forward == res.length - 1 && zapisMultiMarka.length < 1) {
 
-                                if (res[o][2] == "4") {
+                                if (res[o][2].toString() == "3") {
                                     markiza = new Feature({
                                         geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                         name: 'Futbal kurwa',
@@ -297,8 +290,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                             scale: 0.2
                                         })
                                     }));
+                                    console.log("sport 4");
                                 }
-                                if (res[o][2] == "6") {
+                                if (res[o][2].toString() == "6") {
                                     markiza = new Feature({
                                         geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                         name: 'Futbal kurwa',
@@ -313,8 +307,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                             scale: 0.2
                                         })
                                     }));
+                                    console.log("sport 6");
+
                                 }
-                                if (res[o][2] == "1") {
+                                if (res[o][2].toString() == "1") {
                                     markiza = new Feature({
                                         geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                         name: 'Futbal kurwa',
@@ -328,8 +324,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                             scale: 0.2
                                         })
                                     }));
+                                    console.log("sport 1");
+
                                 }
-                                if (res[o][2] == "2") {
+                                if (res[o][2].toString() == "2") {
                                     markiza = new Feature({
                                         geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                         name: 'Futbal kurwa',
@@ -344,7 +342,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                             scale: 0.4
                                         })
                                     }));
+                                    console.log("sport 2");
+
                                 }
+                                console.log("pushujem sporty");
 
                                 markres.push(markiza);
                                 break;
@@ -368,6 +369,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                 })
                             }));
                             markres.push(markiza);
+
                             break;
                         }
                         if (res[o][0] != res[forward][0] && zapisMultiMarka.length < 1) {
@@ -379,7 +381,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                             console.log(res[o][3]);
 
 
-                            if (res[o][2] == "4") {
+                            if (res[o][2].toString() == "4") {
                                 markiza = new Feature({
                                     // @ts-ignore
                                     geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
@@ -394,8 +396,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         scale: 0.2
                                     })
                                 }));
+                                console.log("sport 4");
+
                             }
-                            if (res[o][2] == "6") {
+                            if (res[o][2].toString() == "6") {
                                 markiza = new Feature({
                                     // @ts-ignore
                                     geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
@@ -410,8 +414,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         scale: 0.2
                                     })
                                 }));
+                                console.log("sport 6");
+
                             }
-                            if (res[o][2] == "1") {
+                            if (res[o][2].toString() == "1") {
                                 markiza = new Feature({
                                     // @ts-ignore
                                     geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
@@ -426,8 +432,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         scale: 0.2
                                     })
                                 }));
+                                console.log("sport 1");
+
                             }
-                            if (res[o][2] == "2") {
+                            if (res[o][2].toString() == "3") {
                                 markiza = new Feature({
                                     // @ts-ignore
                                     geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
@@ -442,6 +450,8 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         scale: 0.2
                                     })
                                 }));
+                                console.log("sport 3");
+
                             }
                             console.log(markiza);
                             if (markiza != undefined) {
@@ -454,7 +464,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         if (o == res.length - 1 && zapisMultiMarka.length > 0) {
                             markiza = new Feature({
                                 // @ts-ignore
-                                geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
+                                geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                                 name: 'Viacero športov',
                                 id: res[o][3],
                                 idcka: zapisMultiMarka
@@ -470,7 +480,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                             markres.push(markiza);
                             break;
                         } else if (o == res.length - 1 && zapisMultiMarka.length < 1) {
-                            if (res[o][2] == "4") {
+                            if (res[o][2].toString() == "4") {
                                 markiza = new Feature({
                                     // @ts-ignore
                                     geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
@@ -485,8 +495,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         scale: 0.2
                                     })
                                 }));
+                                console.log("sport 4");
+
                             }
-                            if (res[o][2] == "6") {
+                            if (res[o][2].toString() == "1") {
                                 markiza = new Feature({
                                     // @ts-ignore
                                     geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
@@ -501,8 +513,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         scale: 0.2
                                     })
                                 }));
+                                console.log("sport 1");
+
                             }
-                            if (res[o][2] == "1") {
+                            if (res[o][2].toString() == "3") {
                                 markiza = new Feature({
                                     // @ts-ignore
                                     geometry: new Point(fromLonLat([parseFloat(res[o][0]), parseFloat(res[o][1])])),
@@ -517,8 +531,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         scale: 0.2
                                     })
                                 }));
+                                console.log("sport 1");
+
                             }
-                            if (res[o][2] == "2") {
+                            if (res[o][2].toString() == "2") {
 
 
                                 markiza = new Feature({
@@ -534,6 +550,8 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                         scale: 0.2
                                     })
                                 }));
+                                console.log("sport 2");
+
                             }
 
                             markres.push(markiza);
