@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Sport} from '../models/sport';
+import {Activity} from "../models/activity";
 
 @Injectable({
     providedIn: 'root'
@@ -74,6 +75,10 @@ export class DataService {
 
     getSportIconByValue(val: number): string {
         return this.getSportsSk().find(item => item.value == val).icon;
+    }
+
+    getAllActivities(actiities: Activity){
+
     }
 }
 

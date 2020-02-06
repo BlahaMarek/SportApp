@@ -48,6 +48,11 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     @Input() selectedActivity: Activity;
     @Input() bookable: boolean;
+    @Input() reserved: boolean;
+    @Input() bookablenon: boolean;
+
+
+
     sportOptions: Sport[] = [];
     private objekt: any;
     initialMapLoad = true;
@@ -123,8 +128,11 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
         if (this.bookable) {
             this.activityForm.disable();
-        } else {
+        } else if (!this.bookable) {
             this.activityForm.enable();
+        }
+        else if (this.reserved){
+            this.activityForm.disable();
         }
     }
     // getData(){
@@ -157,11 +165,21 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     onFormSubmit() {
         if (!this.bookable) {
             this.activityService.updateActivity(this.selectedActivity.id, this.assignValueToActivity());
-        } else {
+        } else if (this.bookable && !this.reserved) {
             this.activityService.addBookerToActivity(this.selectedActivity).then(()=>{
-                console.log("Tymto logom som nezisil nic");
             });
         }
+        else if (this.reserved) {
+            this.activityService.removeBookerFromActivity(this.selectedActivity).then(()=>{
+            });
+            console.log("som pri prvom resrvede");
+        }
+        // else if (!this.reserved) {  //toto asi netreba
+        //     this.activityService.removeBookerFromActivity(this.selectedActivity).then(()=>{
+        //     });
+        //     console.log("som pri druhom resrvede");
+
+        // }
         const data = {message: 'Add new activity!'};
         if (this.bookable) {
             console.log(this.selectedActivity.id);
@@ -178,7 +196,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     assignValueToActivity(): Activity {
         return {
             // id: this.activityService.allActivitiesCount + 1,
-            id: "thiactivi",
             sport: this.activityForm.get('sport').value,
             createdBy: this.authService.userIdAuth,
             topActivity: this.activityForm.get('topActivity').value,

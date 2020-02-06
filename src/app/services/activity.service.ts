@@ -8,6 +8,7 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 import {map, take} from 'rxjs/operators';
 import * as firebase from "firebase";
 import {AuthService} from '../auth/auth.service';
+import {forEach} from "@angular-devkit/schematics";
 
 
 
@@ -90,6 +91,23 @@ export class ActivityService {
         return this.sportsCollection.doc(sport.id).update(activity);
 
     }
+    removeBookerFromActivity(sport: Activity) {
+        let activity: Activity = this.getActivityById(sport.id);
+        console.log("toto je user id ]");
+        console.log(this.authService.userIdAuth);
+
+        for (var i = 0 ; i< activity.bookedBy.length ; i++){
+            if (activity.bookedBy[i] == this.authService.userIdAuth){
+                activity.bookedBy.splice(i,1);
+                break;
+            }
+            console.log("toto je activity bookedby[i]"+i);
+            console.log(activity.bookedBy[i]);
+        }
+        activity.peopleCount = activity.peopleCount +1;
+        return this.sportsCollection.doc(sport.id).update(activity);
+
+    }
 
     // get activity by id
     getActivityById(id: string): Activity {
@@ -123,11 +141,11 @@ export class ActivityService {
     }
 
     // update activity
-    updateActivity(id: string, activity: Activity) {
-        this.activities = [
-            ...this.activities.filter(activity=> activity.id !== id),
-            activity
-        ]
+    updateActivity(id: string, sport: Activity) { // toto treba dorobit
+        let activity: Activity = this.getActivityById(sport.id);
+
+
+        return this.sportsCollection.doc(sport.id).update(activity);
     }
 
     // delete existing activity

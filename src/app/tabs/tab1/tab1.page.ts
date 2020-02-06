@@ -64,16 +64,16 @@ export class Tab1Page implements OnInit {
         }else if(event.detail.value === 'registered'){
             let hovno = [];
             let prihlaseny = this.authService.userIdAuth;
-            this.activityListByUser = this.activityList.filter(activity => activity.bookedBy.forEach(function(value) {
-                if (value === prihlaseny){
-                    hovno.push(activity);
+                this.activityListByUser = this.activityList.filter(activity => activity.bookedBy.forEach(function(value) {
+                    if (value === prihlaseny){
+                        hovno.push(activity);
 
-                    //this.hovno.push(activity);
-                    console.log(activity);
-                }
-                console.log("toto je moja value// " + value);
+                        //this.hovno.push(activity);
+                        console.log(activity);
+                    }
+                    console.log("toto je moja value// " + value);
 
-            }));
+                }));
             this.filteredList = hovno;
 
 

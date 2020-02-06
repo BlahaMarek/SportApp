@@ -36,7 +36,10 @@ export class ActivityListComponent implements OnInit {
                 component: ActivityDetailComponent,
                 componentProps: {
                     selectedActivity: this.activityService.getActivityById(id),
-                    bookable: !(this.activityService.getActivityById(id).createdBy === this.authService.userIdAuth)
+                    bookable: !(this.activityService.getActivityById(id).createdBy === this.authService.userIdAuth),
+                    reserved: (this.activityService.getActivityById(id).bookedBy[0] === this.authService.userIdAuth),
+
+
                 }
             })
             .then(modalEl => {

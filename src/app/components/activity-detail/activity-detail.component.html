@@ -76,7 +76,19 @@
 
 <!--        disabled="{{!activityForm.valid}}"-->
         {{bookable ? "Rezervuj miesto" : "Uprav aktivitu"}}
+
+
     </ion-button>
+
+    <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
+    >
+
+        <!--        disabled="{{!activityForm.valid}}"-->
+        {{reserved ? "Odhlas sa zo sportu" : ""}}
+
+    </ion-button>
+
+
 
 
     <div id="map2" class="map2"></div>
