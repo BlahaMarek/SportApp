@@ -224,10 +224,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             ({lattitude,longtitude,sport, id}) => [parseFloat(longtitude),parseFloat(lattitude),sport, id]);
         console.log("moj array vysnivany");
         console.log(res);
-        console.log("toto je 0 0" + res[0][0]);
-        console.log("toto je 0 1" + res[0][1]);
-        console.log("toto je 0 2" + res[0][2]);
-        console.log("toto je 0 3" + res[0][3]);
+        // console.log("toto je 0 0" + res[0][0]);
+        // console.log("toto je 0 1" + res[0][1]);
+        // console.log("toto je 0 2" + res[0][2]);
+        // console.log("toto je 0 3" + res[0][3]);
 
 
         res.sort(sortFunction);

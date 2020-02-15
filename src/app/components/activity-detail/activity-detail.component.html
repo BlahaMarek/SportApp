@@ -71,7 +71,7 @@
             ></ion-toggle>
         </ion-item>
     </form>
-    <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
+    <ion-button *ngIf="!reserved" class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
                 >
 
 <!--        disabled="{{!activityForm.valid}}"-->
@@ -80,13 +80,21 @@
 
     </ion-button>
 
-    <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
+    <ion-button *ngIf="!bookable" class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
     >
 
         <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlas sa zo sportu" : ""}}
+        {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
 
     </ion-button>
+    <ion-button *ngIf="bookable && reserved"  class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
+    >
+
+        <!--        disabled="{{!activityForm.valid}}"-->
+        {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
+
+    </ion-button>
+
 
 
 

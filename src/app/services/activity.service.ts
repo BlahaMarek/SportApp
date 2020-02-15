@@ -91,6 +91,15 @@ export class ActivityService {
         return this.sportsCollection.doc(sport.id).update(activity);
 
     }
+
+    // update activity
+    updateActivity(id: string, sport: Activity) { // toto treba dorobit
+        let activity: Activity = this.getActivityById(sport.id);
+
+
+        return this.sportsCollection.doc(sport.id).update(activity);
+    }
+
     removeBookerFromActivity(sport: Activity) {
         let activity: Activity = this.getActivityById(sport.id);
         console.log("toto je user id ]");
@@ -140,16 +149,13 @@ export class ActivityService {
         ]
     }
 
-    // update activity
-    updateActivity(id: string, sport: Activity) { // toto treba dorobit
-        let activity: Activity = this.getActivityById(sport.id);
 
-
-        return this.sportsCollection.doc(sport.id).update(activity);
-    }
 
     // delete existing activity
-    deleteActivity(id: string) {
-        this.activities = this.activities.filter(activity => activity.id !== id);
+    deleteActivity(sport: Activity) {
+        return this.sportsCollection.doc(sport.id).delete();
+        //this.activities = this.activities.filter(activity => activity.id !== id);
+
+
     }
 }

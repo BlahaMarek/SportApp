@@ -14,6 +14,7 @@ export class AuthService {
       }
       else {
         console.log("Nepodarilo sa nacitat uid usera")
+        this.userId = "xxx";
       }
     });
   }
