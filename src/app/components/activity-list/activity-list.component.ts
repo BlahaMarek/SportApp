@@ -31,18 +31,17 @@ export class ActivityListComponent implements OnInit {
     }
 
     onActivityClicked(id: string) {
+        var authService = this.authService.userIdAuth;
         this.modalController
             .create({
                 component: ActivityDetailComponent,
                 componentProps: {
                     selectedActivity: this.activityService.getActivityById(id),
                     bookable: !(this.activityService.getActivityById(id).createdBy === this.authService.userIdAuth),
-                    //reserved: (this.activityService.getActivityById(id).bookedBy[0] === this.authService.userIdAuth),
-                    reserved: (this.activityService.getActivityById(id).bookedBy.filter(function (name) {
-                        return name === this.authService.userIdAuth;
-                        
-                    }) ),
+                    reserved: (this.activityService.getActivityById(id).bookedBy.find(function (prihlaseny) {
+                        return prihlaseny.includes(authService)
 
+                    })),
                 }
             })
             .then(modalEl => {
