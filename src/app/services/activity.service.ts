@@ -93,9 +93,9 @@ export class ActivityService {
     }
 
     // update activity
-    updateActivity(id: string, sport: Activity) { // toto treba dorobit
+    updateActivity(sport: Activity, sportNew: Activity) { // toto treba dorobit
         let activity: Activity = this.getActivityById(sport.id);
-
+        activity = sportNew;
 
         return this.sportsCollection.doc(sport.id).update(activity);
     }

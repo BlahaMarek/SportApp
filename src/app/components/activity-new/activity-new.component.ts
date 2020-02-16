@@ -69,7 +69,8 @@ export class ActivityNewComponent implements OnInit {
                 this.userIdFire = user.uid;
             }
             else {
-                console.log("Nepodarilo sa nacitat uid usera")
+                console.log("Nepodarilo sa nacitat uid usera");
+                this.userIdFire = "xxx"; //totot dat prec
             }
         });
     }
@@ -97,7 +98,7 @@ export class ActivityNewComponent implements OnInit {
 
         return {
             // id: this.activityService.allActivitiesCount + 1,
-            id: "ss",
+
             sport: this.activityForm.get('sport').value,
             createdBy: this.userIdFire,
             topActivity: this.activityForm.get('topActivity').value,

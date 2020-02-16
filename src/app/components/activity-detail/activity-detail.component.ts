@@ -163,8 +163,11 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     }
 
     onFormSubmit() {
-        if (!this.bookable) {
-            this.activityService.updateActivity(this.selectedActivity.id, this.assignValueToActivity());
+        if (!this.bookable && !this.reserved) {
+            this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
+
+            });
+            console.log("upravujem aktivitu");
         } else if (this.bookable && !this.reserved) {
             this.activityService.addBookerToActivity(this.selectedActivity).then(()=>{
             });
@@ -174,12 +177,32 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             });
             console.log("som pri prvom resrvede");
         }
-        // else if (!this.reserved) {  //toto asi netreba
-        //     this.activityService.removeBookerFromActivity(this.selectedActivity).then(()=>{
-        //     });
-        //     console.log("som pri druhom resrvede");
+        else if (!this.reserved) {  //toto asi netreba
+            this.activityService.deleteActivity(this.selectedActivity).then(()=>{
+            });
+            console.log("som pri druhom resrvede");
 
-        // }
+        }
+        const data = {message: 'Add new activity!'};
+        if (this.bookable) {
+            console.log(this.selectedActivity.id);
+            console.log(this.authService.userIdAuth);
+            data.message = 'Booked activity';
+
+
+        }
+        console.log(this.selectedActivity.id);
+        console.log(this.authService.userIdAuth);
+        this.modalController.dismiss(data, 'add');
+    }
+    onFormSubmitDelete() {
+
+        if (!this.reserved) {
+            this.activityService.deleteActivity(this.selectedActivity).then(()=>{
+            });
+            console.log("deletujem");
+        }
+
         const data = {message: 'Add new activity!'};
         if (this.bookable) {
             console.log(this.selectedActivity.id);

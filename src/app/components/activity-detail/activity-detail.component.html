@@ -80,18 +80,18 @@
 
     </ion-button>
 
-    <ion-button *ngIf="!bookable" class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
+    <ion-button *ngIf="!bookable" class="ion-margin-top" (click)="onFormSubmitDelete()" expand="block" fill="outline"
     >
 
         <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
+        {{reserved ? "Odhlas sa zo sportu1" : "Vymaz Aktivitu1"}}
 
     </ion-button>
     <ion-button *ngIf="bookable && reserved"  class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
     >
 
         <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
+        {{reserved ? "Odhlas sa zo sportu2" : "Vymaz Aktivitu2"}}
 
     </ion-button>
 
