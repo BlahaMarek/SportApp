@@ -9,7 +9,11 @@ import {AuthService} from '../../auth/auth.service';
 import {DataService} from '../../data/data.service';
 import * as firebase from "firebase";
 import {forEach} from "@angular-devkit/schematics";
+import {Geolocation} from "@ionic-native/geolocation/ngx";
 
+let a1;
+let b1;
+var zoradeneSporty = []
 @Component({
     selector: 'app-tab1',
     templateUrl: 'tab1.page.html',
@@ -25,6 +29,12 @@ export class Tab1Page implements OnInit {
     sportOptions: any;
     segment: any;
     products: any[] =[];
+    latitude = 0;
+    longitude = 0;
+    hodnota;
+    hodnota2;
+    vysledok;
+
     constructor(
         public zone: NgZone,
         private fb: FormBuilder,
@@ -34,16 +44,55 @@ export class Tab1Page implements OnInit {
         private activityService: ActivityService,
         private authService: AuthService,
         private dataService: DataService,
+        private geolocation: Geolocation,
+
     ) {
         this.segment = "others";
         this.sportOptions = dataService.getSportsSk();
         this.initApp();
     }
+    locate() {
+        this.geolocation.getCurrentPosition().then((resp) => {
+            a1 = resp.coords.latitude ;
+            b1 = resp.coords.longitude;
+             this.longitude = resp.coords.longitude;
+            console.log("Toto je latitude");
+            console.log(this.latitude);
+        }).catch((error) => {
+            console.log('Error getting location', error);
+        });
+    }
 
     ngOnInit() {
+        this.locate();
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
-            this.activityList = this.activityList.sort((x, y) => (x.topActivity === y.topActivity) ? 0 : x.topActivity ? -1 : 1);
+            ////
+            //moja ultra total algo na zoradenie aktivit podla polohy
+
+            this.activityList.forEach(function (value) { // toto je ultra mega total algo, ktory zatial zobrazuje len podla polohy aktivity..aspon dufam..ale top na vrchu nie su
+                console.log("toto je latitude ktoru chcem kuaaaaaa ");
+
+                console.log(value.lattitude);
+                var hodnota = parseFloat(value.lattitude) - 48.717110;
+
+                var hodnota2 = parseFloat(value.longtitude) - 21.259781;
+
+                if (hodnota < 0){
+                    hodnota = hodnota *-1;
+                }
+                if (hodnota2<0){
+                    hodnota2 = hodnota2 *-1;
+                }
+                value.distanceFromUser = hodnota + hodnota2;
+
+
+            });
+
+///
+            this.activityList = this.activityList.sort(function(a,b){
+                return a.distanceFromUser - b.distanceFromUser
+            });
             this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length) && !activity.bookedBy.includes(this.authService.userIdAuth)));
         });
     }

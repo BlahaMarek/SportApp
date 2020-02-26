@@ -12,4 +12,5 @@ export class Activity {
     createdBy?: string;
     lattitude?: string;
     longtitude?: string;
+    distanceFromUser?: number;
 }

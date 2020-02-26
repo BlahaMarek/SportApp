@@ -21,6 +21,9 @@ import TileJSON from 'ol/source/TileJSON';
 import {Icon, Style} from 'ol/style';
 import {ActivityService} from "../../services/activity.service";
 import {Activity} from "../../models/activity";
+import {ActivityDetailComponent} from "../../components/activity-detail/activity-detail.component";
+import {ModalController} from '@ionic/angular';
+import {AuthService} from "../../auth/auth.service";
 
 
 declare var ol: any;
@@ -49,6 +52,7 @@ let k = 0;
 const markres = [];
 pocet = 0;
 declare var $: any;
+var idDoButtonu;
 const popup2 = new Overlay({
     element: document.getElementById('popup')
 });
@@ -70,8 +74,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     // @ViewChild('mapElement') mapElement;
 
     constructor(
+        private authService: AuthService,
         private activityService: ActivityService,
-
+        private modalController: ModalController,
         private geolocation: Geolocation,
         public toastController: ToastController
     ) {
@@ -82,6 +87,30 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             duration: 5000
         });
         toast.present();
+    }
+    onActivityClicked() {
+        console.log("Id do buttonu");
+        console.log(idDoButtonu);
+        var authService = this.authService.userIdAuth;
+        this.modalController
+            .create({
+                component: ActivityDetailComponent,
+                componentProps: {
+                    selectedActivity: this.activityService.getActivityById(idDoButtonu),
+                    bookable: !(this.activityService.getActivityById(idDoButtonu).createdBy === this.authService.userIdAuth),
+                    reserved: (this.activityService.getActivityById(idDoButtonu).bookedBy.find(function (prihlaseny) {
+                        return prihlaseny.includes(authService)
+
+                    })),
+                }
+            })
+            .then(modalEl => {
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+                console.log(result);
+            });
     }
     ngAfterViewInit(): void {
 
@@ -146,11 +175,13 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 $(document.getElementById('popup2')).popover({
                     placement: 'top',
                     html: true,
-                    content: feature.get('name'),
                     id: feature.get('id')
                 });
+
+               $(document.getElementById('popup2')).addEventListener('click'); // toto treba spravit, fnuk
                 console.log("Toto je cislo kativity omg");
                 console.log(feature.get('id'));
+                idDoButtonu = feature.get('id');
                 console.log(feature.get('idcka'));
                 // $(document.getElementById('popup')).append('<input type="button" value="new button" />');
                 $(document.getElementById('popup')).popover('show');
@@ -161,6 +192,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 $(document.getElementById('popup2')).popover('destroy');
             }
         });
+
+
+
+
         // tslint:disable-next-line:only-arrow-functions
         map.on('pointermove', function(e) {
             if (e.dragging) {
