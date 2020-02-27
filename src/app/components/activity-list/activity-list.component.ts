@@ -31,6 +31,7 @@ export class ActivityListComponent implements OnInit {
     }
 
     onActivityClicked(id: string) {
+        console.log("Klikol som na aktivitu");
         var authService = this.authService.userIdAuth;
         this.modalController
             .create({

@@ -2,8 +2,7 @@ import {AfterContentInit, AfterViewInit, Component, NgZone, OnInit, ViewChild} f
 import {MenuController} from '@ionic/angular';
 
 // declare var google;
-// import * as $ from 'jquery';
-import 'ol/ol.css';
+import {defaults as defaultControls, Control} from 'ol/control';import 'ol/ol.css';
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -88,17 +87,16 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         });
         toast.present();
     }
-    onActivityClicked() {
-        console.log("Id do buttonu");
-        console.log(idDoButtonu);
+      onActivityClicked(id: string) {
+        console.log("Klikol som na aktivitu");
         var authService = this.authService.userIdAuth;
         this.modalController
             .create({
                 component: ActivityDetailComponent,
                 componentProps: {
-                    selectedActivity: this.activityService.getActivityById(idDoButtonu),
-                    bookable: !(this.activityService.getActivityById(idDoButtonu).createdBy === this.authService.userIdAuth),
-                    reserved: (this.activityService.getActivityById(idDoButtonu).bookedBy.find(function (prihlaseny) {
+                    selectedActivity: this.activityService.getActivityById(id),
+                    bookable: !(this.activityService.getActivityById(id).createdBy === this.authService.userIdAuth),
+                    reserved: (this.activityService.getActivityById(id).bookedBy.find(function (prihlaseny) {
                         return prihlaseny.includes(authService)
 
                     })),
@@ -114,7 +112,38 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     }
     ngAfterViewInit(): void {
 
+        var RotateNorthControl = /*@__PURE__*/(function (Control) {
+            function RotateNorthControl(opt_options) {
+                var options = opt_options || {};
 
+                var button = document.createElement('button');
+                button.innerHTML = 'N';
+
+                var element = document.createElement('div');
+                element.className = 'rotate-north ol-unselectable ol-control';
+                element.appendChild(button);
+
+                Control.call(this, {
+                    element: element,
+                    target: options.target
+                });
+
+                button.addEventListener('click', this.handleRotateNorth.bind(this), false);
+            }
+
+            if ( Control ) RotateNorthControl.__proto__ = Control;
+            RotateNorthControl.prototype = Object.create( Control && Control.prototype );
+            RotateNorthControl.prototype.constructor = RotateNorthControl;
+
+            RotateNorthControl.prototype.handleRotateNorth = function handleRotateNorth () {
+                this.getMap().getView().setRotation(0);
+                //alert("hovno");
+                console.log("hovno" + idDoButtonu);
+                this.onActivityClicked(idDoButtonu);
+            };
+
+            return RotateNorthControl;
+        }(Control));
 
 
         this.pridanieMarkerov();
@@ -127,7 +156,12 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             console.log('toto je a1' + a1);
             console.log('toto je b1' + b1);
         } else { console.log('kures fakt preskakuje null'); }
+
         const map = new Map({
+            controls: defaultControls().extend([
+                // @ts-ignore
+                new RotateNorthControl()
+            ]),
             layers: [
                 new TileLayer({
                     source: new OSM()
@@ -178,7 +212,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     id: feature.get('id')
                 });
 
-               $(document.getElementById('popup2')).addEventListener('click'); // toto treba spravit, fnuk
+
+
+               //$(document.getElementById('popup2')).addEventListener('click', this.onActivityClicked); // toto treba spravit, fnuk
                 console.log("Toto je cislo kativity omg");
                 console.log(feature.get('id'));
                 idDoButtonu = feature.get('id');
