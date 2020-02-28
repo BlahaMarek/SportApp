@@ -117,7 +117,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 var options = opt_options || {};
 
                 var button = document.createElement('button');
-                button.innerHTML = 'N';
+                button.innerHTML = 'Aktivita';
 
                 var element = document.createElement('div');
                 element.className = 'rotate-north ol-unselectable ol-control';
@@ -139,7 +139,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 this.getMap().getView().setRotation(0);
                 //alert("hovno");
                 console.log("hovno" + idDoButtonu);
-                this.onActivityClicked(idDoButtonu);
+                //this.onActivityClicked(idDoButtonu);
             };
 
             return RotateNorthControl;

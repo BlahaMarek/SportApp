@@ -5,7 +5,7 @@ export class Activity {
     sport?: number;
     peopleCount: number;
     topActivity?: boolean;
-
+    comment?: string;
     place?: string;
     date?: Date;
     bookedBy?: string[];

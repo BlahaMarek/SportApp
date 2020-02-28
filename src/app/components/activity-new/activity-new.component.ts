@@ -58,6 +58,7 @@ export class ActivityNewComponent implements OnInit {
         topActivity: [false],
         date: ['', Validators.required],
         sport: ['', Validators.required],
+        comment: [''],
         lattitudeFB: [''],
         longtitudeFB: [''],
     });
@@ -86,7 +87,7 @@ export class ActivityNewComponent implements OnInit {
                 this.userIdFire = user.uid;
             }
             else {
-                console.log("Nepodarilo sa nacitat uid usera")
+                console.log("Nepodarilo sa nacitat uid usera");
             }
         });
         this.activityService.addActivity(this.assignValueToActivity());
@@ -105,6 +106,7 @@ export class ActivityNewComponent implements OnInit {
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
             date: this.activityForm.get('date').value,
+            comment: this.activityForm.get('comment').value,
             bookedBy: [],
             lattitude : this.lattitudeFirebase,
             longtitude: this.longtitudeFirebase

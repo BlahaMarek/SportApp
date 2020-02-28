@@ -158,6 +158,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.activityForm.get('topActivity').patchValue(this.selectedActivity.topActivity);
         this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
         this.activityForm.get('sport').setValue(this.selectedActivity.sport);
+            this.activityForm.get('comment').patchValue(this.selectedActivity.comment);
+
+
         this.activityForm.updateValueAndValidity();
         console.log(this.activityForm.value);
     }
@@ -225,6 +228,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
             date: this.activityForm.get('date').value,
+            comment: this.activityForm.get('comment').value,
             bookedBy: this.selectedActivity.bookedBy,
             lattitude: this.lattitudeFirebase,
             longtitude: this.longtitudeFirebase

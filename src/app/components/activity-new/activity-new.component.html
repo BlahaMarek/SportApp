@@ -32,6 +32,7 @@
                     placeholder="Zadajte počet osôb"
             ></ion-input>
         </ion-item>
+
         <ion-item>
 <!--            <ion-label position="stacked" >Kde? *</ion-label>-->
 <!--            <ion-input-->
@@ -70,6 +71,15 @@
                     formControlName="topActivity"
                     text-left
             ></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked" >Komentár</ion-label>
+            <ion-input
+                    type="koemnt"
+                    text-left
+                    formControlName="comment"
+                    placeholder="Zadajte komentár..."
+            ></ion-input>
         </ion-item>
     </form>
     <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline" disabled="{{!activityForm.valid}}">
