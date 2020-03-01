@@ -13,7 +13,8 @@ import {Geolocation} from "@ionic-native/geolocation/ngx";
 
 let a1;
 let b1;
-var zoradeneSporty = []
+var zoradeneSporty = [];
+var datumZAktivity;
 @Component({
     selector: 'app-tab1',
     templateUrl: 'tab1.page.html',
@@ -28,12 +29,15 @@ export class Tab1Page implements OnInit {
     filteredList: Activity[];
     sportOptions: any;
     segment: any;
+    porovnavaciDate: Date;
+
     products: any[] =[];
     latitude = 0;
     longitude = 0;
     hodnota;
     hodnota2;
     vysledok;
+
 
     constructor(
         public zone: NgZone,
@@ -64,17 +68,8 @@ export class Tab1Page implements OnInit {
     }
 
     ngOnInit() {
-        var datum = new Date();
-        var rok = datum.getFullYear();
-         var day = datum.getDate();
-        var mesiac = datum.getMonth();
-        mesiac = mesiac +1;
-        console.log("toto je dnesny den: " + day +  "mesiac : " + mesiac +  "rok:  "  + rok);
-        var porovnavaciDate = new Date();
-        porovnavaciDate.setFullYear(rok);
-        porovnavaciDate.setMonth(mesiac);
-        porovnavaciDate.setDate(day);
-        console.log("moj rocik " + porovnavaciDate);
+        this.porovnavaciDate = new Date();
+
         this.locate();
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
@@ -82,9 +77,6 @@ export class Tab1Page implements OnInit {
             //moja ultra total algo na zoradenie aktivit podla polohy
 
             this.activityList.forEach(function (value) { // toto je ultra mega total algo, ktory zatial zobrazuje len podla polohy aktivity..aspon dufam..ale top na vrchu nie su
-
-                    console.log("toto je datum aktivity");
-                console.log(value.date);
 
                 var hodnota = parseFloat(value.lattitude) - 48.717110;
 
@@ -106,7 +98,7 @@ export class Tab1Page implements OnInit {
                 return a.distanceFromUser - b.distanceFromUser
             });
             this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length)
-                && !activity.bookedBy.includes(this.authService.userIdAuth)));
+                && !activity.bookedBy.includes(this.authService.userIdAuth) && (new Date(activity.date).getTime() > this.porovnavaciDate.getTime())));
 
         });
 
@@ -118,9 +110,19 @@ export class Tab1Page implements OnInit {
 
 
     onFilterUpdate(event: CustomEvent) {
-
+        var datum = new Date();
+        var rok = datum.getFullYear();
+        var day = datum.getDate();
+        var mesiac = datum.getMonth();
+        //mesiac = mesiac +1;
+        console.log("toto je dnesny den: " + day +  "mesiac : " + mesiac +  "rok:  "  + rok);
+        var porovnavaciDate = new Date();
+        porovnavaciDate.setFullYear(rok);
+        porovnavaciDate.setMonth(mesiac);
+        porovnavaciDate.setDate(day);
         if (event.detail.value === 'others') {
-            this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length) && !activity.bookedBy.includes(this.authService.userIdAuth)));
+            this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) &&
+                (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= porovnavaciDate.getTime()) && !activity.bookedBy.includes(this.authService.userIdAuth)));
             this.filteredList = this.activityListByUser;
         } else if (event.detail.value === 'mine') {
             this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.authService.userIdAuth);
