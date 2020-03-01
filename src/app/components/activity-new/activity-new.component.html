@@ -63,8 +63,14 @@
         </ion-item>
         <ion-item>
             <ion-label position="stacked" >Kedy? *</ion-label>
-            <ion-datetime placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
+            <ion-datetime displayFormat="MM/DD/YYYY" [min]="minDate" [(ngModel)]="startDate" placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
         </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Čas *</ion-label>
+            <ion-datetime displayFormat="HH:mm" placeholder="Zadajte čas" formControlName="time"></ion-datetime>
+        </ion-item>
+
         <ion-item>
             <ion-label position="stacked" >Topovať aktivitu?</ion-label>
             <ion-toggle

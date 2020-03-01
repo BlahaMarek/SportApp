@@ -98,6 +98,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         topActivity: [false],
         date: ['', Validators.required],
         sport: ['', Validators.required],
+        comment: [''],
+        time: [''],
         latitude: [''],
         longtitude: ['']
     });
@@ -158,7 +160,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.activityForm.get('topActivity').patchValue(this.selectedActivity.topActivity);
         this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
         this.activityForm.get('sport').setValue(this.selectedActivity.sport);
-            this.activityForm.get('comment').patchValue(this.selectedActivity.comment);
+        this.activityForm.get('comment').patchValue(this.selectedActivity.comment);
+        this.activityForm.get('time').patchValue(this.selectedActivity.time);
 
 
         this.activityForm.updateValueAndValidity();
@@ -229,6 +232,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             peopleCount: this.activityForm.get('peopleCount').value,
             date: this.activityForm.get('date').value,
             comment: this.activityForm.get('comment').value,
+            time: this.activityForm.get('time').value,
             bookedBy: this.selectedActivity.bookedBy,
             lattitude: this.lattitudeFirebase,
             longtitude: this.longtitudeFirebase

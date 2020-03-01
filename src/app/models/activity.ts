@@ -1,4 +1,5 @@
 import { Sport } from './sport';
+import {Time} from "@angular/common";
 
 export class Activity {
     id?: string;
@@ -8,6 +9,7 @@ export class Activity {
     comment?: string;
     place?: string;
     date?: Date;
+    time?: Time;
     bookedBy?: string[];
     createdBy?: string;
     lattitude?: string;

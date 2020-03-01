@@ -27,6 +27,10 @@ export class ActivityNewComponent implements OnInit {
     longt: number;
     lattitudeFirebase: string;
     longtitudeFirebase: string;
+    startDate: any;
+    minDate: any;
+    maxDate: any;
+    year: string;
     constructor(
         private fireService: FirestoreService,
         public toastController: ToastController,
@@ -57,6 +61,7 @@ export class ActivityNewComponent implements OnInit {
         place: ['', Validators.required],
         topActivity: [false],
         date: ['', Validators.required],
+        time: ['', Validators.required],
         sport: ['', Validators.required],
         comment: [''],
         lattitudeFB: [''],
@@ -74,6 +79,15 @@ export class ActivityNewComponent implements OnInit {
                 this.userIdFire = "xxx"; //totot dat prec
             }
         });
+        this.startDate = new Date().toISOString();
+
+
+        this.minDate = new Date().toISOString();
+       // this.year = this.minDate.getFullYear();
+        var month = this.minDate.getMonth();
+        var day = this.minDate.getDate();
+
+        //this.maxDate = new Date(new Date().setFullYear(new Date().getFullYear() + 2)).toISOString();
     }
 
     onCancel() {
@@ -106,6 +120,7 @@ export class ActivityNewComponent implements OnInit {
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
             date: this.activityForm.get('date').value,
+            time: this.activityForm.get('time').value,
             comment: this.activityForm.get('comment').value,
             bookedBy: [],
             lattitude : this.lattitudeFirebase,

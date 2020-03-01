@@ -64,6 +64,17 @@ export class Tab1Page implements OnInit {
     }
 
     ngOnInit() {
+        var datum = new Date();
+        var rok = datum.getFullYear();
+         var day = datum.getDate();
+        var mesiac = datum.getMonth();
+        mesiac = mesiac +1;
+        console.log("toto je dnesny den: " + day +  "mesiac : " + mesiac +  "rok:  "  + rok);
+        var porovnavaciDate = new Date();
+        porovnavaciDate.setFullYear(rok);
+        porovnavaciDate.setMonth(mesiac);
+        porovnavaciDate.setDate(day);
+        console.log("moj rocik " + porovnavaciDate);
         this.locate();
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
@@ -71,9 +82,10 @@ export class Tab1Page implements OnInit {
             //moja ultra total algo na zoradenie aktivit podla polohy
 
             this.activityList.forEach(function (value) { // toto je ultra mega total algo, ktory zatial zobrazuje len podla polohy aktivity..aspon dufam..ale top na vrchu nie su
-                console.log("toto je latitude ktoru chcem kuaaaaaa ");
 
-                console.log(value.lattitude);
+                    console.log("toto je datum aktivity");
+                console.log(value.date);
+
                 var hodnota = parseFloat(value.lattitude) - 48.717110;
 
                 var hodnota2 = parseFloat(value.longtitude) - 21.259781;
@@ -93,8 +105,11 @@ export class Tab1Page implements OnInit {
             this.activityList = this.activityList.sort(function(a,b){
                 return a.distanceFromUser - b.distanceFromUser
             });
-            this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length) && !activity.bookedBy.includes(this.authService.userIdAuth)));
+            this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length)
+                && !activity.bookedBy.includes(this.authService.userIdAuth)));
+
         });
+
     }
 
     initApp() {
