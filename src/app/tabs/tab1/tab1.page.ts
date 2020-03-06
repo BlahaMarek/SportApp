@@ -73,12 +73,12 @@ export class Tab1Page implements OnInit {
         this.locate();
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
-            ////
+
+
             //moja ultra total algo na zoradenie aktivit podla polohy
 
-            this.activityList.forEach(function (value) { // toto je ultra mega total algo, ktory zatial zobrazuje len podla polohy aktivity..aspon dufam..ale top na vrchu nie su
-
-                var hodnota = parseFloat(value.lattitude) - 48.717110;
+            this.activityList.forEach(function (value) {
+                var hodnota = parseFloat(value.lattitude) - 48.717110; // tu ma byt poloha pouzivatela ...a1 b1
 
                 var hodnota2 = parseFloat(value.longtitude) - 21.259781;
 
@@ -89,11 +89,9 @@ export class Tab1Page implements OnInit {
                     hodnota2 = hodnota2 *-1;
                 }
                 value.distanceFromUser = hodnota + hodnota2;
-
-
             });
 
-///
+
             this.activityList = this.activityList.sort(function(a,b){
                 return a.distanceFromUser - b.distanceFromUser
             });
@@ -110,19 +108,10 @@ export class Tab1Page implements OnInit {
 
 
     onFilterUpdate(event: CustomEvent) {
-        var datum = new Date();
-        var rok = datum.getFullYear();
-        var day = datum.getDate();
-        var mesiac = datum.getMonth();
-        //mesiac = mesiac +1;
-        console.log("toto je dnesny den: " + day +  "mesiac : " + mesiac +  "rok:  "  + rok);
-        var porovnavaciDate = new Date();
-        porovnavaciDate.setFullYear(rok);
-        porovnavaciDate.setMonth(mesiac);
-        porovnavaciDate.setDate(day);
+        this.porovnavaciDate = new Date();
         if (event.detail.value === 'others') {
             this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) &&
-                (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= porovnavaciDate.getTime()) && !activity.bookedBy.includes(this.authService.userIdAuth)));
+                (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= this.porovnavaciDate.getTime()) && !activity.bookedBy.includes(this.authService.userIdAuth)));
             this.filteredList = this.activityListByUser;
         } else if (event.detail.value === 'mine') {
             this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.authService.userIdAuth);

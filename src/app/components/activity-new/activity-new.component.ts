@@ -83,11 +83,8 @@ export class ActivityNewComponent implements OnInit {
 
 
         this.minDate = new Date().toISOString();
-       // this.year = this.minDate.getFullYear();
-        var month = this.minDate.getMonth();
-        var day = this.minDate.getDate();
 
-        //this.maxDate = new Date(new Date().setFullYear(new Date().getFullYear() + 2)).toISOString();
+
     }
 
     onCancel() {
@@ -110,7 +107,11 @@ export class ActivityNewComponent implements OnInit {
     }
 
     assignValueToActivity(): Activity {
-
+        var cas = new Date(this.activityForm.get('time').value);
+        cas.getTime();
+        var datum =  new Date(this.activityForm.get('date').value); // toto robimlen preto aby som k datumu pridal rovno cas
+        datum.setTime(cas.getTime());                               // a potom ho rovno pri zobrazeni menil na timestamp
+                                                                    // a starsie aktivity sa nebudu zobrazovat, pro
         return {
             // id: this.activityService.allActivitiesCount + 1,
 
@@ -119,7 +120,7 @@ export class ActivityNewComponent implements OnInit {
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
-            date: this.activityForm.get('date').value,
+            date: datum,
             time: this.activityForm.get('time').value,
             comment: this.activityForm.get('comment').value,
             bookedBy: [],
