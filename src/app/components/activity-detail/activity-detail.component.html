@@ -86,8 +86,7 @@
             ></ion-input>
         </ion-item>
     </form>
-    <ion-button *ngIf="!reserved" class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
-                >
+    <ion-button *ngIf="!reserved && !overdue" class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline">
 
 <!--        disabled="{{!activityForm.valid}}"-->
         {{bookable ? "Rezervuj miesto" : "Uprav aktivitu"}}
@@ -95,18 +94,22 @@
 
     </ion-button>
 
-    <ion-button *ngIf="!bookable" class="ion-margin-top" (click)="onFormSubmitDelete()" expand="block" fill="outline"
-    >
+    <ion-button *ngIf="!bookable && !overdue" class="ion-margin-top" (click)="onFormSubmitDelete()" expand="block" fill="outline">
 
         <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlas sa zo sportu1" : "Vymaz Aktivitu1"}}
+        {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
 
     </ion-button>
-    <ion-button *ngIf="bookable && reserved"  class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline"
-    >
+    <ion-button *ngIf="bookable && reserved && !overdue"  class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline">
 
         <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlas sa zo sportu2" : "Vymaz Aktivitu2"}}
+        {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
+
+    </ion-button>
+
+    <ion-button *ngIf="overdue"  class="ion-margin-top" expand="block" fill="outline">
+<!--treba dokoncit ohodnotenie spoluhracov-->
+        {{ "Ohodnot spoluhracov"}}
 
     </ion-button>
 

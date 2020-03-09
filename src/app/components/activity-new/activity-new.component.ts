@@ -108,10 +108,16 @@ export class ActivityNewComponent implements OnInit {
 
     assignValueToActivity(): Activity {
         var cas = new Date(this.activityForm.get('time').value);
-        cas.getTime();
+
+        console.log("toto je acs ktory chcem ulozit do datu" + cas.getHours());
+        console.log("toto je acs ktory chcem ulozit do datu" + cas.getMinutes());
+
         var datum =  new Date(this.activityForm.get('date').value); // toto robimlen preto aby som k datumu pridal rovno cas
-        datum.setTime(cas.getTime());                               // a potom ho rovno pri zobrazeni menil na timestamp
-                                                                    // a starsie aktivity sa nebudu zobrazovat, pro
+        datum.setHours(cas.getHours());                            // a potom ho rovno pri zobrazeni menil na timestamp
+        datum.setMinutes(cas.getMinutes());
+        console.log("totot je timestamp vytorenej aktivity:" + datum.getTime())// a starsie aktivity sa nebudu zobrazovat, pro
+        console.log("toto je terajsi casik, pro"+new Date().getTime());
+        var datum2 = datum.toString();
         return {
             // id: this.activityService.allActivitiesCount + 1,
 
@@ -120,7 +126,7 @@ export class ActivityNewComponent implements OnInit {
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
-            date: datum,
+            date: datum2,
             time: this.activityForm.get('time').value,
             comment: this.activityForm.get('comment').value,
             bookedBy: [],

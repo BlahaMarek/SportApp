@@ -68,8 +68,8 @@ export class Tab1Page implements OnInit {
     }
 
     ngOnInit() {
-        this.porovnavaciDate = new Date();
-
+        var porovnavaciDate = new Date();
+        console.log("a toto terajsi datum" + porovnavaciDate.getTime());
         this.locate();
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
@@ -89,6 +89,12 @@ export class Tab1Page implements OnInit {
                     hodnota2 = hodnota2 *-1;
                 }
                 value.distanceFromUser = hodnota + hodnota2;
+
+                var aktivityCas = new Date(value.date);
+                console.log("toto je aktivity date timestamo" + aktivityCas + " " + value.time );
+                if (aktivityCas.getTime() > porovnavaciDate.getTime()){
+                    console.log("nasiel som novsiu aktivitu omfg");
+                }
             });
 
 
@@ -96,7 +102,7 @@ export class Tab1Page implements OnInit {
                 return a.distanceFromUser - b.distanceFromUser
             });
             this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length)
-                && !activity.bookedBy.includes(this.authService.userIdAuth) && (new Date(activity.date).getTime() > this.porovnavaciDate.getTime())));
+                && !activity.bookedBy.includes(this.authService.userIdAuth) && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
 
         });
 
@@ -113,9 +119,13 @@ export class Tab1Page implements OnInit {
             this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) &&
                 (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= this.porovnavaciDate.getTime()) && !activity.bookedBy.includes(this.authService.userIdAuth)));
             this.filteredList = this.activityListByUser;
+
         } else if (event.detail.value === 'mine') {
             this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.authService.userIdAuth);
             this.filteredList = this.activityListByUser;
+            this.filteredList.sort(function(a,b){
+                return new Date(b.date).getTime() - new Date(a.date).getTime()
+            });
         }else if(event.detail.value === 'registered'){
             let hovno = [];
             let prihlaseny = this.authService.userIdAuth;
@@ -130,7 +140,9 @@ export class Tab1Page implements OnInit {
 
                 }));
             this.filteredList = hovno;
-
+            this.filteredList.sort(function(a,b){
+                return new Date(b.date).getTime() - new Date(a.date).getTime()
+            });
 
         }
     }

@@ -49,7 +49,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     @Input() selectedActivity: Activity;
     @Input() bookable: boolean;
     @Input() reserved: boolean;
-    @Input() bookablenon: boolean;
+    @Input() overdue: boolean;
 
 
 
@@ -128,14 +128,17 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.sportOptions = this.dataService.getSportsSk();
         this.assignValueToForm();
 
-        if (this.bookable) {
-            this.activityForm.disable();
-        } else if (!this.bookable) {
-            this.activityForm.enable();
+
+        if (!this.overdue) {
+            if (this.bookable) {
+                this.activityForm.disable();
+            } else if (!this.bookable) {
+                this.activityForm.enable();
+            } else if (this.reserved) {
+                this.activityForm.disable();
+            }
         }
-        else if (this.reserved){
-            this.activityForm.disable();
-        }
+        else this.activityForm.disable();
     }
     // getData(){
     //     this.route.data.subscribe(routeData => {

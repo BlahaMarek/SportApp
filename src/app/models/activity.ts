@@ -8,7 +8,7 @@ export class Activity {
     topActivity?: boolean;
     comment?: string;
     place?: string;
-    date?: Date;
+    date?: string;
     time?: Time;
     bookedBy?: string[];
     createdBy?: string;

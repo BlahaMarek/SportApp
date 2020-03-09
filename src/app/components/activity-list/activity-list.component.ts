@@ -43,6 +43,7 @@ export class ActivityListComponent implements OnInit {
                         return prihlaseny.includes(authService)
 
                     })),
+                    overdue: (new Date(this.activityService.getActivityById(id).date).getTime() < new Date().getTime())
                 }
             })
             .then(modalEl => {
