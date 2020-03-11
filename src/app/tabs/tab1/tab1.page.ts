@@ -1,7 +1,7 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MenuController, ModalController, ToastController} from '@ionic/angular';
-import {ActivityNewComponent} from '../../components/activity-new/activity-new.component';
+import {ActivityNewComponent} from '../../components/activities/activity-new/activity-new.component';
 import {LanguageService} from '../../services/language.service';
 import {Activity} from '../../models/activity';
 import {ActivityService} from '../../services/activity.service';

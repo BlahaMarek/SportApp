@@ -16,8 +16,23 @@ export class FirestoreService {
         return this.firestore.collection('sports').add(sport);
     }
 
+    createEvent(sport: Activity) {
+        return this.firestore.collection('events').add(sport);
+    }
+
     readAllSports() {
         return this.firestore.collection('sports').snapshotChanges().pipe(
+            map(actions => {
+                return actions.map(a => {
+                    const data = a.payload.doc.data();
+                    const id = a.payload.doc.id;
+                    return {id, ...data};
+                });
+            })
+        )
+    }
+    readAllEvents() {
+        return this.firestore.collection('events').snapshotChanges().pipe(
             map(actions => {
                 return actions.map(a => {
                     const data = a.payload.doc.data();
@@ -30,6 +45,8 @@ export class FirestoreService {
 
 
     updateSport(sportId, sport) {
+        this.firestore.doc('students/' + sportId).update(sport);
+    }updateEvent(sportId, sport) {
         this.firestore.doc('students/' + sportId).update(sport);
     }
 

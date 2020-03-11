@@ -20,7 +20,7 @@ import TileJSON from 'ol/source/TileJSON';
 import {Icon, Style} from 'ol/style';
 import {ActivityService} from "../../services/activity.service";
 import {Activity} from "../../models/activity";
-import {ActivityDetailComponent} from "../../components/activity-detail/activity-detail.component";
+import {ActivityDetailComponent} from "../../components/activities/activity-detail/activity-detail.component";
 import {ModalController} from '@ionic/angular';
 import {AuthService} from "../../auth/auth.service";
 

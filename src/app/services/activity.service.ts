@@ -51,19 +51,6 @@ export class ActivityService {
 
 
     }
-    // getFoodCollection(activityId: string) {
-    //     this.sportsCollection = this.fireService.collection<Activity>(`activities/${activityId}`);
-    //     this.sports = this.sportsCollection.snapshotChanges().pipe(
-    //         map(actions => {
-    //             return actions.map(a => {
-    //                 const data = a.payload.doc.data();
-    //                 const id = a.payload.doc.id;
-    //                 return {id, ...data};
-    //             });
-    //         })
-    //     );
-    // }
-
 
     private _activities = new BehaviorSubject<Activity[]>([]);
     readonly activities$ = this._activities.asObservable();

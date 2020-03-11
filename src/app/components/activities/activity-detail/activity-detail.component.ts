@@ -9,13 +9,13 @@ import {
     OnInit,
     ViewChild
 } from '@angular/core';
-import {Activity} from '../../models/activity';
+import {Activity} from '../../../models/activity';
 import {ModalController} from '@ionic/angular';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Sport} from '../../models/sport';
-import {DataService} from '../../data/data.service';
-import {ActivityService} from '../../services/activity.service';
-import {AuthService} from '../../auth/auth.service';
+import {Sport} from '../../../models/sport';
+import {DataService} from '../../../data/data.service';
+import {ActivityService} from '../../../services/activity.service';
+import {AuthService} from '../../../auth/auth.service';
 import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import { ToastController} from '@ionic/angular';

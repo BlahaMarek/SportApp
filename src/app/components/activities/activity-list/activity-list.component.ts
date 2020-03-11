@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivityService} from '../../services/activity.service';
-import {Activity} from '../../models/activity';
+import {ActivityService} from '../../../services/activity.service';
+import {Activity} from '../../../models/activity';
 import {ModalController, ToastController} from '@ionic/angular';
 import {ActivityDetailComponent} from '../activity-detail/activity-detail.component';
-import {Sport} from '../../models/sport';
-import {DataService} from '../../data/data.service';
-import {AuthService} from '../../auth/auth.service';
+import {Sport} from '../../../models/sport';
+import {DataService} from '../../../data/data.service';
+import {AuthService} from '../../../auth/auth.service';
 import * as firebase from "firebase";
 
 @Component({

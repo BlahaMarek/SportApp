@@ -1,17 +1,17 @@
 import {Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {ModalController} from '@ionic/angular';
-import {ActivityService} from '../../services/activity.service';
-import {Activity} from '../../models/activity';
-import {DataService} from '../../data/data.service';
-import {Sport} from '../../models/sport';
-import {AuthService} from '../../auth/auth.service';
+import {ActivityService} from '../../../services/activity.service';
+import {Activity} from '../../../models/activity';
+import {DataService} from '../../../data/data.service';
+import {Sport} from '../../../models/sport';
+import {AuthService} from '../../../auth/auth.service';
 // import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import { ToastController} from '@ionic/angular';
-import {FirestoreService} from '../../services/firestore.service';
+import {FirestoreService} from '../../../services/firestore.service';
 import * as firebase from "firebase";
 
 
@@ -154,15 +154,15 @@ export class ActivityNewComponent implements OnInit {
 
     selectSearchResult(item) {
         // let place: google.maps.places.PlaceResult = this.GoogleAutocomplete.getPlacePredictions();
-        console.log(item);
+        //console.log(item);
         this.location = item;
         this.placeid = this.location.place_id;
-        console.log(this.placeid);
+        //console.log(this.placeid);
         JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
         this.autocomplete.input = JSON.stringify(item, ['description']);
         this.objekt = JSON.parse(this.autocomplete.input);
         this.autocomplete.input = this.objekt.description;
-        console.log('toto je mesto omg' + this.autocomplete.input);
+        //console.log('toto je mesto omg' + this.autocomplete.input);
         for (let i = 0; i < 6; i++) {
             this.autocompleteItems.pop();
         }
@@ -186,7 +186,7 @@ export class ActivityNewComponent implements OnInit {
                 this.longtitudeFirebase = result[0].longitude) // tu je sirka a vyska
             .catch((error: any) => this.openToast('Toto sa dosralo'));
 
-        console.log('kurwa co to nejde');
+        //console.log('kurwa co to nejde');
         // this.nativeGeocoder.reverseGeocode(52.5072095, 13.1452818, options)
         //     .then((result: NativeGeocoderReverseResult[]) => console.log(JSON.stringify(result[0])))
         //     .catch((error: any) => console.log(error));
