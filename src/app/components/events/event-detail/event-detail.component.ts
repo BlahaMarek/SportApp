@@ -174,21 +174,24 @@ export class EventDetailComponent implements OnInit {
   onFormSubmit() {
     if (!this.bookable && !this.reserved) {
       this.eventService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
-
+    this.presentToast("Aktivita bola upravena");
       });
       console.log("upravujem aktivitu");
     } else if (this.bookable && !this.reserved) {
       this.eventService.addBookerToActivity(this.selectedActivity).then(()=>{
       });
+      this.presentToast("Uspesne si sa prihlasil");
     }
     else if (this.reserved) {
       this.eventService.removeBookerFromActivity(this.selectedActivity).then(()=>{
       });
+      this.presentToast("Uspesne si sa odhlasil");
       console.log("som pri prvom resrvede");
     }
     else if (!this.reserved) {  //toto asi netreba
       this.eventService.deleteEvent(this.selectedActivity).then(()=>{
       });
+      this.presentToast("Aktivita bola vymazana");
       console.log("som pri druhom resrvede");
 
     }
@@ -203,6 +206,14 @@ export class EventDetailComponent implements OnInit {
     console.log(this.selectedActivity.id);
     console.log(this.authService.userIdAuth);
     this.modalController.dismiss(data, 'add');
+  }
+  async presentToast(message:any) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: 'medium'
+    });
+    toast.present();
   }
   onFormSubmitDelete() {
 

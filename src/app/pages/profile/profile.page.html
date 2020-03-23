@@ -1,24 +1,30 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      User Facebook Profile
+      Profil
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="facebook-bg">
-  <div *ngIf="user">
+  <div *ngIf="this.dataService.logged != false">
     <ion-row>
-      <ion-col class="title">
-        {{user.displayName}}
+      <ion-col *ngIf="this.dataService.logged !=false" class="title">
+        {{this.user.additionalUserInfo.profile.first_name}}
+
       </ion-col>
     </ion-row>
-    <ion-img class="profile-image" [src]="user.photoURL"></ion-img>
+    <ion-img class="profile-image" [src]="this.user.user.photoURL"></ion-img>
+  </div>
 
-
+  <div class="allLogin" *ngIf="this.dataService.logged == false">
+    <p>Na zobrazenie profilu sa musíte prihlásiť</p>
+    <ion-buttons class="button-login" (click)="login()" slot="end">
+      Login
+    </ion-buttons>
   </div>
 </ion-content>
-<ion-footer (click)="logout()">
+<ion-footer *ngIf="this.dataService.logged != false" (click)="logout()">
   <ion-toolbar color="danger">
     <ion-title>
       Logout

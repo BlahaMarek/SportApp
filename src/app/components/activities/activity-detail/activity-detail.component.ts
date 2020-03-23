@@ -50,7 +50,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     @Input() bookable: boolean;
     @Input() reserved: boolean;
     @Input() overdue: boolean;
-
+    @Input() unSigned: boolean;
 
 
     sportOptions: Sport[] = [];
@@ -159,7 +159,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     assignValueToForm() {
         this.activityForm.get('peopleCount').patchValue(this.selectedActivity.peopleCount);
-        this.activityForm.get('place').setValue(this.selectedActivity.place);
+        this.activityForm.get('place').patchValue(this.selectedActivity.place);
         this.activityForm.get('topActivity').patchValue(this.selectedActivity.topActivity);
         this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
         this.activityForm.get('sport').setValue(this.selectedActivity.sport);

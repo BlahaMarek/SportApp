@@ -7,16 +7,7 @@ import * as firebase from "firebase";
 export class AuthService {
   private userId: string;
   constructor() {
-    firebase.auth().onAuthStateChanged((user)=>{
-      if (user){
-        console.log(user.uid);
-        this.userId = user.uid;
-      }
-      else {
-        console.log("Nepodarilo sa nacitat uid usera")
-        this.userId = "xxx";
-      }
-    });
+
   }
 
   get userIdAuth(): string {

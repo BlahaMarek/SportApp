@@ -3,16 +3,24 @@ import { Router } from '@angular/router';
 import { Sport } from '../models/sport';
 import * as firebase from 'firebase';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
-import {NavController} from "@ionic/angular";
+import {NavController, ToastController} from "@ionic/angular";
+import {DataService} from "../data/data.service";
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss'],
 })
-export class AuthPage  {
+export class AuthPage implements OnInit {
   userProfile: any = null;
-  constructor(public navCtrl: NavController, private facebook: Facebook, private router: Router) {}
+  constructor(private dataService: DataService,public navCtrl: NavController, private facebook: Facebook, private router: Router,public toastController: ToastController,
+  ) {}
+
+    ngOnInit(): void {
+      if (this.userProfile != null){
+          this.router.navigateByUrl('/tabs/tabs/tab1');
+      }
+    }
 
   facebookLogin(): void {
     this.facebook.login(['email']).then( (response) => {
@@ -21,18 +29,31 @@ export class AuthPage  {
 
       firebase.auth().signInWithCredential(facebookCredential)
           .then((success) => {
-            console.log("Firebase success: " + JSON.stringify(success));
-            this.userProfile = success;
+            console.log("som v page" + JSON.stringify(success));
+            this.dataService.user = success;
+            this.dataService.logged = true;
+            this.presentToast("Úspešne prihlásený ako " + this.dataService.getSignInUser().user.displayName);
+            this.router.navigateByUrl('/tabs/tabs/tab1');
           })
           .catch((error) => {
             console.log("Firebase failure: " + JSON.stringify(error));
+              this.presentToast("Prihlásenie neúspešné");
           });
 
     }).catch((error) => { console.log(error) });
   }
-
+    async presentToast(message:any) {
+        const toast = await this.toastController.create({
+            message: message,
+            duration: 2000,
+            color: 'medium'
+        });
+        toast.present();
+    }
 
   onSubmitClick() {
     this.router.navigateByUrl('/tabs/tabs/tab1');
   }
+
+
 }

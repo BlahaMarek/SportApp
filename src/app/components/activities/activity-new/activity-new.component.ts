@@ -31,6 +31,7 @@ export class ActivityNewComponent implements OnInit {
     minDate: any;
     maxDate: any;
     year: string;
+    user: any = {};
     constructor(
         private fireService: FirestoreService,
         public toastController: ToastController,
@@ -69,19 +70,8 @@ export class ActivityNewComponent implements OnInit {
     });
 
     ngOnInit() {
-        firebase.auth().onAuthStateChanged((user)=>{
-            if (user){
-                console.log(user.uid);
-                this.userIdFire = user.uid;
-            }
-            else {
-                console.log("Nepodarilo sa nacitat uid usera");
-                this.userIdFire = "xxx"; //totot dat prec
-            }
-        });
+        this.user = this.dataService.getSignInUser();
         this.startDate = new Date().toISOString();
-
-
         this.minDate = new Date().toISOString();
 
 
@@ -92,15 +82,7 @@ export class ActivityNewComponent implements OnInit {
     }
 
     onFormSubmit() {
-        firebase.auth().onAuthStateChanged((user)=>{
-            if (user){
-                console.log(user.uid);
-                this.userIdFire = user.uid;
-            }
-            else {
-                console.log("Nepodarilo sa nacitat uid usera");
-            }
-        });
+
         this.activityService.addActivity(this.assignValueToActivity());
         this.fireService.createSport(this.assignValueToActivity());
         this.modalController.dismiss({message: 'Add new activity!'}, 'add');
@@ -109,20 +91,16 @@ export class ActivityNewComponent implements OnInit {
     assignValueToActivity(): Activity {
         var cas = new Date(this.activityForm.get('time').value);
 
-        console.log("toto je acs ktory chcem ulozit do datu" + cas.getHours());
-        console.log("toto je acs ktory chcem ulozit do datu" + cas.getMinutes());
-
         var datum =  new Date(this.activityForm.get('date').value); // toto robimlen preto aby som k datumu pridal rovno cas
         datum.setHours(cas.getHours());                            // a potom ho rovno pri zobrazeni menil na timestamp
         datum.setMinutes(cas.getMinutes());
-        console.log("totot je timestamp vytorenej aktivity:" + datum.getTime())// a starsie aktivity sa nebudu zobrazovat, pro
-        console.log("toto je terajsi casik, pro"+new Date().getTime());
+
         var datum2 = datum.toString();
         return {
             // id: this.activityService.allActivitiesCount + 1,
 
             sport: this.activityForm.get('sport').value,
-            createdBy: this.userIdFire,
+            createdBy: this.user.user.uid,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
@@ -130,6 +108,7 @@ export class ActivityNewComponent implements OnInit {
             time: this.activityForm.get('time').value,
             comment: this.activityForm.get('comment').value,
             bookedBy: [],
+            bookedByNames:[],
             lattitude : this.lattitudeFirebase,
             longtitude: this.longtitudeFirebase
 

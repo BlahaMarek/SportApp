@@ -122,11 +122,16 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 var element = document.createElement('div');
                 element.className = 'rotate-north ol-unselectable ol-control';
                 element.appendChild(button);
+                var popupp = document.getElementById('popup');
+                popupp.appendChild(element);
 
-                Control.call(this, {
-                    element: element,
-                    target: options.target
-                });
+
+
+                    Control.call(this, {
+                        element: element,
+                        target: map   //ked tu je options.target tak je button hore v lavo a da sa na neho kliknut....
+                    });
+
 
                 button.addEventListener('click', this.handleRotateNorth.bind(this), false);
             }
@@ -136,7 +141,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             RotateNorthControl.prototype.constructor = RotateNorthControl;
 
             RotateNorthControl.prototype.handleRotateNorth = function handleRotateNorth () {
-                this.getMap().getView().setRotation(0);
+                //this.getMap().getView().setRotation(0);
                 //alert("hovno");
                 console.log("hovno" + idDoButtonu);
                 //this.onActivityClicked(idDoButtonu);

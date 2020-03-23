@@ -68,7 +68,6 @@ export class Tab3Page {
 
     ngOnInit() {
         var porovnavaciDate = new Date();
-        console.log("a toto terajsi datum" + porovnavaciDate.getTime());
         this.locate();
         this.eventService.activities$.subscribe(list => {
             this.activityList = list;
@@ -89,11 +88,7 @@ export class Tab3Page {
                 }
                 value.distanceFromUser = hodnota + hodnota2;
 
-                var aktivityCas = new Date(value.date);
-                console.log("toto je aktivity date timestamo" + aktivityCas + " " + value.time );
-                if (aktivityCas.getTime() > porovnavaciDate.getTime()){
-                    console.log("nasiel som novsiu aktivitu omfg");
-                }
+
             });
 
 
@@ -135,7 +130,6 @@ export class Tab3Page {
                     //this.hovno.push(activity);
                     console.log(activity);
                 }
-                console.log("toto je moja value// " + value);
 
             }));
             this.filteredList = hovno;

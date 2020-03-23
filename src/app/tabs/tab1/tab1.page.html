@@ -3,10 +3,21 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>{{'HEADERS.tab1' | translate}}</ion-title>
-        <ion-buttons slot="end">
+        <ion-title>{{'HEADERS.tab1' | translate}} </ion-title>
+
+        <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
+            {{this.user.additionalUserInfo.profile.first_name + " "}} <ion-img *ngIf="this.dataService.logged != false" class="profile-image" [src]="this.user.user.photoURL"> </ion-img>
             <ion-button (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
         </ion-buttons>
+
+        <ion-buttons slot="end" *ngIf="this.dataService.logged == false">
+            <ion-buttons class="login" *ngIf="this.dataService.logged == false" (click)="login()" slot="end">
+                Login
+            </ion-buttons>
+        </ion-buttons>
+
+
+
     </ion-toolbar>
 </ion-header>
 

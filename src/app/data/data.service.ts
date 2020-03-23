@@ -1,13 +1,17 @@
 import {Injectable} from '@angular/core';
 import {Sport} from '../models/sport';
 import {Activity} from "../models/activity";
+import {AngularFireAuth} from "@angular/fire/auth";
 
 @Injectable({
     providedIn: 'root'
 })
 export class DataService {
+    user: any = {};
+    logged: boolean = false;
 
-    constructor() {
+
+    constructor(private fireAuth: AngularFireAuth) {
     }
 
     getSportsSk(): Sport[] {
@@ -78,7 +82,13 @@ export class DataService {
     }
 
     getAllActivities(actiities: Activity){
+    }
 
+    getSignInUser(){
+        return this.user;
+    }
+    getLogged(){
+        return this.logged;
     }
 }
 

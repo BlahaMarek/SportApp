@@ -26,12 +26,12 @@ import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-
+import * as firebase from 'firebase';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
-
+firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
     declarations: [AppComponent, MenuComponent],
     entryComponents: [],

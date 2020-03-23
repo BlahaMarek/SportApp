@@ -32,7 +32,6 @@ export class EventListComponent implements OnInit {
   }
 
   onActivityClicked(id: string) {
-    console.log("rit a aktivita omfg" + id);
     var authService = this.authService.userIdAuth;
     this.modalController
         .create({

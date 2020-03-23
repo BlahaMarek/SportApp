@@ -11,6 +11,7 @@ export class Activity {
     date?: string;
     time?: Time;
     bookedBy?: string[];
+    bookedByNames?: string[];
     createdBy?: string;
     lattitude?: string;
     longtitude?: string;
