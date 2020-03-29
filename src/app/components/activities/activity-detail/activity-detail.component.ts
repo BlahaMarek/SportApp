@@ -174,20 +174,24 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     onFormSubmit() {
         if (!this.bookable && !this.reserved) {
             this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
+                this.dataService.refreshAfterLogin = true;
 
             });
             console.log("upravujem aktivitu");
         } else if (this.bookable && !this.reserved) {
             this.activityService.addBookerToActivity(this.selectedActivity).then(()=>{
+                this.dataService.refreshAfterLogin = true;
             });
         }
         else if (this.reserved) {
             this.activityService.removeBookerFromActivity(this.selectedActivity).then(()=>{
+                this.dataService.refreshAfterLogin = true;
             });
             console.log("som pri prvom resrvede");
         }
         else if (!this.reserved) {  //toto asi netreba
             this.activityService.deleteActivity(this.selectedActivity).then(()=>{
+                this.dataService.refreshAfterLogin = true;
             });
             console.log("som pri druhom resrvede");
 
@@ -208,12 +212,14 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
         if (!this.reserved) {
             this.activityService.deleteActivity(this.selectedActivity).then(()=>{
+                this.dataService.refreshAfterLogin = true;
             });
             console.log("deletujem");
         }
 
         const data = {message: 'Add new activity!'};
         if (this.bookable) {
+            this.dataService.refreshAfterLogin = true;
             console.log(this.selectedActivity.id);
             console.log(this.authService.userIdAuth);
             data.message = 'Booked activity';

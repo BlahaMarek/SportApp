@@ -23,7 +23,7 @@
 
 <ion-content>
 
-    <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>
+    <ion-searchbar value={{this.idZMapy}} (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>
     <ion-segment [(ngModel)]="segment" (ionChange)="onFilterUpdate($event)">
         <ion-segment-button #others value="others" checked>Všetky</ion-segment-button>
         <ion-segment-button value="mine">Moje</ion-segment-button>

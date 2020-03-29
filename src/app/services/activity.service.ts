@@ -94,7 +94,7 @@ export class ActivityService {
     removeBookerFromActivity(sport: Activity) {
         let activity: Activity = this.getActivityById(sport.id);
         for (var i = 0 ; i< activity.bookedBy.length ; i++){
-            if (activity.bookedBy[i] == this.dataService.getSignInUser().user.uid){
+            if (activity.bookedBy[i] == this.user.user.uid){
                 activity.bookedBy.splice(i,1);
                 activity.bookedByNames.splice(i,1);
                 break;

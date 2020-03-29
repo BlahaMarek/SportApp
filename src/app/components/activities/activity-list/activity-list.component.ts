@@ -28,6 +28,7 @@ export class ActivityListComponent implements OnInit {
 
     ngOnInit() {
         this.user = this.dataService.getSignInUser();
+        console.log("som v liste, lol");
     }
 
     onActivityClicked(id: string) {

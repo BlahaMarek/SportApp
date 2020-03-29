@@ -27,6 +27,7 @@ export class Tab1Page implements OnInit {
     activityList: Activity[];
     activityListByUser: Activity[];
     user: any = {};
+    idZMapy: any = [];
     filteredList: Activity[];
     sportOptions: any;
     segment: any;
@@ -67,6 +68,14 @@ export class Tab1Page implements OnInit {
         }).catch((error) => {
             console.log('Error getting location', error);
         });
+    }
+    ionViewWillEnter(){
+      //  if(this.dataService.refreshAfterLogin == true){ // aby sa vzdy nacitali spravne aktivity 
+        console.log("Ion enter");
+        this.idZMapy = this.dataService.getIdZMapy();
+       console.log(this.idZMapy);
+        this.dataService.refreshAfterLogin = false;
+        
     }
 
     ngOnInit() {
@@ -177,11 +186,17 @@ export class Tab1Page implements OnInit {
     }
 
     onSearchUpdate(event: CustomEvent) {
+         
+         console.log("totot je id z mapy");
+         console.log(this.idZMapy);
+
         if (event.detail.value === '') {
             this.filteredList = this.activityListByUser;
             return;
         }
-        this.filteredList = this.activityListByUser.filter(activity => this.dataService.getSportNameByValue(activity.sport).toUpperCase().includes(event.detail.value.toUpperCase()));
+        console.log(this.activityListByUser);
+        this.filteredList = this.activityListByUser.filter((activity => this.dataService.getSportNameByValue(activity.sport).toUpperCase().includes(event.detail.value.toUpperCase()) ||
+        (activity => activity.id === this.idZMapy)));
     }
 
     onFabClicked(event: MouseEvent) {

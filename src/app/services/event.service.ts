@@ -3,9 +3,9 @@ import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firest
 import {Activity} from "../models/activity";
 import {BehaviorSubject, Observable} from "rxjs";
 import {FirestoreService} from "./firestore.service";
-import {AuthService} from "../auth/auth.service";
 import {map} from "rxjs/operators";
 import * as firebase from "firebase";
+import { DataService } from '../data/data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,9 @@ export class EventService {
   private events: Observable<Activity[]>;
   event: Activity;
   events2: any[] =[];routes;
-
-  constructor( private fireService: FirestoreService, private afs: AngularFirestore,private authService: AuthService) {
+  user: any = {};
+  constructor( private fireService: FirestoreService, private afs: AngularFirestore
+    ,private dataService: DataService) {
 
 
     this.eventsCollection = this.afs.collection<any>('events');
@@ -31,7 +32,7 @@ export class EventService {
         })
     );
 
-
+    this.user = this.dataService.getSignInUser();
     fireService.readAllEvents().subscribe(all => {
       this.events2 = all;
 
@@ -68,7 +69,8 @@ export class EventService {
   // add person, who booked activity to list of users, who booked
   addBookerToActivity(sport: Activity) {
     let activity: Activity = this.getEventById(sport.id);
-    activity.bookedBy.push(this.authService.userIdAuth);
+    activity.bookedBy.push(this.user.user.uid);
+    activity.bookedByNames.push(this.user.additionalUserInfo.profile.first_name);
     activity.peopleCount = activity.peopleCount +1;
     return this.eventsCollection.doc(sport.id).update(activity);
 
@@ -84,12 +86,11 @@ export class EventService {
 
   removeBookerFromActivity(sport: Activity) {
     let activity: Activity = this.getEventById(sport.id);
-    console.log("toto je user id ]");
-    console.log(this.authService.userIdAuth);
 
     for (var i = 0 ; i< activity.bookedBy.length ; i++){
-      if (activity.bookedBy[i] == this.authService.userIdAuth){
+      if (activity.bookedBy[i] == this.user.user.uid){
         activity.bookedBy.splice(i,1);
+        activity.bookedByNames.splice(i,1);
         break;
       }
       console.log("toto je activity bookedby[i]"+i);

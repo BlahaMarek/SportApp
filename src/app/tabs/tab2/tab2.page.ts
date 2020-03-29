@@ -23,6 +23,8 @@ import {Activity} from "../../models/activity";
 import {ActivityDetailComponent} from "../../components/activities/activity-detail/activity-detail.component";
 import {ModalController} from '@ionic/angular';
 import {AuthService} from "../../auth/auth.service";
+import { Router } from '@angular/router';
+import { DataService } from 'src/app/data/data.service';
 
 
 declare var ol: any;
@@ -73,11 +75,13 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     // @ViewChild('mapElement') mapElement;
 
     constructor(
+        private router: Router,
         private authService: AuthService,
         private activityService: ActivityService,
         private modalController: ModalController,
         private geolocation: Geolocation,
-        public toastController: ToastController
+        public toastController: ToastController,
+        private dataService: DataService
     ) {
     }
     async presentToast(msg) {
@@ -87,69 +91,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         });
         toast.present();
     }
-      onActivityClicked(id: string) {
-        console.log("Klikol som na aktivitu");
-        var authService = this.authService.userIdAuth;
-        this.modalController
-            .create({
-                component: ActivityDetailComponent,
-                componentProps: {
-                    selectedActivity: this.activityService.getActivityById(id),
-                    bookable: !(this.activityService.getActivityById(id).createdBy === this.authService.userIdAuth),
-                    reserved: (this.activityService.getActivityById(id).bookedBy.find(function (prihlaseny) {
-                        return prihlaseny.includes(authService)
-
-                    })),
-                }
-            })
-            .then(modalEl => {
-                modalEl.present();
-                return modalEl.onDidDismiss();
-            })
-            .then(result => {
-                console.log(result);
-            });
-    }
     ngAfterViewInit(): void {
 
-        var RotateNorthControl = /*@__PURE__*/(function (Control) {
-            function RotateNorthControl(opt_options) {
-                var options = opt_options || {};
-
-                var button = document.createElement('button');
-                button.innerHTML = 'Aktivita';
-
-                var element = document.createElement('div');
-                element.className = 'rotate-north ol-unselectable ol-control';
-                element.appendChild(button);
-                var popupp = document.getElementById('popup');
-                popupp.appendChild(element);
-
-
-
-                    Control.call(this, {
-                        element: element,
-                        target: map   //ked tu je options.target tak je button hore v lavo a da sa na neho kliknut....
-                    });
-
-
-                button.addEventListener('click', this.handleRotateNorth.bind(this), false);
-            }
-
-            if ( Control ) RotateNorthControl.__proto__ = Control;
-            RotateNorthControl.prototype = Object.create( Control && Control.prototype );
-            RotateNorthControl.prototype.constructor = RotateNorthControl;
-
-            RotateNorthControl.prototype.handleRotateNorth = function handleRotateNorth () {
-                //this.getMap().getView().setRotation(0);
-                //alert("hovno");
-                console.log("hovno" + idDoButtonu);
-                //this.onActivityClicked(idDoButtonu);
-            };
-
-            return RotateNorthControl;
-        }(Control));
-
+    
 
         this.pridanieMarkerov();
         // console.log('toto su markre');
@@ -163,10 +107,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         } else { console.log('kures fakt preskakuje null'); }
 
         const map = new Map({
-            controls: defaultControls().extend([
-                // @ts-ignore
-                new RotateNorthControl()
-            ]),
             layers: [
                 new TileLayer({
                     source: new OSM()
@@ -216,7 +156,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     html: true,
                     id: feature.get('id')
                 });
-
+            
+                $('#testButton').click(function(){
+                    
+                  });
 
 
                //$(document.getElementById('popup2')).addEventListener('click', this.onActivityClicked); // toto treba spravit, fnuk
@@ -264,6 +207,12 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             this.map.updateSize();
         }, 500);
         this.ionViewWillLeave();
+    }
+    prejdiDoTab1(){
+        console.log("Toto otototototottotototo je id do aktivity z maaap");
+        console.log(idDoButtonu);
+        this.dataService.idZMapy = idDoButtonu;
+        this.router.navigateByUrl('/tabs/tabs/tab1');
     }
     pridanieMarkerov() {
         const places = [

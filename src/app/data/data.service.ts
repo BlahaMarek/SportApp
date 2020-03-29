@@ -3,13 +3,15 @@ import {Sport} from '../models/sport';
 import {Activity} from "../models/activity";
 import {AngularFireAuth} from "@angular/fire/auth";
 
+
 @Injectable({
     providedIn: 'root'
 })
 export class DataService {
     user: any = {};
     logged: boolean = false;
-
+    idZMapy: any = [];
+    refreshAfterLogin: boolean = false;
 
     constructor(private fireAuth: AngularFireAuth) {
     }
@@ -89,6 +91,9 @@ export class DataService {
     }
     getLogged(){
         return this.logged;
+    }
+    getIdZMapy(){
+        return this.idZMapy;
     }
 }
 

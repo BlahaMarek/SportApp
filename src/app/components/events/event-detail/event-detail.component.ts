@@ -50,7 +50,7 @@ export class EventDetailComponent implements OnInit {
   @Input() bookable: boolean;
   @Input() reserved: boolean;
   @Input() overdue: boolean;
-
+  @Input() unSigned: boolean;
 
 
   sportOptions: Sport[] = [];

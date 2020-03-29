@@ -20,7 +20,7 @@ export class ProfilePage implements OnInit {
     this.fireAuth.auth.signOut().then(() => {
       this.dataService.user = {};
       this.dataService.logged = false;
-
+      this.dataService.refreshAfterLogin = false;
       this.router.navigateByUrl('/login');
     });
   }

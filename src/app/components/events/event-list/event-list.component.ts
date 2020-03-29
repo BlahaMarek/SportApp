@@ -18,7 +18,7 @@ export class EventListComponent implements OnInit {
 
   @Input() filteredList: Activity[];
   sportOptions: Sport[] = [];
-
+  user: any = {};
   constructor(
       private eventService: EventService,
       private modalController: ModalController,
@@ -32,15 +32,17 @@ export class EventListComponent implements OnInit {
   }
 
   onActivityClicked(id: string) {
-    var authService = this.authService.userIdAuth;
+    this.user= this.dataService.getSignInUser();
+    var logged= this.dataService.getSignInUser();
+    if (this.dataService.logged != false) {
     this.modalController
         .create({
           component: EventDetailComponent,
           componentProps: {
             selectedActivity: this.eventService.getEventById(id),
-            bookable: !(this.eventService.getEventById(id).createdBy === this.authService.userIdAuth),
+            bookable: !(this.eventService.getEventById(id).createdBy === this.user.user.uid),
             reserved: (this.eventService.getEventById(id).bookedBy.find(function (prihlaseny) {
-              return prihlaseny.includes(authService)
+              return prihlaseny.includes(logged.user.uid)
 
             })),
             overdue: (new Date(this.eventService.getEventById(id).date).getTime() < new Date().getTime())
@@ -53,6 +55,29 @@ export class EventListComponent implements OnInit {
         .then(result => {
           console.log(result);
         });
+      }else {
+        this.modalController
+            .create({
+                component: ActivityDetailComponent,
+                componentProps: {
+                    selectedActivity: this.eventService.getEventById(id),
+                    bookable: !(this.eventService.getEventById(id).createdBy === "guest"),
+                    reserved: (this.eventService.getEventById(id).bookedBy.find(function (prihlaseny) {
+                        return prihlaseny.includes("guest")
+
+                    })),
+                    overdue: (new Date(this.eventService.getEventById(id).date).getTime() < new Date().getTime()),
+                    unSigned: (this.dataService.logged == false)
+                }
+            })
+            .then(modalEl => {
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+                console.log(result);
+            });
+    }
   }
 
 
