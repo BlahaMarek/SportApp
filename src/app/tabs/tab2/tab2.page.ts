@@ -191,14 +191,22 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     console.log(feature.get('id'));
                     idDoButtonu = feature.get('id');
                     console.log(feature.get('idcka'));
+                    var rect = document.getElementById('popup').getBoundingClientRect();
+                    console.log("toto je voncooo");
+
+                    document.getElementById('testButton').style.display= "block";
+                    document.getElementById('testButton').style.position = "absolute";
+                    document.getElementById('testButton').style.top = rect.top -55  +"px";
+                    document.getElementById('testButton').style.left = rect.left -55 +"px";
+
+
+                    console.log(coordinates);
                 }
 
                 popup2.setPosition(coordinates);
 
 
-                $('#testButton').click(function(){
 
-                  });
 
 
                 // console.log("Toto je cislo kativity omg");
@@ -213,6 +221,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 idDoButtonu = [];
                 $(document.getElementById('popup')).popover('destroy');
                 $(document.getElementById('popup2')).popover('destroy');
+                document.getElementById('testButton').style.display= "none";
             }
         });
 
@@ -224,7 +233,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             if (e.dragging) {
                 $(document.getElementById('popup')).popover('destroy');
                 $(document.getElementById('popup2')).popover('destroy');
-
+                document.getElementById('testButton').style.display= "none";
                 return;
             }
             const pixel = map.getEventPixel(e.originalEvent);
