@@ -11,8 +11,10 @@ export class DataService {
     user: any = {};
     logged: boolean = false;
     idZMapy: any = [];
+    idEventZMapy: any = [];
     refreshAfterLogin: boolean = false;
-
+    aktivity: Activity[];
+    event: Activity[];
     constructor(private fireAuth: AngularFireAuth) {
     }
 
@@ -95,5 +97,27 @@ export class DataService {
     getIdZMapy(){
         return this.idZMapy;
     }
+    setIdZMapy(idzMap: any[]){
+        this.idZMapy = idzMap;
+    }
+    getidEventZMapy(){
+        return this.idEventZMapy;
+    }
+
+
+    setAktivity(akti: Activity[]){
+        this.aktivity = akti;
+    }
+    getAktivitz(){
+        return this.aktivity;
+    }
+
+    setEvent(event: Activity[]){
+        this.event = event;
+    }
+    getEvent(){
+        return this.event;
+    }
+
 }
 

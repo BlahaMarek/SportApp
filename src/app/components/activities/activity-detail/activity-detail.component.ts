@@ -27,7 +27,7 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import Point from 'ol/geom/Point';
 import {OSM, Vector as VectorSource} from 'ol/source';
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
+import {Circle as CircleStyle, Fill, Stroke, Style, Icon} from 'ol/style';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {ActivatedRoute} from "@angular/router";
 
@@ -77,18 +77,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.autocompleteItems = [];
         // tslint:disable-next-line:no-shadowed-variable
         const positionFeature = new Feature();
-        positionFeature.setStyle(new Style({
-            image: new CircleStyle({
-                radius: 6,
-                fill: new Fill({
-                    color: '#3399CC'
-                }),
-                stroke: new Stroke({
-                    color: '#fff',
-                    width: 2
-                })
-            })
-        }));
+
     }
 
 
@@ -307,7 +296,17 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        // tslint:disable-next-line:no-unused-expression
+        var iconStyle = new Style({
+            image: new CircleStyle({
+                radius: 8,
+                stroke: new Stroke({
+                    color: '#fff'
+                }),
+                fill: new Fill({
+                    color: '#ff0000'
+                })
+            })
+        });
         new VectorLayer({
             map: this.map = new Map({
                 layers: [
@@ -322,9 +321,11 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             }),
             source: new VectorSource({
                 features: [new Feature({
-                    geometry: new Point(fromLonLat([this.selectedActivity.longtitude, this.selectedActivity.lattitude])) // tu pojdu vsetky aktivity
-                }), positionFeature]
-            })
+                    geometry: new Point(fromLonLat([this.selectedActivity.longtitude, this.selectedActivity.lattitude])),
+
+                }) ]
+            }),
+            style: iconStyle
         });
         setTimeout(() => {
             this.map.updateSize();

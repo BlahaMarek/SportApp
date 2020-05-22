@@ -1,8 +1,5 @@
 import {AfterContentInit, AfterViewInit, Component, NgZone, OnInit, ViewChild} from '@angular/core';
-import {MenuController} from '@ionic/angular';
 
-// declare var google;
-import {defaults as defaultControls, Control} from 'ol/control';import 'ol/ol.css';
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -25,6 +22,8 @@ import {AuthService} from "../../auth/auth.service";
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/data/data.service';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text, Icon} from 'ol/style';
+import {forEach} from "@angular-devkit/schematics";
+import {isBoolean} from "util";
 
 
 declare var ol: any;
@@ -51,9 +50,11 @@ const pomoc: number[] = []; // do pola zapisem hodnoty ktore sa rovnaju, a potom
 let rovnaky = false;
 let k = 0;
 const markres = [];
+const markresEvent = [];
 pocet = 0;
 declare var $: any;
 var idDoButtonu = [];
+var idDoButtonuEvent = [];
 const popup2 = new Overlay({
     element: document.getElementById('popup')
 });
@@ -96,10 +97,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
 
         this.pridanieMarkerov();
-        // console.log('toto su markre');
-        // console.log(markre);
-        // console.log('toto su markres');
-        // console.log(markres);
         if (a1 == null) {
             this.locate();
             console.log('toto je a1' + a1);
@@ -117,37 +114,27 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 zoom: 12
             }),
         });
-        // function createInput(){
-        //     var $input = $('<input type="button" value="new button" />');
-        //     $input.appendTo($('body'));
-        // }
+
         const popup = new Overlay({
             element: document.getElementById('popup'),
             positioning: 'bottom-center',
             stopEvent: false,
             offset: [0, -50]
         });
-        const popup2 = new Overlay({
-            element: document.getElementById('popup2'),
-            positioning: 'bottom-center',
-            stopEvent: false,
-            offset: [0, -50]
-        });
+
         map.addOverlay(popup);
-        map.addOverlay(popup2);
+
         // tslint:disable-next-line:only-arrow-functions
         map.on('click', function(evt) {
             idDoButtonu = [];
             const feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
                 var features = feature.get('features');
-                if (features.length == 1) {
-                    console.log("sam");
+                if (features.length == 1) { // jedna aktivita
                     console.log(features.length);
                     return features[0];
                 }
-                if (features.length > 1) {
+                if (features.length > 1) { // viacej aktivit pod klastrom
                     console.log(features.length);
-                    console.log("je nas vac");
                     return features;
                 }
                 return feature;
@@ -159,21 +146,79 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 if (feature.length >= 2){
                     var coordinates = feature[0].getGeometry().getCoordinates();
                     popup.setPosition(coordinates);
-                    $(document.getElementById('popup')).popover({
-                        placement: 'top',
-                        html: true,
-                        content: feature[0].get('name')
-                    });
-                    for (var i = 0; i<feature.length; i++){
-                        console.log(feature[i].get('id'));
-                        try {
-                            idDoButtonu.push(feature[i].get('id'))
-                        }
-                        catch(error) {
-                            console.error(error);
-                            idDoButtonu = [];
-                        }
 
+                    var vsetkyRovnake = feature[0].values_.zdroj;
+                    for (var i = 0; i < feature.length; i++) { // rozdelujem idcka podla zdroja ... aktivitu do id buttona  a event do iddobutttonaevent... necakane
+                        if (vsetkyRovnake != feature[i].values_.zdroj) { //ak sa nahodou nejaka nebude rovnat 1. prvu nastavi  sa na false
+                            vsetkyRovnake = false;
+                        }
+                        if (feature[i].values_.zdroj=="aktivita"){
+                            try {
+                                idDoButtonu.push(feature[i].get('id'))
+                            }
+                            catch(error) {
+                                console.error(error);
+                                // idDoButtonu = [];
+                            }
+                        }
+                        if (feature[i].values_.zdroj=="event"){
+                            try {
+                                idDoButtonuEvent.push(feature[i].get('id'))
+                            }
+                            catch(error) {
+                                console.error(error);
+                                // idDoButtonuEvent = [];
+                            }
+                        }
+                    }
+
+                    if (vsetkyRovnake && feature[0].values_.zdroj=="aktivita") {
+                        $(document.getElementById('popup')).popover({
+                            placement: 'top',
+                            html: true,
+                            content: "Viacero športov"
+                        });
+                        var rect = document.getElementById('popup').getBoundingClientRect();
+                        console.log("toto je voncooo");
+
+                        document.getElementById('testButton').style.display = "block";
+                        document.getElementById('testButton').style.position = "absolute";
+                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton').style.left = rect.left - 35 + "px";
+                    }
+                    if (vsetkyRovnake && feature[0].values_.zdroj=="event") {
+                        $(document.getElementById('popup')).popover({
+                            placement: 'top',
+                            html: true,
+                            content: "Viacero eventov"
+                        });
+                        var rect = document.getElementById('popup').getBoundingClientRect();
+                        console.log("toto je voncooo");
+
+                        document.getElementById('testButton3').style.display = "block";
+                        document.getElementById('testButton3').style.position = "absolute";
+                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton3').style.left = rect.left - 35 + "px";
+                    }
+                    if (!vsetkyRovnake){
+                        $(document.getElementById('popup')).popover({
+                            placement: 'top',
+                            html: true,
+                            content: "Športy a aktivity"
+                        });
+                        var rect = document.getElementById('popup').getBoundingClientRect();
+                        console.log("toto je voncooo");
+
+                        document.getElementById('testButton').style.display = "block";
+                        document.getElementById('testButton').style.position = "absolute";
+                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton').style.left = rect.left - 75 + "px";
+
+
+                        document.getElementById('testButton3').style.display = "block";
+                        document.getElementById('testButton3').style.position = "absolute";
+                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton3').style.left = rect.left - 1 + "px";
                     }
 
 
@@ -190,66 +235,69 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     console.log("Toto je cislo kativity omg");
                     console.log(feature.get('id'));
                     idDoButtonu = feature.get('id');
+                    idDoButtonuEvent = feature.get('id');
                     console.log(feature.get('idcka'));
                     var rect = document.getElementById('popup').getBoundingClientRect();
                     console.log("toto je voncooo");
-
-                    document.getElementById('testButton').style.display= "block";
-                    document.getElementById('testButton').style.position = "absolute";
-                    document.getElementById('testButton').style.top = rect.top -55  +"px";
-                    document.getElementById('testButton').style.left = rect.left -55 +"px";
-
-
-                    console.log(coordinates);
+                    console.log(feature);
+                    if (feature.values_.zdroj == "aktivita") {
+                        document.getElementById('testButton').style.display = "block";
+                        document.getElementById('testButton').style.position = "absolute";
+                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton').style.left = rect.left - 35 + "px";
+                    }
+                    if (feature.values_.zdroj == "event") {
+                        document.getElementById('testButton3').style.display = "block";
+                        document.getElementById('testButton3').style.position = "absolute";
+                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton3').style.left = rect.left - 35 + "px";
+                    }
+                    else {
+                        console.error("vlastne ani neviem aky vyznam ma tento else, ale funguje to, tak to nemenim")
+                    }
                 }
 
-                popup2.setPosition(coordinates);
-
-
-
-
-
-                // console.log("Toto je cislo kativity omg");
-                // console.log(feature.get('id'));
-                // idDoButtonu = feature.get('id');
-                // console.log(feature.get('idcka'));
-                // $(document.getElementById('popup')).append('<input type="button" value="new button" />');
                 $(document.getElementById('popup')).popover('show');
-                $(document.getElementById('popup2')).popover('show');
+
 
             } else {
                 idDoButtonu = [];
+                idDoButtonuEvent =[];
                 $(document.getElementById('popup')).popover('destroy');
-                $(document.getElementById('popup2')).popover('destroy');
                 document.getElementById('testButton').style.display= "none";
+                document.getElementById('testButton3').style.display= "none";
             }
         });
 
 
-
-
-        // tslint:disable-next-line:only-arrow-functions
         map.on('pointermove', function(e) {
             if (e.dragging) {
+                idDoButtonu = [];
+                idDoButtonuEvent =[];
                 $(document.getElementById('popup')).popover('destroy');
-                $(document.getElementById('popup2')).popover('destroy');
                 document.getElementById('testButton').style.display= "none";
+                document.getElementById('testButton3').style.display= "none";
                 return;
             }
             const pixel = map.getEventPixel(e.originalEvent);
             const hit = map.hasFeatureAtPixel(pixel);
             map.getTarget().style.cursor = hit ? 'pointer' : '';
         });
-        // tslint:disable-next-line:no-unused-expression
 
         var source = new VectorSource({
             features: markres
+        });
+        var source2 = new VectorSource({
+            features: markresEvent
         });
 
         var clusterSource = new Cluster({
             distance: parseInt("20", 10),
             source: source
         });
+
+
+
         var styleCache = {};
         new VectorLayer({
             map: this.map = map,
@@ -257,30 +305,92 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             style: function(feature) {
                 var size = feature.get('features').length;
                 var style = styleCache[size];
-                if (!style) {
-                    style = new Style({
-                        image: new CircleStyle({
-                            radius: 10,
-                            stroke: new Stroke({
-                                color: '#fff'
-                            }),
-                            fill: new Fill({
-                                color: '#3399CC'
-                            })
-                        }),
-                        text: new Text({
-                            text: size.toString(),
-                            fill: new Fill({
-                                color: '#fff'
-                            })
-                        })
-                    });
-                    styleCache[size] = style;
+                var coordinates = feature.getGeometry().getCoordinates();
+                console.log("tento zdrojik si prosim");
+                console.log(feature.values_.features[0].values_.zdroj);
+                console.log(feature.get('features'));
+                var vsetkyRovnake = true;
+                if (feature.get('features').length > 1) {
+                    var prvy = feature.values_.features[0].values_.zdroj;
+                    for (var i = 1; i < feature.get('features').length; i++) {
+                        if (prvy != feature.values_.features[i].values_.zdroj) {
+                            vsetkyRovnake = false;
+                            break
+                        }
+                    }
                 }
-                return style;
+                if (vsetkyRovnake == true) { //ked su v klastri len eventy/aktivitz
+                    if (!style && feature.values_.features[0].values_.zdroj == 'aktivita') {
+                        style = new Style({
+                            image: new CircleStyle({
+                                radius: 10,
+                                stroke: new Stroke({
+                                    color: '#fff'
+                                }),
+                                fill: new Fill({
+                                    color: '#FF0000'
+                                })
+                            }),
+                            text: new Text({
+                                text: size.toString(),
+                                fill: new Fill({
+                                    color: '#fff'
+                                })
+                            })
+                        });
+                        // styleCache[size] = style;
+                    }
+                    if (!style && feature.values_.features[0].values_.zdroj == 'event') {
+                        style = new Style({
+                            image: new CircleStyle({
+                                radius: 10,
+                                stroke: new Stroke({
+                                    color: '#fff'
+                                }),
+                                fill: new Fill({
+                                    color: '#6D0DAF'
+                                })
+                            }),
+                            text: new Text({
+                                text: size.toString(),
+                                fill: new Fill({
+                                    color: '#fff'
+                                })
+                            })
+                        });
+                        // styleCache[size] = style;
+                    }
+                    return style;
+                }else { // ked je v klastri aj aktivita aj event
+                    if (!style) {
+                        style = new Style({
+                                image: new Icon({
+                                        color: '#8959A8',
+                                        crossOrigin: 'anonymous',
+                                        src: 'assets/sports/multisport.png',
+                                        scale: 0.1
+
+                            }),
+                            text: new Text({
+                                text: size.toString(),
+                                fill: new Fill({
+                                    color: '#fff'
+                                })
+                            })
+                        });
+                        // styleCache[size] = style;
+                    }
+                    return style;
+
+
+
+
+
+
+                }
             }
         });
-        // this.pridanieMarkerov();
+        this.pridanieMarkerov();
         this.locate();
         // console.log('toto su markre');
         // console.log(markre);
@@ -293,92 +403,70 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         console.log("Toto otototototottotototo je id do aktivity z maaap");
         console.log(idDoButtonu);
         this.dataService.idZMapy = idDoButtonu;
+        $(document.getElementById('popup')).popover('destroy');
+        document.getElementById('testButton').style.display= "none";
+        document.getElementById('testButton3').style.display= "none";
+        idDoButtonu = [];
+        idDoButtonuEvent =[];
         this.router.navigateByUrl('/tabs/tabs/tab1');
     }
+    prejdiDoTab3(){
+        console.log("Toto otototototottotototo je id do aktivity z maaap");
+        console.log(idDoButtonu);
+        this.dataService.idEventZMapy = idDoButtonuEvent;
+        $(document.getElementById('popup')).popover('destroy');
+        document.getElementById('testButton').style.display= "none";
+        document.getElementById('testButton3').style.display= "none";
+        idDoButtonu = [];
+        idDoButtonuEvent =[];
+        this.router.navigateByUrl('/tabs/tabs/tab3');
+    }
     pridanieMarkerov() {
-        const places = [
-            [0, 0, "nic", 0],
-            [15, 15, "futbal", 0],
-            [17.7, 1, "futbal", 1],
-            [0.7, 1, "hokej", 2],
-            [20, 20, "tenis", 3],
-            [20, 1, "futbal", 4],
-            [0.1, 0.1, "squash", 5]
+
+        if (this.dataService.getEvent() != null){
 
 
-        ];
-        console.log("totototototooooooooooooooooooooooooooooooooooo");
-
-        console.log(places);
-        console.log(places[0][0]);
-        console.log(places[0][2]);
-
-        let hovno :string[][];
-        // this.activityList = this.activityList.filter(activity => activity.bookedBy.forEach(function(value) {
-        //
-        //         //this.hovno.push(activity);
-        //         console.log(activity);
-        //     console.log("toto je moja value// " + value);
-        //
-        // }));
+        const resEvent = Array.from(Object.values(this.dataService.getEvent()), //eventy
+            ({lattitude,longtitude,sport, id, peopleCount}) => [parseFloat(longtitude),parseFloat(lattitude),sport, id]);
+        console.log("toto je res event");
+        console.log(resEvent);
 
 
-        this.activityService.activities$.subscribe(list => {
-            this.activityList = list;
-        });
-        const res = Array.from(Object.values(this.activityList),
-            ({lattitude,longtitude,sport, id}) => [parseFloat(longtitude),parseFloat(lattitude),sport, id]);
-        console.log("moj array vysnivany");
-        console.log(res);
-        // console.log("toto je 0 0" + res[0][0]);
-        // console.log("toto je 0 1" + res[0][1]);
-        // console.log("toto je 0 2" + res[0][2]);
-        // console.log("toto je 0 3" + res[0][3]);
 
 
-        res.sort(sortFunction);
-        places.sort(sortFunction);
-        console.log(res);
+        for (let o = 0; o< resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
+            markiza = new Feature({                 //uz nie lebo som to upravil na klastre, pro
+                geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
+                name: 'Event kurwa',
+                id: resEvent[o][3],
+                zdroj: 'event'
+            });
+            markres.push(markiza);
 
-        function sortFunction(a, b) {
-            if (a[0] === b[0]) {
-                return 0;
-            }
-            else {
-                return (a[0] < b[0]) ? -1 : 1;
-            }
+
+        }
         }
 
+        const res = Array.from(Object.values(this.dataService.getAktivitz()), //aktivity
+            ({lattitude,longtitude,sport, id, peopleCount}) => [parseFloat(longtitude),parseFloat(lattitude),sport, id]);
 
         for (let o = 0; o< res.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
             markiza = new Feature({
                         geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                         name: 'Futbal kurwa',
-                        id: res[o][3]
+                        id: res[o][3],
+                        zdroj: 'aktivita'
                     });
+            markiza.setStyle(new Style({
+                image: new Icon({
+                    color: '#8959A8',
+                    crossOrigin: 'anonymous',
+                    src: 'assets/sports/hockey.svg',
+                    scale: 0.2
+                })
+            }));
             markres.push(markiza);
 
-
-
-
-            // if (res[o][2].toString() == "3") {
-            //     markiza = new Feature({
-            //         geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
-            //         name: 'Futbal kurwa',
-            //         id: res[o][3]
-            //     });
-            //     markiza.setStyle(new Style({
-            //         image: new Icon({
-            //             color: '#8959A8',
-            //             crossOrigin: 'anonymous',
-            //             src: 'assets/sports/soccer.svg',
-            //             scale: 0.2
-            //         })
-            //     }));
-            //     console.log("sport 4");
-            //
-            //
-            // }
 
         }
 
@@ -387,19 +475,19 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
 
     }
-    // tslint:disable-next-line:use-lifecycle-interface
+
 
 
     ionViewWillLeave() {
-        if (pocet > 0) {
-            console.log('ted to pujde ');
-            // this.map.setTarget(null); // toto to zavrie ale aj tak to nejde, gg
-            this.map = null;
-        }
-        if (pocet === 0) {
-            console.log('az teraz sa vypinam omg ');
-            pocet++;
-        }
+        // if (pocet > 0) {
+        //     console.log('ted to pujde ');
+        //     // this.map.setTarget(null); // toto to zavrie ale aj tak to nejde, gg
+        //     this.map = null;
+        // }
+        // if (pocet === 0) {
+        //     console.log('az teraz sa vypinam omg ');
+        //     pocet++;
+        // }
     }
     locate() {
         this.geolocation.getCurrentPosition().then((resp) => {

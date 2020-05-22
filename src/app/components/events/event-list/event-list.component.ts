@@ -45,7 +45,8 @@ export class EventListComponent implements OnInit {
               return prihlaseny.includes(logged.user.uid)
 
             })),
-            overdue: (new Date(this.eventService.getEventById(id).date).getTime() < new Date().getTime())
+            overdue: (new Date(this.eventService.getEventById(id).date).getTime() < new Date().getTime()),
+              unSigned: (this.user.user.uid == 0)
           }
         })
         .then(modalEl => {
@@ -58,7 +59,7 @@ export class EventListComponent implements OnInit {
       }else {
         this.modalController
             .create({
-                component: ActivityDetailComponent,
+                component: EventDetailComponent,
                 componentProps: {
                     selectedActivity: this.eventService.getEventById(id),
                     bookable: !(this.eventService.getEventById(id).createdBy === "guest"),

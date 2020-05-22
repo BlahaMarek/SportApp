@@ -6,8 +6,15 @@
     <ion-title>
       Udalosti
     </ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
+      {{this.user.additionalUserInfo.profile.first_name + " "}} <ion-img *ngIf="this.dataService.logged != false" class="profile-image" [src]="this.user.user.photoURL"> </ion-img>
       <ion-button (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end" *ngIf="this.dataService.logged == false">
+      <ion-buttons class="login" *ngIf="this.dataService.logged == false" (click)="login()" slot="end">
+        Login
+      </ion-buttons>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -15,6 +22,7 @@
 <ion-content>
 
   <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>
+  <ion-searchbar class="invisibleInput" type="hidden" value={{this.idEventZMapy}} (ionChange)="onSearchUpdateId($event)"></ion-searchbar>
   <ion-segment [(ngModel)]="segment" (ionChange)="onFilterUpdate($event)">
     <ion-segment-button #others value="others" checked>Všetky</ion-segment-button>
     <ion-segment-button value="mine">Moje</ion-segment-button>

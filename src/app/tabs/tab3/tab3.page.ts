@@ -10,6 +10,7 @@ import {FormBuilder} from "@angular/forms";
 import {LanguageService} from "../../services/language.service";
 import {Geolocation} from "@ionic-native/geolocation/ngx";
 import {EventService} from "../../services/event.service";
+import {Router} from "@angular/router";
 
 let a1;
 let b1;
@@ -24,12 +25,12 @@ export class Tab3Page {
     @ViewChild('others') others: ElementRef;
     activityList: Activity[];
     activityListByUser: Activity[];
-
+    user: any = {};
     filteredList: Activity[];
     sportOptions: any;
     segment: any;
     porovnavaciDate: Date;
-
+    idEventZMapy: any = [];
     products: any[] =[];
     latitude = 0;
     longitude = 0;
@@ -48,6 +49,7 @@ export class Tab3Page {
         private authService: AuthService,
         private dataService: DataService,
         private geolocation: Geolocation,
+        private router: Router,
 
     ) {
         this.segment = "others";
@@ -64,6 +66,14 @@ export class Tab3Page {
         }).catch((error) => {
             console.log('Error getting location', error);
         });
+    }
+    ionViewWillEnter(){
+        //  if(this.dataService.refreshAfterLogin == true){ // aby sa vzdy nacitali spravne aktivity
+        console.log("Ion enter");
+        this.idEventZMapy = this.dataService.getidEventZMapy();
+        console.log(this.dataService.getidEventZMapy());
+
+
     }
 
     ngOnInit() {
@@ -95,9 +105,16 @@ export class Tab3Page {
             this.activityList = this.activityList.sort(function(a,b){
                 return a.distanceFromUser - b.distanceFromUser
             });
-            this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) && (activity.peopleCount > activity.bookedBy.length)
-                && !activity.bookedBy.includes(this.authService.userIdAuth) && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
 
+            if(this.dataService.logged != false) { //prihlaseny
+                this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.user.user.uid) && (activity.peopleCount > activity.bookedBy.length)
+                    && !activity.bookedBy.includes(this.user.user.uid) && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
+                this.dataService.setEvent(this.filteredList);
+            }
+            else{ //neprihlaseny
+                this.filteredList = this.activityList.filter(activity => ((new Date(activity.date).getTime() > porovnavaciDate.getTime())));
+                this.dataService.setEvent(this.filteredList);
+            }
         });
 
     }
@@ -109,52 +126,105 @@ export class Tab3Page {
 
     onFilterUpdate(event: CustomEvent) {
         this.porovnavaciDate = new Date();
-        if (event.detail.value === 'others') {
-            this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.authService.userIdAuth ) &&
-                (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= this.porovnavaciDate.getTime()) && !activity.bookedBy.includes(this.authService.userIdAuth)));
-            this.filteredList = this.activityListByUser;
+        if(this.dataService.logged != false) { //prihlaseny
 
-        } else if (event.detail.value === 'mine') {
-            this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.authService.userIdAuth);
-            this.filteredList = this.activityListByUser;
-            this.filteredList.sort(function(a,b){
-                return new Date(b.date).getTime() - new Date(a.date).getTime()
-            });
-        }else if(event.detail.value === 'registered'){
-            let hovno = [];
-            let prihlaseny = this.authService.userIdAuth;
-            this.activityListByUser = this.activityList.filter(activity => activity.bookedBy.forEach(function(value) {
-                if (value === prihlaseny){
-                    hovno.push(activity);
+            if (event.detail.value === 'others') {
+                this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.user.user.uid) &&
+                     (new Date(activity.date).getTime() >= this.porovnavaciDate.getTime()) && !activity.bookedBy.includes(this.user.user.uid)));
+                this.filteredList = this.activityListByUser;
 
-                    //this.hovno.push(activity);
-                    console.log(activity);
-                }
+            } else if (event.detail.value === 'mine') {
+                this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.user.user.uid);
+                this.filteredList = this.activityListByUser;
+                this.filteredList.sort(function (a, b) {
+                    return new Date(b.date).getTime() - new Date(a.date).getTime()
+                });
+            } else if (event.detail.value === 'registered') {
+                let hovno = [];
+                let prihlaseny = this.user.user.uid;
+                this.activityListByUser = this.activityList.filter(activity => activity.bookedBy.forEach(function (value) {
+                    if (value === prihlaseny) {
+                        hovno.push(activity);
+                    }
 
-            }));
-            this.filteredList = hovno;
-            this.filteredList.sort(function(a,b){
-                return new Date(b.date).getTime() - new Date(a.date).getTime()
-            });
+                }));
+                this.filteredList = hovno;
+                this.filteredList.sort(function (a, b) {
+                    return new Date(b.date).getTime() - new Date(a.date).getTime()
+                });
 
+            }
+        }else{ //neprihlaseny
+            if (event.detail.value === 'others') {
+                this.activityListByUser = this.activityList.filter(activity => ((new Date(activity.date).getTime() >= this.porovnavaciDate.getTime())));
+                this.filteredList = this.activityListByUser;
+                console.log("som v srackach");
+                console.log("filteredlist");
+                console.log(this.filteredList);
+                console.log("activitylist");
+                console.log(this.activityList);
+
+            }
+            else if (event.detail.value === 'mine') {
+                this.filteredList = [];
+            } else if (event.detail.value === 'registered') {
+                this.filteredList = [];
+            }
         }
     }
 
     onSearchUpdate(event: CustomEvent) {
-        if (event.detail.value === '') {
-            this.filteredList = this.activityListByUser;
-            return;
-        }
+
+
         this.filteredList = this.activityListByUser.filter(activity => this.dataService.getSportNameByValue(activity.sport).toUpperCase().includes(event.detail.value.toUpperCase()));
+    }
+    onSearchUpdateId(event: CustomEvent) {
+
+        console.log("totot je id z mapy");
+        console.log(this.idEventZMapy);
+        console.log(event.detail.value);
+
+        console.log(event.detail.value[0]);
+        let pole: string[] = [];
+        let slovo:string = "";
+        for (var i = 0; i < event.detail.value.length; i++ ){ // tu si z filtra robim pole ..tam to je vsetko v stringu
+            if (event.detail.value[i] == ","){
+                console.log("nasel som ciarku ,[pro");
+                pole.push(slovo); // v poli mam jednotlive idcka aktivit
+                slovo = "";
+            }else if (i+1 == event.detail.value.length){
+                slovo += event.detail.value[i];
+                pole.push(slovo);
+                slovo ="";
+            }
+            else {
+                slovo += event.detail.value[i];
+            }
+        }
+
+        let aktivityFiltrovane:Activity[] = [];
+        this.filteredList = this.activityList.filter(activity => pole.forEach(function (number) {
+            if (number == activity.id){
+                console.log("som nasiel prvok pro")
+                aktivityFiltrovane.push(activity);
+            }
+
+        }));
+        this.filteredList = aktivityFiltrovane;
+        aktivityFiltrovane = [];
+        pole = [];
     }
 
     onFabClicked(event: MouseEvent) {
-        alert('Sem pojde filter152 !');
+        alert('Sem pojde filter !');
+    }
+    login() {
+        this.router.navigateByUrl('/login');
     }
 
     presentModal() {
         this.modalController
-            .create({component: EventNewComponent})
+            .create({component: ActivityNewComponent})
             .then(modalEl => {
                 this.segment = "others";
                 modalEl.present();
@@ -168,13 +238,15 @@ export class Tab3Page {
                 }
             });
     }
+    // login() {
+    //     this.router.navigateByUrl('/login');
+    // }
     async presentToast() {
         const toast = await this.toastController.create({
-            message: 'Udalost bola úspešne pridaná.',
+            message: 'Aktivita bola úspešne pridaná.',
             duration: 2000,
             color: 'medium'
         });
         toast.present();
     }
 }
-

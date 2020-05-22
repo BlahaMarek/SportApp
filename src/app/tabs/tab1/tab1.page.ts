@@ -58,6 +58,7 @@ export class Tab1Page implements OnInit {
         this.sportOptions = dataService.getSportsSk();
         this.initApp();
     }
+
     locate() {
         this.geolocation.getCurrentPosition().then((resp) => {
             a1 = resp.coords.latitude ;
@@ -69,14 +70,7 @@ export class Tab1Page implements OnInit {
             console.log('Error getting location', error);
         });
     }
-    ionViewWillEnter(){
-      //  if(this.dataService.refreshAfterLogin == true){ // aby sa vzdy nacitali spravne aktivity 
-        console.log("Ion enter");
-        this.idZMapy = this.dataService.getIdZMapy();
-       console.log(this.idZMapy);
-        this.dataService.refreshAfterLogin = false;
-        
-    }
+
 
     ngOnInit() {
         console.log(this.dataService.getSignInUser());
@@ -88,7 +82,8 @@ export class Tab1Page implements OnInit {
         this.locate();
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
-
+            console.log("toto je moj arraik");
+            console.log(this.activityList);
 
             //moja ultra total algo na zoradenie aktivit podla polohy
 
@@ -115,10 +110,12 @@ export class Tab1Page implements OnInit {
             if(this.dataService.logged != false) {
                 this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.user.user.uid) && (activity.peopleCount > activity.bookedBy.length)
                     && !activity.bookedBy.includes(this.user.user.uid) && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
+                this.dataService.setAktivity(this.filteredList);
             }
             else{
-                this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== "guest") && (activity.peopleCount > activity.bookedBy.length)
-                    && !activity.bookedBy.includes("xxx") && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
+                this.filteredList = this.activityList.filter(activity => ((activity.peopleCount > activity.bookedBy.length)
+                    && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
+                this.dataService.setAktivity(this.filteredList);
             }
 
         });
@@ -138,6 +135,7 @@ export class Tab1Page implements OnInit {
                 this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== this.user.user.uid) &&
                     (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= this.porovnavaciDate.getTime()) && !activity.bookedBy.includes(this.user.user.uid)));
                 this.filteredList = this.activityListByUser;
+                console.log("neviem ci tu mam byt")
 
             } else if (event.detail.value === 'mine') {
                 this.activityListByUser = this.activityList.filter(activity => activity.createdBy === this.user.user.uid);
@@ -168,35 +166,62 @@ export class Tab1Page implements OnInit {
                 this.activityListByUser = this.activityList.filter(activity => ((activity.createdBy !== "guest") &&
                     (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= this.porovnavaciDate.getTime()) && !activity.bookedBy.includes("guest")));
                 this.filteredList = this.activityListByUser;
+                console.log("ale tu teda som    ")
 
             }
             else if (event.detail.value === 'mine') {
-                this.activityListByUser = this.activityList.filter(activity => activity.createdBy === "guest");
-                this.filteredList = this.activityListByUser;
-                this.filteredList.sort(function (a, b) {
-                    return new Date(b.date).getTime() - new Date(a.date).getTime()
-                });
+                this.filteredList = [];
             } else if (event.detail.value === 'registered') {
-                let hovno = [];
-                let prihlaseny = "guest";
-                this.activityListByUser = this.activityList.filter(activity => activity.bookedBy.forEach(function (value) {
-                }));
+                this.filteredList = [];
             }
         }
     }
 
     onSearchUpdate(event: CustomEvent) {
          
-         console.log("totot je id z mapy");
-         console.log(this.idZMapy);
 
-        if (event.detail.value === '') {
-            this.filteredList = this.activityListByUser;
-            return;
+        this.filteredList = this.activityListByUser.filter(activity => this.dataService.getSportNameByValue(activity.sport).toUpperCase().includes(event.detail.value.toUpperCase()));
+
+
+
+
+
+    }
+    onSearchUpdateId(event: CustomEvent) {
+
+        console.log("totot je id z mapy");
+        console.log(this.idZMapy);
+        console.log(event.detail.value);
+
+        console.log(event.detail.value[0]);
+        let pole: string[] = [];
+        let slovo:string = "";
+        for (var i = 0; i < event.detail.value.length; i++ ){ // tu si z filtra robim pole ..tam to je vsetko v stringu
+            if (event.detail.value[i] == ","){
+                console.log("nasel som ciarku ,[pro");
+                pole.push(slovo); // v poli mam jednotlive idcka aktivit
+                slovo = "";
+            }else if (i+1 == event.detail.value.length){
+                slovo += event.detail.value[i];
+                pole.push(slovo);
+                slovo ="";
+            }
+            else {
+                slovo += event.detail.value[i];
+            }
         }
-        console.log(this.activityListByUser);
-        this.filteredList = this.activityListByUser.filter((activity => this.dataService.getSportNameByValue(activity.sport).toUpperCase().includes(event.detail.value.toUpperCase()) ||
-        (activity => activity.id === this.idZMapy)));
+
+        let aktivityFiltrovane:Activity[] = [];
+        this.filteredList = this.activityList.filter(activity => pole.forEach(function (number) {
+            if (number == activity.id){
+                console.log("som nasiel prvok pro")
+                aktivityFiltrovane.push(activity);
+            }
+
+        }));
+        this.filteredList = aktivityFiltrovane;
+        aktivityFiltrovane = [];
+        pole = [];
     }
 
     onFabClicked(event: MouseEvent) {
@@ -217,6 +242,9 @@ export class Tab1Page implements OnInit {
                 if (result.role !== 'cancel') {
                     this.presentToast();
                 }
+                // if (result.role == 'cancel') { // tu asi bude treba urobit refresh stranky
+                //     this.onFilterUpdate('others');
+                // }
             });
     }
     login() {
