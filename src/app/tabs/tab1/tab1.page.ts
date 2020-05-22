@@ -59,6 +59,7 @@ export class Tab1Page implements OnInit {
         this.initApp();
     }
 
+
     locate() {
         this.geolocation.getCurrentPosition().then((resp) => {
             a1 = resp.coords.latitude ;
@@ -70,7 +71,14 @@ export class Tab1Page implements OnInit {
             console.log('Error getting location', error);
         });
     }
+    ionViewWillEnter(){
+      //  if(this.dataService.refreshAfterLogin == true){ // aby sa vzdy nacitali spravne aktivity
+        console.log("Ion enter");
+        this.idZMapy = this.dataService.getIdZMapy();
+       console.log(this.idZMapy);
+        this.dataService.refreshAfterLogin = false;
 
+    }
 
     ngOnInit() {
         console.log(this.dataService.getSignInUser());
@@ -242,9 +250,6 @@ export class Tab1Page implements OnInit {
                 if (result.role !== 'cancel') {
                     this.presentToast();
                 }
-                // if (result.role == 'cancel') { // tu asi bude treba urobit refresh stranky
-                //     this.onFilterUpdate('others');
-                // }
             });
     }
     login() {
