@@ -11,6 +11,16 @@
     <ion-row>
       <ion-col *ngIf="this.dataService.logged !=false" class="title">
         {{this.user.additionalUserInfo.profile.first_name}}
+        <p>Average rating is: {{this.userFromAnotherTable.behavior/this.userFromAnotherTable.behaviorCount}} with {{this.userFromAnotherTable.behaviorCount}} ratings. </p>
+        <ionic4-star-rating #rating
+                            activeIcon = "ios-star"
+                            defaultIcon = "ios-star-outline"
+                            activeColor = "#FFD700"
+                            defaultColor = "#ccccff"
+                            readonly="false"
+                            rating="0"
+                            fontSize = "25px"
+                            (ratingChanged)="logRatingChange(user.id, $event)">
 
       </ion-col>
     </ion-row>

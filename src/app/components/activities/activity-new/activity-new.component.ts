@@ -93,6 +93,7 @@ export class ActivityNewComponent implements OnInit {
 
         var datum =  new Date(this.activityForm.get('date').value); // toto robimlen preto aby som k datumu pridal rovno cas
         datum.setHours(cas.getHours());                            // a potom ho rovno pri zobrazeni menil na timestamp
+                                                                        //tak nie
         datum.setMinutes(cas.getMinutes());
 
         var datum2 = datum.toString();

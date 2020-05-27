@@ -2,15 +2,20 @@ import {Injectable} from '@angular/core';
 import {Sport} from '../models/sport';
 import {Activity} from "../models/activity";
 import {AngularFireAuth} from "@angular/fire/auth";
+import {Observable} from "rxjs";
+import { User } from '../models/user';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class DataService {
+    allUsers: User[];
     user: any = {};
     logged: boolean = false;
     idZMapy: any = [];
+    segment: any;
+    observer: any;
     idEventZMapy: any = [];
     refreshAfterLogin: boolean = false;
     aktivity: Activity[];
@@ -118,6 +123,13 @@ export class DataService {
     getEvent(){
         return this.event;
     }
+    getAllUsers(){
+        return this.allUsers;
+    }
+    setAllUsers(users: any[]){
+        this.allUsers = users;
+    }
+
 
 }
 

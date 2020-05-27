@@ -1,3 +1,35 @@
-<p>
-  activity-rating works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ohodnoť spoluhráčov</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+<ion-list padding *ngFor="let user of this.allUsers">
+  <ion-item>{{user.name}}  <ionic4-star-rating #rating
+    activeIcon = "ios-star"
+    defaultIcon = "ios-star-outline"
+    activeColor = "#FFD700" 
+    defaultColor = "#ccccff"
+    readonly="false"
+    rating="0"
+    fontSize = "25px"
+    (ratingChanged)="logRatingChange(user.id, $event)">
+</ionic4-star-rating> </ion-item>
+
+  <ion-item *ngIf="allUsers.length==0">
+    Ohodnotili set vsetkych hracov
+
+  </ion-item>
+
+</ion-list>
+
+
+
+
+</ion-content>

@@ -27,14 +27,15 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import * as firebase from 'firebase';
-
+import {ActivityRatingComponent} from "./components/activities/activity-rating/activity-rating.component";
+import { StarRatingModule } from 'ionic4-star-rating';
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
-    declarations: [AppComponent, MenuComponent],
-    entryComponents: [],
+    declarations: [AppComponent, MenuComponent, ActivityRatingComponent],
+    entryComponents: [ActivityRatingComponent],
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
@@ -42,6 +43,7 @@ firebase.initializeApp(environment.firebaseConfig);
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        StarRatingModule,
         IonicStorageModule.forRoot(),
         TranslateModule.forRoot({
             loader: {

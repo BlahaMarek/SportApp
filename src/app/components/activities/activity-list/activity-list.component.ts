@@ -7,6 +7,7 @@ import {Sport} from '../../../models/sport';
 import {DataService} from '../../../data/data.service';
 import {AuthService} from '../../../auth/auth.service';
 import * as firebase from "firebase";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'app-activity-list',
@@ -73,11 +74,15 @@ export class ActivityListComponent implements OnInit {
                     }
                 })
                 .then(modalEl => {
+                    console.log("som in da list1");
+                    console.log(modalEl);
                     modalEl.present();
                     return modalEl.onDidDismiss();
                 })
                 .then(result => {
+                    console.log("som in da list2");
                     console.log(result);
+
                 });
         }
     }

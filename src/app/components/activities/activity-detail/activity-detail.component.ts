@@ -30,6 +30,8 @@ import {OSM, Vector as VectorSource} from 'ol/source';
 import {Circle as CircleStyle, Fill, Stroke, Style, Icon} from 'ol/style';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {ActivatedRoute} from "@angular/router";
+import {ActivityNewComponent} from "../activity-new/activity-new.component";
+import {ActivityRatingComponent} from "../activity-rating/activity-rating.component";
 
 
 const positionFeature = new Feature();
@@ -45,7 +47,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     activity: Activity[];
     validations_form: FormGroup;
     sport2: any;
-
+    user: any = {};
     @Input() selectedActivity: Activity;
     @Input() bookable: boolean;
     @Input() reserved: boolean;
@@ -77,6 +79,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.autocompleteItems = [];
         // tslint:disable-next-line:no-shadowed-variable
         const positionFeature = new Feature();
+        this.user = this.dataService.getSignInUser();
 
     }
 
@@ -142,6 +145,28 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.modalController.dismiss({message: 'ActivityDetail closed'}, 'cancel');
     }
 
+    ohodnot() {
+        this.modalController
+            .create({component: ActivityRatingComponent,
+                    componentProps:{
+                        users: this.selectedActivity.bookedByNames,
+                        usersId: this.selectedActivity.bookedBy
+
+            }
+
+            })
+            .then(modalEl => {
+                console.log("som v tabe 1111  hore");
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+
+            });
+    }
+
+
+
     compareWithFn = (o1, o2) => {
         return o1.value === o2.value;
     }
@@ -161,10 +186,12 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     }
 
     onFormSubmit() {
+        const data = {message: ''};
         if (!this.bookable && !this.reserved) {
             this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
                 this.dataService.refreshAfterLogin = true;
-
+                data.message = 'Aktivita bola zmenená';
+                this.modalController.dismiss(data, 'change');
             });
             console.log("upravujem aktivitu");
         } else if (this.bookable && !this.reserved) {
@@ -176,7 +203,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             this.activityService.removeBookerFromActivity(this.selectedActivity).then(()=>{
                 this.dataService.refreshAfterLogin = true;
             });
-            console.log("som pri prvom resrvede");
+
+            data.message = 'Použivateľ ohlásený';
+            this.modalController.dismiss(data, 'logout');
+
         }
         else if (!this.reserved) {  //toto asi netreba
             this.activityService.deleteActivity(this.selectedActivity).then(()=>{
@@ -185,46 +215,45 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             console.log("som pri druhom resrvede");
 
         }
-        const data = {message: 'Add new activity!'};
+
         if (this.bookable) {
             console.log(this.selectedActivity.id);
             console.log(this.authService.userIdAuth);
             data.message = 'Booked activity';
-
+            this.modalController.dismiss(data, 'add');
 
         }
         console.log(this.selectedActivity.id);
         console.log(this.authService.userIdAuth);
-        this.modalController.dismiss(data, 'add');
+
     }
     onFormSubmitDelete() {
-
-        if (!this.reserved) {
+        const data = {message: ''};
+        if (!this.reserved) { //toto je pri mazani
             this.activityService.deleteActivity(this.selectedActivity).then(()=>{
                 this.dataService.refreshAfterLogin = true;
             });
             console.log("deletujem");
+            this.modalController.dismiss("Deleted aktivity", 'delete');
         }
 
-        const data = {message: 'Add new activity!'};
+
         if (this.bookable) {
             this.dataService.refreshAfterLogin = true;
-            console.log(this.selectedActivity.id);
-            console.log(this.authService.userIdAuth);
-            data.message = 'Booked activity';
+            console.log("neviem co robimm");
+
 
 
         }
         console.log(this.selectedActivity.id);
         console.log(this.authService.userIdAuth);
-        this.modalController.dismiss(data, 'add');
+        // this.modalController.dismiss(data, 'add');
     }
 
     assignValueToActivity(): Activity {
         return {
-            // id: this.activityService.allActivitiesCount + 1,
             sport: this.activityForm.get('sport').value,
-            createdBy: this.authService.userIdAuth,
+            createdBy: this.user.user.uid,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
@@ -254,7 +283,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     }
 
     selectSearchResult(item) {
-        // let place: google.maps.places.PlaceResult = this.GoogleAutocomplete.getPlacePredictions();
         console.log(item);
         this.location = item;
         this.placeid = this.location.place_id;
@@ -332,4 +360,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         }, 500);
         console.log('mapa idze ci nejdze');
     }
+
+
+
 }

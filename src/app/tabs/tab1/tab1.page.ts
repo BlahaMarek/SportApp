@@ -28,6 +28,7 @@ export class Tab1Page implements OnInit {
     activityListByUser: Activity[];
     user: any = {};
     idZMapy: any = [];
+    reload:string;
     filteredList: Activity[];
     sportOptions: any;
     segment: any;
@@ -57,6 +58,7 @@ export class Tab1Page implements OnInit {
         this.segment = "others";
         this.sportOptions = dataService.getSportsSk();
         this.initApp();
+
     }
 
 
@@ -119,11 +121,13 @@ export class Tab1Page implements OnInit {
                 this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.user.user.uid) && (activity.peopleCount > activity.bookedBy.length)
                     && !activity.bookedBy.includes(this.user.user.uid) && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
                 this.dataService.setAktivity(this.filteredList);
+                this.activityListByUser = this.filteredList; // bez tohto slo vyhladavanie az po prekliknuti na moje a  potom uz ficalo
             }
             else{
-                this.filteredList = this.activityList.filter(activity => ((activity.peopleCount > activity.bookedBy.length)
+                this.filteredList = this.activityList.filter(activity => ((activity.peopleCount > 0)
                     && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
                 this.dataService.setAktivity(this.filteredList);
+                this.activityListByUser = this.filteredList;
             }
 
         });
@@ -234,21 +238,29 @@ export class Tab1Page implements OnInit {
 
     onFabClicked(event: MouseEvent) {
         alert('Sem pojde filter !');
+        const myObserver = {
+            next: x => console.log('Observer got a next value: ' + x),
+            error: err => console.error('Observer got an error: ' + err),
+            complete: () => console.log('Observer got a complete notification'),
+        };
+
     }
+
 
     presentModal() {
         this.modalController
             .create({component: ActivityNewComponent})
             .then(modalEl => {
+                console.log("som v tabe 1111  hore");
                 this.segment = "others";
                 modalEl.present();
                 return modalEl.onDidDismiss();
             })
             .then(result => {
-                console.log(result);
-
-                if (result.role !== 'cancel') {
-                    this.presentToast();
+                if (result.role == 'add') {
+                    this.segment = "others";
+                    this.segment = "mine";
+                    this.presentToast(); // jednoduchy reaload by bol vzdy sa vratit napr na vsetky aktivity...
                 }
             });
     }
@@ -256,6 +268,7 @@ export class Tab1Page implements OnInit {
         this.router.navigateByUrl('/login');
     }
     async presentToast() {
+        this.segment = "mine";
         const toast = await this.toastController.create({
             message: 'Aktivita bola úspešne pridaná.',
             duration: 2000,

@@ -77,6 +77,7 @@ export class Tab3Page {
     }
 
     ngOnInit() {
+        this.user = this.dataService.getSignInUser();
         var porovnavaciDate = new Date();
         this.locate();
         this.eventService.activities$.subscribe(list => {
@@ -107,13 +108,15 @@ export class Tab3Page {
             });
 
             if(this.dataService.logged != false) { //prihlaseny
-                this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.user.user.uid) && (activity.peopleCount > activity.bookedBy.length)
-                    && !activity.bookedBy.includes(this.user.user.uid) && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
+                this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.user.user.uid) // tu som par veci premazal
+                    && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
                 this.dataService.setEvent(this.filteredList);
+                this.activityListByUser = this.filteredList; // bez tohto nesiel filter na zaciatku..az po prekliknuti na moje aktivity
             }
             else{ //neprihlaseny
                 this.filteredList = this.activityList.filter(activity => ((new Date(activity.date).getTime() > porovnavaciDate.getTime())));
                 this.dataService.setEvent(this.filteredList);
+                this.activityListByUser = this.filteredList;
             }
         });
 
@@ -235,12 +238,12 @@ export class Tab3Page {
 
                 if (result.role !== 'cancel') {
                     this.presentToast();
+                    this.idEventZMapy = " "; //toto mozno urobi reaload, neodkusane
+                    this.idEventZMapy = "";
                 }
+
             });
     }
-    // login() {
-    //     this.router.navigateByUrl('/login');
-    // }
     async presentToast() {
         const toast = await this.toastController.create({
             message: 'Aktivita bola úspešne pridaná.',
