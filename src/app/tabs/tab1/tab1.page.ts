@@ -65,15 +65,12 @@ export class Tab1Page implements OnInit {
             a1 = resp.coords.latitude ;
             b1 = resp.coords.longitude;
              this.longitude = resp.coords.longitude;
-            console.log("Toto je latitude");
-            console.log(this.latitude);
         }).catch((error) => {
             console.log('Error getting location', error);
         });
     }
     ionViewWillEnter(){
       //  if(this.dataService.refreshAfterLogin == true){ // aby sa vzdy nacitali spravne aktivity
-        console.log("Ion enter");
         this.idZMapy = this.dataService.getIdZMapy();
        console.log(this.idZMapy);
         this.dataService.refreshAfterLogin = false;
@@ -81,6 +78,11 @@ export class Tab1Page implements OnInit {
     }
 
     ngOnInit() {
+        if (localStorage.getItem('user')){
+            this.dataService.user = JSON.parse(localStorage.getItem('user'));
+            this.dataService.logged = true;
+            this.dataService.refreshAfterLogin = true;
+        }
         console.log(this.dataService.getSignInUser());
         this.user = this.dataService.getSignInUser();
         if (Object.keys(this.user).length == 0){
@@ -186,27 +188,13 @@ export class Tab1Page implements OnInit {
     }
 
     onSearchUpdate(event: CustomEvent) {
-         
-
         this.filteredList = this.activityListByUser.filter(activity => this.dataService.getSportNameByValue(activity.sport).toUpperCase().includes(event.detail.value.toUpperCase()));
-
-
-
-
-
     }
     onSearchUpdateId(event: CustomEvent) {
-
-        console.log("totot je id z mapy");
-        console.log(this.idZMapy);
-        console.log(event.detail.value);
-
-        console.log(event.detail.value[0]);
         let pole: string[] = [];
         let slovo:string = "";
         for (var i = 0; i < event.detail.value.length; i++ ){ // tu si z filtra robim pole ..tam to je vsetko v stringu
             if (event.detail.value[i] == ","){
-                console.log("nasel som ciarku ,[pro");
                 pole.push(slovo); // v poli mam jednotlive idcka aktivit
                 slovo = "";
             }else if (i+1 == event.detail.value.length){

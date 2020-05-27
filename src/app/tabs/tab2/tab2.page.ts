@@ -67,6 +67,7 @@ const popup2 = new Overlay({
 })
 export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     map: Map;
+    user: any = {};
     image:any='';
     private win: any = window;
     activityList: Activity[];
@@ -506,5 +507,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     }
 
     ngOnInit() {
+        this.user = this.dataService.getSignInUser();
     }
 }

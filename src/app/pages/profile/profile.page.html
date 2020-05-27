@@ -3,18 +3,24 @@
     <ion-title>
       Profil
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/tabs/tabs/tab1">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="facebook-bg">
-  <div *ngIf="this.dataService.logged != false">
+  <div *ngIf="this.dataService.logged && this.dataService.user">
     <ion-row>
-      <ion-col *ngIf="this.dataService.logged !=false" class="title">
+      <ion-col class="title">
         {{this.user.additionalUserInfo.profile.first_name}}
 
       </ion-col>
     </ion-row>
-    <ion-img class="profile-image" [src]="this.user.user.photoURL"></ion-img>
+    <ion-img  [src]="userPhoto"> </ion-img>
+
   </div>
 
   <div class="allLogin" *ngIf="this.dataService.logged == false">

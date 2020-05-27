@@ -77,6 +77,7 @@ export class Tab3Page {
     }
 
     ngOnInit() {
+        this.user = this.dataService.getSignInUser();
         var porovnavaciDate = new Date();
         this.locate();
         this.eventService.activities$.subscribe(list => {
@@ -106,7 +107,7 @@ export class Tab3Page {
                 return a.distanceFromUser - b.distanceFromUser
             });
 
-            if(this.dataService.logged != false) { //prihlaseny
+            if(this.dataService.logged) { //prihlaseny
                 this.filteredList = this.activityList.filter(activity => ((activity.createdBy !== this.user.user.uid) && (activity.peopleCount > activity.bookedBy.length)
                     && !activity.bookedBy.includes(this.user.user.uid) && (new Date(activity.date).getTime() > porovnavaciDate.getTime())));
                 this.dataService.setEvent(this.filteredList);

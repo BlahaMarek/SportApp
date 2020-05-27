@@ -75,7 +75,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
         this.autocomplete = {input: ''};
         this.autocompleteItems = [];
-        // tslint:disable-next-line:no-shadowed-variable
         const positionFeature = new Feature();
 
     }
@@ -143,7 +142,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     }
 
     compareWithFn = (o1, o2) => {
-        return o1.value === o2.value;
+        return o1 == o2;
     }
 
     assignValueToForm() {

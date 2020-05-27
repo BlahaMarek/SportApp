@@ -12,12 +12,14 @@ import {DataService} from "../data/data.service";
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
-  userProfile: any = null;
   constructor(private dataService: DataService,public navCtrl: NavController, private facebook: Facebook, private router: Router,public toastController: ToastController,
   ) {}
 
     ngOnInit(): void {
-      if (this.userProfile != null){
+      if (localStorage.getItem('user')){
+          this.dataService.user = JSON.parse(localStorage.getItem('user'));
+          this.dataService.logged = true;
+          this.dataService.refreshAfterLogin = true;
           this.router.navigateByUrl('/tabs/tabs/tab1');
       }
     }
@@ -29,10 +31,8 @@ export class AuthPage implements OnInit {
 
       firebase.auth().signInWithCredential(facebookCredential)
           .then((success) => {
-            console.log("som v page" + JSON.stringify(success));
-            
-            console.log(this.dataService.user);
             this.dataService.user = success;
+            localStorage.setItem("user", JSON.stringify(success))
             this.dataService.logged = true;
             this.dataService.refreshAfterLogin = true;
             this.presentToast("Úspešne prihlásený ako " + this.dataService.getSignInUser().user.displayName);

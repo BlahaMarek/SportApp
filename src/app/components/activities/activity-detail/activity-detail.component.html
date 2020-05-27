@@ -15,23 +15,17 @@
         <div>
             <ion-item>
                 <ion-label position="stacked">Výber športu *</ion-label>
-                <ion-select [compareWith]="compareWith" formControlName="sport" placeholder="Vyberte šport">
+                <ion-select [compareWith]="compareWithFn" formControlName="sport" placeholder="Vyberte šport">
                     <ion-select-option [value]="val.value" *ngFor="let val of sportOptions">
                         {{ val.label }}
                     </ion-select-option>
                 </ion-select>
-
             </ion-item>
         </div>
 
         <ion-item>
             <ion-label position="stacked">Počet ľudí? * </ion-label>
-            <ion-input
-                    type="pocet"
-                    text-left
-                    formControlName="peopleCount"
-                    placeholder="Zadajte počet osôb"
-            ></ion-input>
+            <ion-input type="number" text-left placeholder="Zadajtee počet osôb" formControlName="peopleCount"></ion-input>
         </ion-item>
 
 
@@ -44,7 +38,6 @@
             <!--                                text-left-->
             <!--                                placeholder="Zadajte miesto"-->
             <!--                        ></ion-input>-->
-
             <!--            KVOLI TOMUTO NEJDE DOPLNANIE MIESTA -> PREROBIT NG-MODEL INAK NEPJDU REAKTIVNE FORMULARE-->
             <ion-input
                        type="miesto"

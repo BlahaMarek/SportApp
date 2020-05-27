@@ -7,7 +7,7 @@
       Udalosti
     </ion-title>
     <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
-      {{this.user.additionalUserInfo.profile.first_name + " "}} <ion-img *ngIf="this.dataService.logged != false" class="profile-image" [src]="this.user.user.photoURL"> </ion-img>
+      <ion-img routerLink="/profile" *ngIf="this.dataService.logged && !!this.user" class="profile-image" [src]="this.user.user.photoURL"> </ion-img>
       <ion-button (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
     </ion-buttons>
 
