@@ -29,4 +29,10 @@ export class ProfilePage implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
+  get userPhoto() {
+    if (!this.user || !this.user.user || !this.user.user.photoURL) {
+      return "";
+    }
+    return this.user.user.photoURL + "?type=large";
+  }
 }

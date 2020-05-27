@@ -2,6 +2,8 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {IonImg} from '@ionic/angular';
 import {LanguageService} from '../../services/language.service';
 import {Storage} from '@ionic/storage';
+import {DataService} from "../../data/data.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-menu',
@@ -16,8 +18,10 @@ export class MenuComponent implements OnInit {
   @ViewChild('en') en: ElementRef;
   constructor(
       private languageService: LanguageService,
-      private storage: Storage
-  ) { }
+      private storage: Storage,
+      private dataService: DataService,
+      private router: Router
+) { }
 
   ngOnInit() {
     this.storage.get(this.languageService.getLangKey).then(lang => {
@@ -39,6 +43,9 @@ export class MenuComponent implements OnInit {
 
   onLogout() {
     console.log("Logout");
+    localStorage.clear();
+    this.router.navigate(['login']);
+
   }
 
   onLanguageIconClicked(lang: String) {
