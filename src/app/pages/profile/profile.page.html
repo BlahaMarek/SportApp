@@ -20,6 +20,16 @@
       </ion-col>
     </ion-row>
     <ion-img  [src]="userPhoto"> </ion-img>
+    <ionic4-star-rating #rating
+                        activeIcon = "ios-star"
+                        defaultIcon = "ios-star-outline"
+                        activeColor = "#FFD700"
+                        defaultColor = "#ccccff"
+                        readonly="true"
+                        (ratingChanged)="this.rating"
+                        fontSize = "25px"
+                        >
+    </ionic4-star-rating>
 
   </div>
 

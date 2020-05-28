@@ -126,8 +126,8 @@
         <h4 >Pre prihlásenie sa do aktivity sa najprv musíte prihlásiť!</h4>
     </ion-text>
 
-    <ion-button *ngIf="overdue && !unSigned"  class="ion-margin-top" expand="block" fill="outline">
-<!--treba dokoncit ohodnotenie spoluhracov-->
+    <ion-button  (click)="rateUsers()" class="ion-margin-top" expand="block" fill="outline">
+<!--        *ngIf="overdue && !unSigned"-->
         {{ "Ohodnot spoluhracov"}}
 
     </ion-button>

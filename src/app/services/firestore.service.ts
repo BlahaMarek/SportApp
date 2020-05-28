@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Activity} from '../models/activity';
 import {map} from 'rxjs/operators';
+import {User} from "../models/user";
 
 
 @Injectable({
@@ -18,6 +19,9 @@ export class FirestoreService {
 
     createEvent(sport: Activity) {
         return this.firestore.collection('events').add(sport);
+    }
+    createUser(user: User) {
+        return this.firestore.collection('users').doc(user.id).set(user);
     }
 
     readAllSports() {

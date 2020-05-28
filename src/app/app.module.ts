@@ -19,7 +19,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
-
+import {ActivityRatingComponent} from "./components/activities/activity-rating/activity-rating.component";
+import { StarRatingModule } from 'ionic4-star-rating';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
@@ -33,8 +34,8 @@ export function createTranslateLoader(http: HttpClient) {
 }
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
-    declarations: [AppComponent, MenuComponent],
-    entryComponents: [],
+    declarations: [AppComponent, MenuComponent,ActivityRatingComponent ],
+    entryComponents: [ActivityRatingComponent],
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
@@ -53,7 +54,8 @@ firebase.initializeApp(environment.firebaseConfig);
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFirestoreModule,
         AngularFireDatabaseModule,
-        AngularFireAuthModule
+        AngularFireAuthModule,
+        StarRatingModule
     ],
     providers: [
         Facebook,

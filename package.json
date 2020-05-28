@@ -50,6 +50,7 @@
     "firebase": "^7.6.1",
     "global": "^4.4.0",
     "ionic": "^5.2.5",
+    "ionic4-star-rating": "^1.1.1",
     "jquery": "^3.4.1",
     "leaflet": "^1.5.1",
     "ol": "^6.0.1",

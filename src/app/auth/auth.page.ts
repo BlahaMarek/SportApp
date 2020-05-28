@@ -5,6 +5,9 @@ import * as firebase from 'firebase';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import {NavController, ToastController} from "@ionic/angular";
 import {DataService} from "../data/data.service";
+import {UserService} from "../services/user.service";
+import {FirestoreService} from "../services/firestore.service";
+
 
 @Component({
   selector: 'app-auth',
@@ -12,7 +15,7 @@ import {DataService} from "../data/data.service";
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
-  constructor(private dataService: DataService,public navCtrl: NavController, private facebook: Facebook, private router: Router,public toastController: ToastController,
+  constructor(private firestore: FirestoreService,private userService:UserService, private dataService: DataService,public navCtrl: NavController, private facebook: Facebook, private router: Router,public toastController: ToastController,
   ) {}
 
     ngOnInit(): void {
@@ -21,6 +24,8 @@ export class AuthPage implements OnInit {
           this.dataService.logged = true;
           this.dataService.refreshAfterLogin = true;
           this.router.navigateByUrl('/tabs/tabs/tab1');
+
+
       }
     }
 
@@ -31,7 +36,9 @@ export class AuthPage implements OnInit {
 
       firebase.auth().signInWithCredential(facebookCredential)
           .then((success) => {
+              console.log(success);
             this.dataService.user = success;
+
             localStorage.setItem("user", JSON.stringify(success))
             this.dataService.logged = true;
             this.dataService.refreshAfterLogin = true;
@@ -53,9 +60,38 @@ export class AuthPage implements OnInit {
         });
         toast.present();
     }
+    createUserToDataabse(){
+
+        this.userService.getOneUser(this.dataService.getSignInUser().id).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
+            console.log(res);
+            console.log("up je res");
+            if (res==undefined){
+                this.firestore.createUser(this.dataService.getSignInUser());
+            }
+        });
+    }
 
   onSubmitClick() {
+      var user = {
+          id: "1MUxrZRhP0Wsdad54w83Icw0y3k2",
+          name : "Skusaim id z fb",
+          photoUrl: "moj total skusobny url2",
+          behaviorCount: 0,
+          behavior: 0,
+          skillRatingCount: 0,
+
+      };
     this.dataService.refreshAfterLogin = true;
+      this.userService.getOneUser(user.id).subscribe(res=>{ //toto vymazat..je to len na skusanie
+          console.log(res);
+          console.log(user + "before");
+          console.log(user)
+          if (res==undefined){ //ak nenajde usera v databaze vytvori ho...
+            this.firestore.createUser(user);
+          }
+      });
+      console.log("toto je user");
+      console.log(user)
     this.router.navigateByUrl('/tabs/tabs/tab1');
   }
 

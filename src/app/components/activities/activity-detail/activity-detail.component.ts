@@ -30,6 +30,7 @@ import {OSM, Vector as VectorSource} from 'ol/source';
 import {Circle as CircleStyle, Fill, Stroke, Style, Icon} from 'ol/style';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {ActivatedRoute} from "@angular/router";
+import {ActivityRatingComponent} from "../activity-rating/activity-rating.component";
 
 
 const positionFeature = new Feature();
@@ -330,5 +331,23 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             this.map.updateSize();
         }, 500);
         console.log('mapa idze ci nejdze');
+    }
+    rateUsers(){
+        this.modalController
+            .create({component: ActivityRatingComponent,
+                componentProps:{
+                    users: this.selectedActivity.bookedByNames,
+                    usersId: this.selectedActivity.bookedBy,
+                }
+
+            })
+            .then(modalEl => {
+                console.log("som v tabe 1111  hore");
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+
+            });
     }
 }

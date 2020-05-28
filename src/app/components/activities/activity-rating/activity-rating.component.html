@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ohodnoť spoluhráčov</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list padding *ngFor="let user of this.usersFromDatabase">
+    <ion-item>{{user.name}}  <ionic4-star-rating #rating
+                                                 activeIcon = "ios-star"
+                                                 defaultIcon = "ios-star-outline"
+                                                 activeColor = "#FFD700"
+                                                 defaultColor = "#ccccff"
+                                                 readonly="false"
+                                                 rating="this.rating"
+                                                 fontSize = "25px"
+                                                 (ratingChanged)="logRatingChange(user.id, $event)">
+    </ionic4-star-rating> </ion-item>
+
+
+  </ion-list>
+
+  <ion-item class="allLogin" *ngIf="this.usersFromDatabase.length==0">
+    <p>Žiadny ďalší používatelia na hodnotenie</p>
+      <ion-buttons class="button-login" (click)="onCancel()" slot="end">
+        Back
+      </ion-buttons>
+
+  </ion-item>
+
+
+</ion-content>
