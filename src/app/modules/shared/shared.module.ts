@@ -8,6 +8,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EventNewComponent} from "../../components/events/event-new/event-new.component";
 import {EventListComponent} from "../../components/events/event-list/event-list.component";
 import {EventDetailComponent} from "../../components/events/event-detail/event-detail.component";
+import {FilterComponent} from "../../components/filter/filter.component";
+import {AppModule} from "../../app.module";
+import {FilterPipe} from "../../pipes/filter.pipe";
 
 @NgModule({
     declarations: [
@@ -16,8 +19,9 @@ import {EventDetailComponent} from "../../components/events/event-detail/event-d
         ActivityListComponent,
         EventNewComponent,
         EventDetailComponent,
-        EventListComponent
-
+        EventListComponent,
+        FilterComponent,
+        FilterPipe,
     ],
     imports: [
         IonicModule,
@@ -31,9 +35,11 @@ import {EventDetailComponent} from "../../components/events/event-detail/event-d
         ActivityListComponent,
         EventNewComponent,
         EventListComponent,
-        EventDetailComponent
+        EventDetailComponent,
+        FilterComponent,
+        FilterPipe
     ],
-    entryComponents: [EventNewComponent,EventDetailComponent]
+    entryComponents: [EventNewComponent,EventDetailComponent,FilterComponent]
 })
 export class SharedModule {
 }

@@ -34,7 +34,7 @@ export function createTranslateLoader(http: HttpClient) {
 }
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
-    declarations: [AppComponent, MenuComponent,ActivityRatingComponent ],
+    declarations: [AppComponent, MenuComponent, ActivityRatingComponent],
     entryComponents: [ActivityRatingComponent],
     imports: [
         BrowserModule,
@@ -67,6 +67,9 @@ firebase.initializeApp(environment.firebaseConfig);
         FilePath,
         ToastController,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+    ],
+    exports: [
+
     ],
     bootstrap: [AppComponent]
 })
