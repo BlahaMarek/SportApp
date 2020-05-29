@@ -11,6 +11,7 @@ import * as firebase from "firebase";
 import {forEach} from "@angular-devkit/schematics";
 import {Geolocation} from "@ionic-native/geolocation/ngx";
 import {Router} from "@angular/router";
+import {FilterComponent} from "../../components/filter/filter.component";
 
 let a1;
 let b1;
@@ -218,10 +219,6 @@ export class Tab1Page implements OnInit {
         this.filteredList = aktivityFiltrovane;
         aktivityFiltrovane = [];
         pole = [];
-    }
-
-    onFabClicked(event: MouseEvent) {
-        alert('Sem pojde filter !');
     }
 
     presentModal() {

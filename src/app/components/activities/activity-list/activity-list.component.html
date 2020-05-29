@@ -1,5 +1,11 @@
 <ion-content>
-    <ion-virtual-scroll [items]="filteredList" approxItemHeight="20px">
+    <ion-fab vertical="start" horizontal="end" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="flame" color="medium" (click)="onFabClicked($event)"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+    <ion-virtual-scroll [items]="filteredList | filter: filterCriteria" approxItemHeight="20px">
         <ion-item-sliding *virtualItem="let activity">
 
             <ion-item-options side="start" style="margin-left: 10px">

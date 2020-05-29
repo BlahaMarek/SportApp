@@ -7,6 +7,7 @@ import {Sport} from '../../../models/sport';
 import {DataService} from '../../../data/data.service';
 import {AuthService} from '../../../auth/auth.service';
 import * as firebase from "firebase";
+import {FilterComponent} from "../../filter/filter.component";
 
 @Component({
     selector: 'app-activity-list',
@@ -18,6 +19,7 @@ export class ActivityListComponent implements OnInit {
     @Input() filteredList: Activity[];
     sportOptions: Sport[] = [];
     user: any = {};
+    filterCriteria = [];
     constructor(
         private activityService: ActivityService,
         private modalController: ModalController,
@@ -86,5 +88,19 @@ export class ActivityListComponent implements OnInit {
 
     getCssClass(activity: Activity) {
         return "item-content " + this.dataService.getSportIconByValue(activity.sport);
+    }
+
+    onFabClicked(event: MouseEvent) {
+        this.modalController
+            .create({component: FilterComponent})
+            .then(modalEl => {
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+                console.log(result);
+                this.filterCriteria = result.data;
+                console.log(this.filterCriteria);
+            });
     }
 }
