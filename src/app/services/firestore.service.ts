@@ -3,6 +3,7 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 import {Activity} from '../models/activity';
 import {map} from 'rxjs/operators';
 import {User} from "../models/user";
+import {Rating} from "../models/rating";
 
 
 @Injectable({
@@ -20,6 +21,10 @@ export class FirestoreService {
     createEvent(sport: Activity) {
         return this.firestore.collection('events').add(sport);
     }
+    createRating(rating: Rating) {
+        return this.firestore.collection('ratings').add(rating);
+    }
+
     createUser(user: User) {
         return this.firestore.collection('users').doc(user.id).set(user);
     }

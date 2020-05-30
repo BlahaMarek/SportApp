@@ -26,12 +26,20 @@
   </ion-list>
 
   <ion-item class="allLogin" *ngIf="this.usersFromDatabase.length==0">
-    <p>Žiadny ďalší používatelia na hodnotenie</p>
+    <p>Všetci boli ohodnotení</p>
       <ion-buttons class="button-login" (click)="onCancel()" slot="end">
         Back
       </ion-buttons>
-
   </ion-item>
+  <p *ngIf="this.usersRated.length >0 ">Ohodnoteni pouzivatelia</p>
+  <ion-list  padding *ngFor="let user of this.usersRated">
+    <ion-item>{{user.name}}  <ion-button (click)="addFriend(this.loggedUser.user.uid,this.user.id)" color="danger">Pridat priatela</ion-button></ion-item>
+
+
+  </ion-list>
+
+
+
 
 
 </ion-content>

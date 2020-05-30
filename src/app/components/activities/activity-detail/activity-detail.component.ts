@@ -336,6 +336,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.modalController
             .create({component: ActivityRatingComponent,
                 componentProps:{
+                    idAktivity: this.selectedActivity.id,
                     users: this.selectedActivity.bookedByNames,
                     usersId: this.selectedActivity.bookedBy,
                 }

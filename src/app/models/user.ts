@@ -6,5 +6,6 @@ export class User {
     skillRatingCount?: number;
     behavior?: number;
     behaviorCount?: number;
+    friends?: string[];
 
 }
