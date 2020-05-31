@@ -9,6 +9,7 @@ import {AngularFireAuth} from "@angular/fire/auth";
 })
 export class DataService {
     user: any = {};
+    userFromDatabase: any = {};
     logged: boolean = false;
     idZMapy: any = [];
     idEventZMapy: any = [];
@@ -86,6 +87,9 @@ export class DataService {
     }
 
     getAllActivities(actiities: Activity){
+    }
+    getUserFromDatabase(){
+        return this.userFromDatabase;
     }
 
     getSignInUser(){

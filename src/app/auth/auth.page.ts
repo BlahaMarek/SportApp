@@ -7,6 +7,7 @@ import {NavController, ToastController} from "@ionic/angular";
 import {DataService} from "../data/data.service";
 import {UserService} from "../services/user.service";
 import {FirestoreService} from "../services/firestore.service";
+import {User} from "../models/user";
 
 
 @Component({
@@ -15,6 +16,10 @@ import {FirestoreService} from "../services/firestore.service";
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
+    user: User={behavior: 0, friends: [], id: "", name: "", photoUrl: ""};
+
+
+
   constructor(private firestore: FirestoreService,private userService:UserService, private dataService: DataService,public navCtrl: NavController, private facebook: Facebook, private router: Router,public toastController: ToastController,
   ) {}
 
@@ -60,13 +65,33 @@ export class AuthPage implements OnInit {
         });
         toast.present();
     }
+
+    ionViewWillLeave(){
+        if (this.dataService.logged == true){
+            this.createUserToDataabse()
+        }
+        console.log("som in da ion view will leave");
+    }
+
     createUserToDataabse(){
 
-        this.userService.getOneUser(this.dataService.getSignInUser().id).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
+        this.userService.getOneUser(this.dataService.getSignInUser().user.uid).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
             console.log(res);
             console.log("up je res");
             if (res==undefined){
-                this.firestore.createUser(this.dataService.getSignInUser());
+                this.user = {
+                    id: this.dataService.getSignInUser().user.uid,
+                    name: this.dataService.getSignInUser().additionalUserInfo.profile.first_name,
+                    photoUrl: this.dataService.getSignInUser().user.photoURL,
+                    friends: [],
+                    behavior: 0
+                }
+                this.firestore.createUser(this.user);
+                this.dataService.userFromDatabase = this.user;
+            }
+            else {
+                this.dataService.userFromDatabase = res;
+
             }
         });
     }

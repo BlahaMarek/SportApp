@@ -23,31 +23,42 @@ export class ActivityRatingComponent implements OnInit {
   ratingsFromAktivity: any = [];
   loggedUser: any = {};
   constructor(private ratingService: RatingService,private firestoreService: FirestoreService,private dataService: DataService,private userService: UserService, private modalController: ModalController) { }
+  // this.loggedUser.user.uid
+  ngOnInit() {
+    this.loggedUser = this.dataService.getSignInUser();
+    this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.user.uid ).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
+      this.ratingsFromAktivity = res;
+    });
 
-   ngOnInit() {
-     this.loggedUser = this.dataService.getSignInUser();
-     this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.user.uid).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
-       this.ratingsFromAktivity = res;
-     });
+    for (var i=0; i<this.usersId.length;i++){
+      if (this.usersId[i] != this.loggedUser.id){
+        this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res=>{
+          if (this.ratingsFromAktivity.length>0) {
+            var bolHodnoteny = this.ratingsFromAktivity.filter(rat => rat.idHraca.includes(res.id))
+            if (bolHodnoteny.length == 0) { //zistim ci ho uz pred tym hodnotil//o 3 riadku povyse
+              this.usersFromDatabase.push(res); // sem si pushnem pouzivatelov z aktivity, okrem lognuteho
+            }
+            else {
+              this.usersRated.push(res);
+            }
+          }else {
+            this.usersFromDatabase.push(res);
+          }
+        });
+      }
+    }
 
-     for (var i=0; i<this.usersId.length;i++){
-       if (this.usersId[i] != this.dataService.getSignInUser().id){
-         this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res=>{
-           if (this.ratingsFromAktivity.length>0) {
-             var bolHodnoteny = this.ratingsFromAktivity.filter(rat => rat.idHraca.includes(res.id))
-             if (bolHodnoteny.length == 0) { //zistim ci ho uz pred tym hodnotil//o 3 riadku povyse
-               this.usersFromDatabase.push(res); // sem si pushnem pouzivatelov z aktivity, okrem lognuteho
-             }
-             else {
-               this.usersRated.push(res);
-             }
-           }else {
-             this.usersFromDatabase.push(res);
-           }
-         });
-       }
-     }
 
+  }
+  checkFriends(friendsId:string){
+    console.log("userFromDatabase");
+    console.log(this.dataService.getUserFromDatabase());
+    var pro = this.dataService.getUserFromDatabase().friends.filter(fr => fr == friendsId);
+    if (pro.length>0){
+      return true
+    }else{
+      return false;
+    }
 
   }
 
@@ -84,8 +95,10 @@ export class ActivityRatingComponent implements OnInit {
     }
     user.friends.push(friend);
     this.userService.updateUser(id, user);
+  }
 
-
+  deleteFriend(friend){
+    this.userService.removeFriend(friend);
   }
 
 
