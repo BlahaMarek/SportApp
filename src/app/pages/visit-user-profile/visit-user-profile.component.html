@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profil hráča {{this.user.name}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+
+
+<ion-avatar>
+  <img src="{{this.user.photoUrl}}">
+</ion-avatar>
+<ion-item>
+  {{this.user.name}}
+</ion-item>
+  <ionic4-star-rating #rating
+                      activeIcon = "ios-star"
+                      defaultIcon = "ios-star-outline"
+                      activeColor = "#FFD700"
+                      defaultColor = "#ccccff"
+                      readonly="true"
+                      rating="{{this.user.behavior / this.user.behaviorCount}}"
+                      fontSize = "25px"
+                      >
+  </ionic4-star-rating> <p>Pocet hodnoteni {{this.user.behaviorCount}}</p>
+        <ion-button *ngIf="!checkFriends()" (click)="addFriend()" color="danger">Pridat priatela</ion-button>
+        <ion-button *ngIf="checkFriends()" (click)="deleteFriend()" color="danger">Odobrat priatela</ion-button>
+</ion-content>

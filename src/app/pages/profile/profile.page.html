@@ -26,7 +26,7 @@
                         activeColor = "#FFD700"
                         defaultColor = "#ccccff"
                         readonly="true"
-                        (ratingChanged)="this.rating"
+                        rating="{{this.user.behavior / this.user.behaviorCount}}"
                         fontSize = "25px"
                         >
     </ionic4-star-rating>

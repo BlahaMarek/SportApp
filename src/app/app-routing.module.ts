@@ -11,6 +11,8 @@ const routes: Routes = [
   { path: 'messages', loadChildren: './pages/messages/messages.module#MessagesPageModule' },
 
 
+
+
 ];
 @NgModule({
   imports: [

@@ -7,6 +7,7 @@ import {take} from "rxjs/operators";
 import {FirestoreService} from "../../../services/firestore.service";
 import {Rating} from "../../../models/rating";
 import {RatingService} from "../../../services/rating.service";
+import {VisitUserProfileComponent} from "../../../pages/visit-user-profile/visit-user-profile.component";
 
 @Component({
   selector: 'app-activity-rating',
@@ -18,6 +19,8 @@ export class ActivityRatingComponent implements OnInit {
   @Input() users: string[];
   @Input() usersId: string[];
   @Input() idAktivity: string;
+  @Input() overdue: boolean;
+
   usersFromDatabase:User[] = [];
   usersRated:User[] = [];
   ratingsFromAktivity: any = [];
@@ -26,7 +29,7 @@ export class ActivityRatingComponent implements OnInit {
   // this.loggedUser.user.uid
   ngOnInit() {
     this.loggedUser = this.dataService.getSignInUser();
-    this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.user.uid ).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
+    this.ratingService.getRatingsById(this.idAktivity,"this.loggedUser.user.uid" ).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
       this.ratingsFromAktivity = res;
     });
 
@@ -84,17 +87,10 @@ export class ActivityRatingComponent implements OnInit {
     this.firestoreService.createRating(ratingUkladam);
   }
 
-  addFriend(id:string ,friend){
-    var user: User = this.usersFromDatabase.find(user => user.id == id);
-    if (user == undefined) {
-      var user: User = this.usersRated.find(user => user.id == id);
-      console.log(user);
-      user.friends.push(friend);
-      this.userService.updateUser(id, user);
-      return;
-    }
+  addFriend(friend){
+    var user: User = this.loggedUser.user.uid
     user.friends.push(friend);
-    this.userService.updateUser(id, user);
+    this.userService.updateUser(this.loggedUser.user.uid, user);
   }
 
   deleteFriend(friend){
@@ -105,6 +101,22 @@ export class ActivityRatingComponent implements OnInit {
 
   onCancel() {
     this.modalController.dismiss({message: 'ActivityRating closed'}, 'cancel');
+  }
+  visitProfile(user: User){
+    this.modalController
+        .create({component: VisitUserProfileComponent,
+          componentProps:{
+            user: user
+          }
+
+        })
+        .then(modalEl => {
+          modalEl.present();
+          return modalEl.onDidDismiss();
+        })
+        .then(result => {
+
+        });
   }
 
 }

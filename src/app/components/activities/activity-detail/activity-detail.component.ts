@@ -339,6 +339,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                     idAktivity: this.selectedActivity.id,
                     users: this.selectedActivity.bookedByNames,
                     usersId: this.selectedActivity.bookedBy,
+                    overdue: this.overdue
                 }
 
             })

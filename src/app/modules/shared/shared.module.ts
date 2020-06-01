@@ -11,6 +11,7 @@ import {EventDetailComponent} from "../../components/events/event-detail/event-d
 import {FilterComponent} from "../../components/filter/filter.component";
 import {AppModule} from "../../app.module";
 import {FilterPipe} from "../../pipes/filter.pipe";
+import {VisitUserProfileComponent} from "../../pages/visit-user-profile/visit-user-profile.component";
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import {FilterPipe} from "../../pipes/filter.pipe";
         EventNewComponent,
         EventDetailComponent,
         EventListComponent,
+        // VisitUserProfileComponent,
         FilterComponent,
         FilterPipe,
     ],
