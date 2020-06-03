@@ -26,10 +26,14 @@
                         activeColor = "#FFD700"
                         defaultColor = "#ccccff"
                         readonly="true"
-                        rating="{{this.user.behavior / this.user.behaviorCount}}"
+                        rating="{{this.dataService.getUserFromDatabase().behavior/this.dataService.getUserFromDatabase().behaviorCount}}"
                         fontSize = "25px"
                         >
     </ionic4-star-rating>
+
+    <ion-button (click)="rateUsers()" expand="block" fill="outline">
+      {{ "Pocet prietelov: " + this.dataService.getUserFromDatabase().friends.length}}
+    </ion-button>
 
   </div>
 

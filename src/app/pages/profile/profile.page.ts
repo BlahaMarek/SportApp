@@ -4,6 +4,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import {DataService} from "../../data/data.service";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {UserService} from "../../services/user.service";
+import {ActivityRatingComponent} from "../../components/activities/activity-rating/activity-rating.component";
+import {ModalController} from "@ionic/angular";
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +14,7 @@ import {UserService} from "../../services/user.service";
 })
 export class ProfilePage implements OnInit {
   user: any = {};
+
   userFromTable:any={}
   rating:number = 0;
   customForm: FormGroup;
@@ -19,7 +22,8 @@ export class ProfilePage implements OnInit {
               private fireAuth: AngularFireAuth,
               private dataService: DataService,
               private userService: UserService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private modalController: ModalController) { }
 
   ngOnInit() {
     console.log(this.dataService.getSignInUser());
@@ -43,6 +47,24 @@ export class ProfilePage implements OnInit {
 
   login() {
     this.router.navigateByUrl('/login');
+  }
+  rateUsers(){
+    this.modalController
+        .create({component: ActivityRatingComponent,
+          componentProps:{
+            usersId: this.userFromTable.friends,
+            profile: true
+          }
+
+        })
+        .then(modalEl => {
+          console.log("som v tabe 1111  hore");
+          modalEl.present();
+          return modalEl.onDidDismiss();
+        })
+        .then(result => {
+
+        });
   }
 
   get userPhoto() {

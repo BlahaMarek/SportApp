@@ -20,39 +20,50 @@ export class ActivityRatingComponent implements OnInit {
   @Input() usersId: string[];
   @Input() idAktivity: string;
   @Input() overdue: boolean;
+  @Input() profile: boolean;
+  @Input() idSportu: number;
 
   usersFromDatabase:User[] = [];
   usersRated:User[] = [];
   ratingsFromAktivity: any = [];
+  friendsFromProfile:User[] = [];
   loggedUser: any = {};
   constructor(private ratingService: RatingService,private firestoreService: FirestoreService,private dataService: DataService,private userService: UserService, private modalController: ModalController) { }
   // this.loggedUser.user.uid
   ngOnInit() {
     this.loggedUser = this.dataService.getSignInUser();
-    this.ratingService.getRatingsById(this.idAktivity,"this.loggedUser.user.uid" ).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
-      this.ratingsFromAktivity = res;
-    });
+    if (this.profile) { // ak pridem z profilu
+      for (var i = 0; i < this.usersId.length; i++) {
+        this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res => {
+          this.friendsFromProfile.push(res);
+        });
+      }
+    }
+    // 1MUxrZRhP0Wsdad54w83Icw0y3k2
+    else {       // ak pridem from da aktivity
+      this.ratingService.getRatingsById(this.idAktivity, this.loggedUser.user.uid).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
+        this.ratingsFromAktivity = res;
+      });
 
-    for (var i=0; i<this.usersId.length;i++){
-      if (this.usersId[i] != this.loggedUser.id){
-        this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res=>{
-          if (this.ratingsFromAktivity.length>0) {
+
+      for (var i = 0; i < this.usersId.length; i++) {
+        this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res => {
+          if (this.ratingsFromAktivity.length > 0) {
             var bolHodnoteny = this.ratingsFromAktivity.filter(rat => rat.idHraca.includes(res.id))
             if (bolHodnoteny.length == 0) { //zistim ci ho uz pred tym hodnotil//o 3 riadku povyse
               this.usersFromDatabase.push(res); // sem si pushnem pouzivatelov z aktivity, okrem lognuteho
-            }
-            else {
+            } else {
               this.usersRated.push(res);
             }
-          }else {
+          } else {
             this.usersFromDatabase.push(res);
           }
         });
       }
+
     }
-
-
   }
+
   checkFriends(friendsId:string){
     console.log("userFromDatabase");
     console.log(this.dataService.getUserFromDatabase());
@@ -79,22 +90,38 @@ export class ActivityRatingComponent implements OnInit {
       idAktivity: this.idAktivity,
       idHraca: userr.id,
       isKritika: this.loggedUser.user.uid,
-      rating: rating
-
+      rating: rating,
+      idSportu: this.idSportu
   }
+
   this.usersRated.push(userr);
     this.userService.updateUser(id, userr);
     this.firestoreService.createRating(ratingUkladam);
   }
 
   addFriend(friend){
-    var user: User = this.loggedUser.user.uid
-    user.friends.push(friend);
-    this.userService.updateUser(this.loggedUser.user.uid, user);
+    var user: User = this.dataService.getUserFromDatabase().id;
+
+    console.log(this.dataService.getUserFromDatabase().id);
+    console.log("toto je user");
+    console.log("toto je friend");
+    console.log(friend);
+    this.dataService.getUserFromDatabase().friends.push(friend);
+    this.userService.updateUser(this.loggedUser.user.uid, this.dataService.getUserFromDatabase());
   }
 
-  deleteFriend(friend){
+  deleteFriend(friend){ //vymaze priatela ale v liste ostane
     this.userService.removeFriend(friend);
+  }
+
+  deleteFriendFomFriendList(friendId){ // toto mam pre vymazanie z priatela profilu...aby aj zmizol z listu
+    this.userService.removeFriend(friendId);
+    for (var i= 0 ; i<this.friendsFromProfile.length;i++){
+      if (this.friendsFromProfile[i].id == friendId){
+        this.friendsFromProfile.splice(i,1);
+        break;
+      }
+    }
   }
 
 

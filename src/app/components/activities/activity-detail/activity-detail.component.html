@@ -134,12 +134,9 @@
 
     <ion-button *ngIf="!overdue"  (click)="rateUsers()" class="ion-margin-top" expand="block" fill="outline">
         <!--        *ngIf="overdue && !unSigned"-->
-        {{ "Prihlaseni pouzivatelia"}}
+        {{ "Prihlaseni pouzivatelia: " + this.selectedActivity.bookedBy.length}}
 
     </ion-button>
-
-
-
 
 
     <div id="map2" class="map2"></div>

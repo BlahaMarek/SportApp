@@ -44,14 +44,16 @@ export class UserService {
     })
   }
   removeFriend(friend: User) {
-    var loggedUser = this.dataService.userFromDatabase;
-    // let userId = this.getOneUser(friend);
+    var loggedUser = this.dataService.getUserFromDatabase();
+console.log("toto je logged user ");
+      console.log(loggedUser);
     for (var i = 0 ; i< loggedUser.friends.length ; i++){
       if (loggedUser.friends[i] == friend){
         loggedUser.friends.splice(i,1);
         break;
       }
-      console.log("toto je activity bookedby[i]"+i);
+        console.log("toto je logged user ");
+        console.log(loggedUser);
     }
     return this.usersCollection.doc(loggedUser.id).update(loggedUser);
 
