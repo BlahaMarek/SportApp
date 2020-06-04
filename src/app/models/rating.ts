@@ -1,6 +1,6 @@
 export class Rating {
     idAktivity: string
-    idSportu: number
+    idSportu: string
     idHraca: string
     isKritika: string
     rating: number

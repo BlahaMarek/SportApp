@@ -30,10 +30,20 @@ export class RatingService {
     //     })
     // );
   }
-  getRatingsById(id, idKritika){
+  getRatingsById(id, idKritika){ // vyberiem ratingy kde ich niekto uz ohodnotil ..prihlaseny dzad
     return this.afs.collection<Rating>('ratings', ref => ref.where('idAktivity','==',id)
         .where('isKritika','==',idKritika)).valueChanges();
   }
+
+  getRatingsByUser(userId,sportId){ // vyberiem vsetky ratingy pouzivatela len zo sportu na ktory je prihlaseny
+    return this.afs.collection<Rating>('ratings', ref => ref.where('idHraca','==',userId)
+        .where('idSportu','==',sportId)).valueChanges();
+  }
+
+  getAllRatingsByUser(userId){ // vyberiem vsetky ratingy pouzivatela
+    return this.afs.collection<Rating>('ratings', ref => ref.where('idHraca','==',userId)).valueChanges();
+  }
+
 
   getOneRating(id){
     return this.ratingCollection.doc<Rating>(id).valueChanges();

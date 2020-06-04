@@ -15,16 +15,17 @@
   <ion-list padding *ngFor="let user of this.usersFromDatabase">
     <ion-item>
       <ion-avatar><img src="{{user.photoUrl}}"></ion-avatar>
-      {{user.name}}
+      <ion-button (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>
+
       <ionic4-star-rating *ngIf="!this.overdue" #rating
                                                  activeIcon = "ios-star"
                                                  defaultIcon = "ios-star-outline"
                                                  activeColor = "#FFD700"
                                                  defaultColor = "#ccccff"
                                                  readonly="true"
-                                                rating="{{this.user.behavior / this.user.behaviorCount}}"
+                                                rating="{{this.user.behavior}}"
                                                  fontSize = "25px"
-                                                 (ratingChanged)="logRatingChange(user.id, $event)">
+                          >
     </ionic4-star-rating>
       <ionic4-star-rating *ngIf="this.overdue && this.loggedUser.user.uid != user.id" #rating
                           activeIcon = "ios-star"
@@ -36,22 +37,14 @@
                           fontSize = "25px"
                           (ratingChanged)="logRatingChange(user.id, $event)">
       </ionic4-star-rating>
-
-
-
-      <ion-button (click)="visitProfile(user)" color="danger">Profil</ion-button></ion-item>
-
-
+    </ion-item>
   </ion-list>
 
 
   <ion-item class="allLogin" *ngIf="this.usersFromDatabase.length==0">
-    <p>Všetci boli ohodnotení</p>
-      <ion-buttons class="button-login" (click)="onCancel()" slot="end">
-        Back
-      </ion-buttons>
+    <p *ngIf="!overdue">Všetci boli ohodnotení</p>
   </ion-item>
-  <p *ngIf="this.usersRated.length >0 ">Ohodnoteni pouzivatelia</p>
+  <p *ngIf="this.usersRated.length >0 && !overdue">Ohodnoteni pouzivatelia</p>
   <ion-list  padding *ngFor="let user of this.usersRated">
 <!--    toto bude treba klepnut hore, lebo este pri nehranej aktivite to tu je na 2 veci-->
     <ion-avatar><img src="{{user.photoUrl}}"></ion-avatar> /
@@ -59,7 +52,6 @@
       <ion-button (click)="visitProfile(user)" color="danger">Profil</ion-button>
       <ion-button *ngIf="!checkFriends(user.id)" (click)="addFriend(user.id)" color="danger">Pridat priatela</ion-button>
       <ion-button *ngIf="checkFriends(user.id)" (click)="deleteFriend(user.id)" color="danger">Odobrat priatela</ion-button>
-
     </ion-item>
 
 

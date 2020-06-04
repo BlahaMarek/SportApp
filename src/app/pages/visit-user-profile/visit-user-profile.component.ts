@@ -34,13 +34,14 @@ export class VisitUserProfileComponent implements OnInit {
   }
 
   addFriend(){
-    var user: User = this.dataService.getUserFromDatabase().id;
-    user.friends.push(this.user.id);
-    this.userService.updateUser(user.id, user);
+    var user: User = this.dataService.getUserFromDatabase().id; // lebo toto proste nejde
+    console.log(user)
+    this.dataService.getUserFromDatabase().friends.push(this.user.id);
+    this.userService.updateUser(this.dataService.getUserFromDatabase().id, this.dataService.getUserFromDatabase());
   }
 
   deleteFriend(){
-    this.userService.removeFriend(this.user);
+    this.userService.removeFriend(this.user.id);
   }
 
 }

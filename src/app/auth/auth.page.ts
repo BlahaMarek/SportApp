@@ -97,6 +97,7 @@ export class AuthPage implements OnInit {
     }
 
   onSubmitClick() {
+      // this.dataService.logged = true; // prec ..iba pre vedecke ucely
       var user = {
           id: "1MUxrZRhP0Wsdad54w83Icw0y3k2",
           name : "Skusaim id z fb",

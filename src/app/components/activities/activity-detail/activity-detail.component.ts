@@ -295,6 +295,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         toast.present();
     }
 
+
+
+
+
     ngAfterViewInit(): void {
         var iconStyle = new Style({
             image: new CircleStyle({

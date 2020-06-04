@@ -43,7 +43,7 @@ export class UserService {
           )
     })
   }
-  removeFriend(friend: User) {
+  removeFriend(friend: string) {
     var loggedUser = this.dataService.getUserFromDatabase();
 console.log("toto je logged user ");
       console.log(loggedUser);
