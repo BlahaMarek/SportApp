@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="overdue">Ohodnoť spoluhráčov</ion-title>
-    <ion-title *ngIf="!overdue">Prihlaseni pouzivatelia</ion-title>
+    <ion-title *ngIf="overdue && !profile">Ohodnoť spoluhráčov</ion-title>
+    <ion-title *ngIf="!overdue && !profile">Prihlaseni pouzivatelia</ion-title>
     <ion-title *ngIf="profile">Priatelia</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="onCancel()">
@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!this.profile">
+<ion-content *ngIf="!this.profile && !overdue">
   <ion-list padding *ngFor="let user of this.usersFromDatabase">
     <ion-item>
       <ion-avatar><img src="{{user.photoUrl}}"></ion-avatar>

@@ -134,11 +134,6 @@ export class ProfilePage implements OnInit {
         }
       });
     });
-    console.log("toto je sport nejaky" + this.ratingSport1);
-    console.log("toto je sport nejaky" + this.ratingSport2);
-    console.log("toto je sport nejaky" + this.ratingSport3);
-    console.log("toto je sport nejaky" + this.ratingSport9);
-
   }
 
   get userPhoto() {

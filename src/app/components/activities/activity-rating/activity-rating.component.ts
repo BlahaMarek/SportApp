@@ -43,9 +43,10 @@ export class ActivityRatingComponent implements OnInit {
       }
 
     }
+    // this.loggedUser.user.uid
     // 1MUxrZRhP0Wsdad54w83Icw0y3k2
     else {       // ak pridem from da aktivity
-      this.ratingService.getRatingsById(this.idAktivity, this.loggedUser.user.uid).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
+      this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.user.uid).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
         this.ratingsFromAktivity = res;
       });
 

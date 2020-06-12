@@ -19,17 +19,140 @@
 </ion-avatar>
 <ion-item>
   {{this.user.name}}
+  <ion-button *ngIf="!checkFriends()" (click)="addFriend()" color="danger">Pridat priatela</ion-button>
+  <ion-button *ngIf="checkFriends()" (click)="deleteFriend()" color="danger">Odobrat priatela</ion-button>
 </ion-item>
-  <ionic4-star-rating #rating
-                      activeIcon = "ios-star"
-                      defaultIcon = "ios-star-outline"
-                      activeColor = "#FFD700"
-                      defaultColor = "#ccccff"
-                      readonly="true"
-                      rating="{{this.user.behavior / this.user.behaviorCount}}"
-                      fontSize = "25px"
-                      >
-  </ionic4-star-rating> <p>Pocet hodnoteni {{this.user.behaviorCount}}</p>
-        <ion-button *ngIf="!checkFriends()" (click)="addFriend()" color="danger">Pridat priatela</ion-button>
-        <ion-button *ngIf="checkFriends()" (click)="deleteFriend()" color="danger">Odobrat priatela</ion-button>
+  <ion-item *ngIf="ratingSport1 != 0">
+    <p>Tenis</p>
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport1)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+
+
+  <ion-item *ngIf="ratingSport2!= 0">
+    <p>Squash</p>
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport2)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+
+  <ion-item *ngIf="ratingSport3 != 0">
+    <p>Ping pong</p>
+    <ionic4-star-rating #rating
+                        activeIcon = "ios-star"
+                        defaultIcon = "ios-star-outline"
+                        activeColor = "#FFD700"
+                        defaultColor = "#ccccff"
+                        readonly="true"
+                        rating="{{countAverageRating(ratingSport3)}}"
+                        fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+  <ion-item *ngIf="ratingSport4 != 0">
+    <p>Futbal</p>
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport4)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+  <ion-item *ngIf="ratingSport5 != 0">
+    <p>Florbal</p>
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport5)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+  <ion-item *ngIf="ratingSport6 != 0">
+    <p>Hokej</p>
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport6)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+  <ion-item *ngIf="ratingSport7 != 0">
+    <p>Volejbal</p>
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport7)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+  <ion-item *ngIf="ratingSport8 != 0">
+    <p>Basketbal</p>
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport8)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+  <ion-item *ngIf="ratingSport9 != 0">
+    <p>Nohejbal</p>
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport9)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+  <ion-item *ngIf="ratingSport10 != 0">
+    <ionic4-star-rating  #rating
+                         activeIcon = "ios-star"
+                         defaultIcon = "ios-star-outline"
+                         activeColor = "#FFD700"
+                         defaultColor = "#ccccff"
+                         readonly="true"
+                         rating="{{countAverageRating(ratingSport10)}}"
+                         fontSize = "25px"
+    >
+    </ionic4-star-rating>
+  </ion-item>
+
 </ion-content>

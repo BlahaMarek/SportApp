@@ -438,7 +438,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         for (let o = 0; o< resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
             markiza = new Feature({                 //uz nie lebo som to upravil na klastre, pro
                 geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
-                name: 'Event kurwa',
+                name: 'Event',
                 id: resEvent[o][3],
                 zdroj: 'event'
             });
@@ -454,7 +454,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         for (let o = 0; o< res.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
             markiza = new Feature({
                         geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
-                        name: 'Futbal kurwa',
+                        name: this.dataService.getSportNameByValue(Number(res[o][2])),
                         id: res[o][3],
                         zdroj: 'aktivita'
                     });
