@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import { Network } from '@ionic-native/network/ngx';
 import {ToastController} from "@ionic/angular";
+import {EventService} from "../services/event.service";
 
 @Component({
   selector: 'app-tabs',
@@ -11,7 +12,7 @@ import {ToastController} from "@ionic/angular";
 export class TabsPage implements OnInit{
   disconnectSubscription: Subscription = null;
 
-  constructor(private network: Network, public toastController: ToastController) {}
+  constructor(private network: Network, public toastController: ToastController, private eventService: EventService) {}
 
   ngOnInit() {
      this.disconnectSubscription = this.network.onDisconnect().subscribe(() => {

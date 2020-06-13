@@ -14,12 +14,16 @@ export class EventService {
 
   private eventsCollection: AngularFirestoreCollection<Activity>;
   private events: Observable<Activity[]>;
+  private _eventss = new BehaviorSubject<Activity[]>([]);
+  readonly activities$ = this._eventss.asObservable();
   event: Activity;
   events2: any[] =[];routes;
   user: any = {};
-  constructor( private fireService: FirestoreService, private afs: AngularFirestore
-    ,private dataService: DataService) {
-
+  constructor(
+      private fireService: FirestoreService,
+      private afs: AngularFirestore,
+      private dataService: DataService
+  ) {
 
     this.eventsCollection = this.afs.collection<any>('events');
     this.events = this.eventsCollection.snapshotChanges().pipe(
@@ -44,24 +48,16 @@ export class EventService {
     });
 
     this.eventss = this.events2;
-
-
   }
 
-  private _eventss = new BehaviorSubject<Activity[]>([]);
-  readonly activities$ = this._eventss.asObservable();
-
-  // get activity list
   get eventss(): Activity[] {
     return this._eventss.getValue();
   }
 
-  // set activity list
   set eventss(activities: Activity[]) {
     this._eventss.next(activities);
   }
 
-  // get count of activities
   get allEventsCount(): number {
     return this._eventss.getValue().length;
   }
@@ -93,8 +89,6 @@ export class EventService {
         activity.bookedByNames.splice(i,1);
         break;
       }
-      console.log("toto je activity bookedby[i]"+i);
-      console.log(activity.bookedBy[i]);
     }
     activity.peopleCount = activity.peopleCount -1;
     return this.eventsCollection.doc(sport.id).update(activity);
@@ -114,17 +108,10 @@ export class EventService {
     return this.eventsCollection.doc<Activity>(id).valueChanges();
   }
 
-
-  // getActivities(): Observable<Activity>{
-  //     return this.activities;
-  // }
-
   getActivityCollection(id: string) {
 
   }
 
-
-  // add new activity
   addEvent(activity: Activity) {
     this.eventss = [
       ...this.eventss,
@@ -132,13 +119,7 @@ export class EventService {
     ]
   }
 
-
-
-  // delete existing activity
   deleteEvent(sport: Activity) {
     return this.eventsCollection.doc(sport.id).delete();
-    //this.activities = this.activities.filter(activity => activity.id !== id);
-
-
   }
 }

@@ -5,11 +5,11 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import Point from 'ol/geom/Point';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-import {Cluster,OSM, Vector as VectorSource} from 'ol/source';
+import {Cluster, OSM, Vector as VectorSource} from 'ol/source';
 import {fromLonLat} from 'ol/proj';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
 import BingMaps from 'ol/source/BingMaps';
-import { ToastController } from '@ionic/angular';
+import {ToastController} from '@ionic/angular';
 import Circle from 'ol/geom/Circle';
 import 'ol/ol.css';
 import Overlay from 'ol/Overlay';
@@ -19,8 +19,8 @@ import {Activity} from "../../models/activity";
 import {ActivityDetailComponent} from "../../components/activities/activity-detail/activity-detail.component";
 import {ModalController} from '@ionic/angular';
 import {AuthService} from "../../auth/auth.service";
-import { Router } from '@angular/router';
-import { DataService } from 'src/app/data/data.service';
+import {Router} from '@angular/router';
+import {DataService} from 'src/app/data/data.service';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text, Icon} from 'ol/style';
 import {forEach} from "@angular-devkit/schematics";
 import {isBoolean} from "util";
@@ -68,10 +68,10 @@ const popup2 = new Overlay({
 export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     map: Map;
     user: any = {};
-    image:any='';
+    image: any = '';
     private win: any = window;
     activityList: Activity[];
-     result:any = [[]];
+    result: any = [[]];
 
     // // @ts-ignore
     // @ViewChild('mapElement') mapElement;
@@ -86,6 +86,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         private dataService: DataService
     ) {
     }
+
     async presentToast(msg) {
         const toast = await this.toastController.create({
             message: msg,
@@ -93,8 +94,8 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         });
         toast.present();
     }
-    ngAfterViewInit(): void {
 
+    ngAfterViewInit(): void {
 
 
         this.pridanieMarkerov();
@@ -102,7 +103,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             this.locate();
             console.log('toto je a1' + a1);
             console.log('toto je b1' + b1);
-        } else { console.log('kures fakt preskakuje null'); }
+        } else {
+            console.log('kures fakt preskakuje null');
+        }
 
         const map = new Map({
             layers: [
@@ -126,9 +129,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         map.addOverlay(popup);
 
         // tslint:disable-next-line:only-arrow-functions
-        map.on('click', function(evt) {
+        map.on('click', function (evt) {
             idDoButtonu = [];
-            const feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+            const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                 var features = feature.get('features');
                 if (features.length == 1) { // jedna aktivita
                     console.log(features.length);
@@ -144,7 +147,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             if (feature) {
                 console.log("som tuu kde chcem byt");
                 console.log(feature.length);
-                if (feature.length >= 2){
+                if (feature.length >= 2) {
                     var coordinates = feature[0].getGeometry().getCoordinates();
                     popup.setPosition(coordinates);
 
@@ -153,27 +156,25 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         if (vsetkyRovnake != feature[i].values_.zdroj) { //ak sa nahodou nejaka nebude rovnat 1. prvu nastavi  sa na false
                             vsetkyRovnake = false;
                         }
-                        if (feature[i].values_.zdroj=="aktivita"){
+                        if (feature[i].values_.zdroj == "aktivita") {
                             try {
                                 idDoButtonu.push(feature[i].get('id'))
-                            }
-                            catch(error) {
+                            } catch (error) {
                                 console.error(error);
                                 // idDoButtonu = [];
                             }
                         }
-                        if (feature[i].values_.zdroj=="event"){
+                        if (feature[i].values_.zdroj == "event") {
                             try {
                                 idDoButtonuEvent.push(feature[i].get('id'))
-                            }
-                            catch(error) {
+                            } catch (error) {
                                 console.error(error);
                                 // idDoButtonuEvent = [];
                             }
                         }
                     }
 
-                    if (vsetkyRovnake && feature[0].values_.zdroj=="aktivita") {
+                    if (vsetkyRovnake && feature[0].values_.zdroj == "aktivita") {
                         $(document.getElementById('popup')).popover({
                             placement: 'top',
                             html: true,
@@ -187,7 +188,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         document.getElementById('testButton').style.top = rect.top - 55 + "px";
                         document.getElementById('testButton').style.left = rect.left - 35 + "px";
                     }
-                    if (vsetkyRovnake && feature[0].values_.zdroj=="event") {
+                    if (vsetkyRovnake && feature[0].values_.zdroj == "event") {
                         $(document.getElementById('popup')).popover({
                             placement: 'top',
                             html: true,
@@ -201,7 +202,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         document.getElementById('testButton3').style.top = rect.top - 55 + "px";
                         document.getElementById('testButton3').style.left = rect.left - 35 + "px";
                     }
-                    if (!vsetkyRovnake){
+                    if (!vsetkyRovnake) {
                         $(document.getElementById('popup')).popover({
                             placement: 'top',
                             html: true,
@@ -223,9 +224,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     }
 
 
-
-                }
-                else {
+                } else {
                     var coordinates = feature.getGeometry().getCoordinates();
                     popup.setPosition(coordinates);
                     $(document.getElementById('popup')).popover({
@@ -252,8 +251,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         document.getElementById('testButton3').style.position = "absolute";
                         document.getElementById('testButton3').style.top = rect.top - 55 + "px";
                         document.getElementById('testButton3').style.left = rect.left - 35 + "px";
-                    }
-                    else {
+                    } else {
                         console.error("vlastne ani neviem aky vyznam ma tento else, ale funguje to, tak to nemenim")
                     }
                 }
@@ -263,21 +261,21 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
             } else {
                 idDoButtonu = [];
-                idDoButtonuEvent =[];
+                idDoButtonuEvent = [];
                 $(document.getElementById('popup')).popover('destroy');
-                document.getElementById('testButton').style.display= "none";
-                document.getElementById('testButton3').style.display= "none";
+                document.getElementById('testButton').style.display = "none";
+                document.getElementById('testButton3').style.display = "none";
             }
         });
 
 
-        map.on('pointermove', function(e) {
+        map.on('pointermove', function (e) {
             if (e.dragging) {
                 idDoButtonu = [];
-                idDoButtonuEvent =[];
+                idDoButtonuEvent = [];
                 $(document.getElementById('popup')).popover('destroy');
-                document.getElementById('testButton').style.display= "none";
-                document.getElementById('testButton3').style.display= "none";
+                document.getElementById('testButton').style.display = "none";
+                document.getElementById('testButton3').style.display = "none";
                 return;
             }
             const pixel = map.getEventPixel(e.originalEvent);
@@ -298,12 +296,11 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         });
 
 
-
         var styleCache = {};
         new VectorLayer({
             map: this.map = map,
             source: clusterSource,
-            style: function(feature) {
+            style: function (feature) {
                 var size = feature.get('features').length;
                 var style = styleCache[size];
                 var coordinates = feature.getGeometry().getCoordinates();
@@ -362,14 +359,14 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         // styleCache[size] = style;
                     }
                     return style;
-                }else { // ked je v klastri aj aktivita aj event
+                } else { // ked je v klastri aj aktivita aj event
                     if (!style) {
                         style = new Style({
-                                image: new Icon({
-                                        color: '#8959A8',
-                                        crossOrigin: 'anonymous',
-                                        src: 'assets/sports/multisport.png',
-                                        scale: 0.1
+                            image: new Icon({
+                                color: '#8959A8',
+                                crossOrigin: 'anonymous',
+                                src: 'assets/sports/multisport.png',
+                                scale: 0.1
 
                             }),
                             text: new Text({
@@ -384,10 +381,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     return style;
 
 
-
-
-
-
                 }
             }
         });
@@ -400,64 +393,65 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         }, 500);
         this.ionViewWillLeave();
     }
-    prejdiDoTab1(){
+
+    prejdiDoTab1() {
         console.log("Toto otototototottotototo je id do aktivity z maaap");
         console.log(idDoButtonu);
         this.dataService.idZMapy = idDoButtonu;
         $(document.getElementById('popup')).popover('destroy');
-        document.getElementById('testButton').style.display= "none";
-        document.getElementById('testButton3').style.display= "none";
+        document.getElementById('testButton').style.display = "none";
+        document.getElementById('testButton3').style.display = "none";
         idDoButtonu = [];
-        idDoButtonuEvent =[];
+        idDoButtonuEvent = [];
         this.router.navigateByUrl('/tabs/tabs/tab1');
     }
-    prejdiDoTab3(){
+
+    prejdiDoTab3() {
         console.log("Toto otototototottotototo je id do aktivity z maaap");
         console.log(idDoButtonu);
         this.dataService.idEventZMapy = idDoButtonuEvent;
         $(document.getElementById('popup')).popover('destroy');
-        document.getElementById('testButton').style.display= "none";
-        document.getElementById('testButton3').style.display= "none";
+        document.getElementById('testButton').style.display = "none";
+        document.getElementById('testButton3').style.display = "none";
         idDoButtonu = [];
-        idDoButtonuEvent =[];
+        idDoButtonuEvent = [];
         this.router.navigateByUrl('/tabs/tabs/tab3');
     }
+
     pridanieMarkerov() {
 
-        if (this.dataService.getEvent() != null){
+        if (this.dataService.getEvent() != null) {
 
 
-        const resEvent = Array.from(Object.values(this.dataService.getEvent()), //eventy
-            ({lattitude,longtitude,sport, id, peopleCount}) => [parseFloat(longtitude),parseFloat(lattitude),sport, id]);
-        console.log("toto je res event");
-        console.log(resEvent);
+            const resEvent = Array.from(Object.values(this.dataService.getEvent()), //eventy
+                ({lattitude, longtitude, sport, id, peopleCount}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id]);
+            console.log("toto je res event");
+            console.log(resEvent);
 
 
+            for (let o = 0; o < resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
+                markiza = new Feature({                 //uz nie lebo som to upravil na klastre, pro
+                    geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
+                    name: 'Event',
+                    id: resEvent[o][3],
+                    zdroj: 'event'
+                });
+                markres.push(markiza);
 
 
-        for (let o = 0; o< resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
-            markiza = new Feature({                 //uz nie lebo som to upravil na klastre, pro
-                geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
-                name: 'Event',
-                id: resEvent[o][3],
-                zdroj: 'event'
-            });
-            markres.push(markiza);
-
-
-        }
+            }
         }
 
         const res = Array.from(Object.values(this.dataService.getAktivitz()), //aktivity
-            ({lattitude,longtitude,sport, id, peopleCount}) => [parseFloat(longtitude),parseFloat(lattitude),sport, id]);
+            ({lattitude, longtitude, sport, id, peopleCount}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id]);
 
-        for (let o = 0; o< res.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
+        for (let o = 0; o < res.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
             markiza = new Feature({
-                        geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
-                        name: this.dataService.getSportNameByValue(Number(res[o][2])),
-                        id: res[o][3],
-                        zdroj: 'aktivita'
-                    });
+                geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
+                name: this.dataService.getSportNameByValue(Number(res[o][2])),
+                id: res[o][3],
+                zdroj: 'aktivita'
+            });
             markiza.setStyle(new Style({
                 image: new Icon({
                     color: '#8959A8',
@@ -474,9 +468,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         console.log("toto je sringik");
 
 
-
     }
-
 
 
     ionViewWillLeave() {
@@ -490,9 +482,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         //     pocet++;
         // }
     }
+
     locate() {
         this.geolocation.getCurrentPosition().then((resp) => {
-            a1 = resp.coords.latitude ;
+            a1 = resp.coords.latitude;
             b1 = resp.coords.longitude;
             console.log('toto jea1' + a1);
             this.presentToast('Toto je a1: ' + a1 + 'b1: ' + b1);
