@@ -29,6 +29,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {VisitUserProfileComponent} from "./pages/visit-user-profile/visit-user-profile.component";
+import { Network } from '@ionic-native/network/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -67,6 +68,7 @@ firebase.initializeApp(environment.firebaseConfig);
         WebView,
         FilePath,
         ToastController,
+        Network,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     exports: [

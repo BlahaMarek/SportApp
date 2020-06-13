@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Sport } from '../models/sport';
 import * as firebase from 'firebase';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
+import { Facebook } from '@ionic-native/facebook/ngx';
 import {NavController, ToastController} from "@ionic/angular";
 import {DataService} from "../data/data.service";
 import {UserService} from "../services/user.service";
 import {FirestoreService} from "../services/firestore.service";
 import {User} from "../models/user";
-
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-auth',
@@ -17,23 +16,27 @@ import {User} from "../models/user";
 })
 export class AuthPage implements OnInit {
     user: User={behavior: 0, friends: [], id: "", name: "", photoUrl: ""};
+    hasConnection = true;
 
 
-
-  constructor(private firestore: FirestoreService,private userService:UserService, private dataService: DataService,public navCtrl: NavController, private facebook: Facebook, private router: Router,public toastController: ToastController,
+  constructor(private network: Network, private firestore: FirestoreService,private userService:UserService, private dataService: DataService,public navCtrl: NavController, private facebook: Facebook, private router: Router,public toastController: ToastController,
   ) {}
 
     ngOnInit(): void {
-      if (localStorage.getItem('user')){
+      if (!this.isConnected) {
+          this.presentToast("Žiadne pripojenie k internetu");
+      }
+      if (localStorage.getItem('user') && this.isConnected){
           this.dataService.user = JSON.parse(localStorage.getItem('user'));
           this.dataService.logged = true;
           this.dataService.refreshAfterLogin = true;
           this.router.navigateByUrl('/tabs/tabs/tab1');
-
-
       }
     }
-
+    get isConnected(): boolean {
+        let connectionType = this.network.type;
+        return connectionType && connectionType !== 'unknown' && connectionType !== 'none';
+    }
   facebookLogin(): void {
     this.facebook.login(['email']).then( (response) => {
       const facebookCredential = firebase.auth.FacebookAuthProvider
