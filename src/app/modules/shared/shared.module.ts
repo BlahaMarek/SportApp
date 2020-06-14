@@ -41,7 +41,7 @@ import {VisitUserProfileComponent} from "../../pages/visit-user-profile/visit-us
         FilterComponent,
         FilterPipe
     ],
-    entryComponents: [EventNewComponent,EventDetailComponent,FilterComponent]
+    entryComponents: [EventNewComponent,EventDetailComponent]
 })
 export class SharedModule {
 }

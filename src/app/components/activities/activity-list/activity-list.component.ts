@@ -5,7 +5,6 @@ import {ModalController, ToastController} from '@ionic/angular';
 import {ActivityDetailComponent} from '../activity-detail/activity-detail.component';
 import {Sport} from '../../../models/sport';
 import {DataService} from '../../../data/data.service';
-import {FilterComponent} from "../../filter/filter.component";
 
 @Component({
     selector: 'app-activity-list',
@@ -53,7 +52,6 @@ export class ActivityListComponent implements OnInit {
                     return modalEl.onDidDismiss();
                 })
                 .then(result => {
-                    console.log(result);
                     this.setSegment.emit('others');
                 });
         }else {
@@ -85,17 +83,8 @@ export class ActivityListComponent implements OnInit {
         return "item-content " + this.dataService.getSportIconByValue(activity.sport);
     }
 
-    onFabClicked(event: MouseEvent) {
-        this.modalController
-            .create({component: FilterComponent})
-            .then(modalEl => {
-                modalEl.present();
-                return modalEl.onDidDismiss();
-            })
-            .then(result => {
-                console.log(result);
-                this.filterCriteria = result.data;
-                console.log(this.filterCriteria);
-            });
+    onSearchClicked(data) {
+        this.filterCriteria = data;
     }
+
 }

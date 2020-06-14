@@ -1,36 +1,24 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Filter</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="onCancel()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<form [formGroup]="activityForm">
+  <ion-fab vertical="start" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="refresh"  color="medium" (click)="activityForm.reset()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
-<ion-content padding>
-  <form [formGroup]="activityForm">
-    <div >
-      <ion-item>
-        <ion-label position="stacked" >Výber športu</ion-label>
-        <ion-select formControlName="sport" placeholder="Vyberte šport">
-          <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
-            {{ val.label }}
-          </ion-select-option>
-        </ion-select>
-
-      </ion-item>
-    </div>
-
+  <div >
     <ion-item>
-      <ion-label position="stacked" >Kedy? *</ion-label>
-      <ion-datetime displayFormat="MM/DD/YYYY" [min]="minDate" placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
-    </ion-item>
+      <ion-label position="stacked" >Výber športu</ion-label>
+      <ion-select formControlName="sport" placeholder="Vyberte šport">
+        <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
+          {{ val.label }}
+        </ion-select-option>
+      </ion-select>
 
-  </form>
-  <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline">
-    Hľadaj
-  </ion-button>
-  {{activityForm.value | json}}
-</ion-content>
+    </ion-item>
+  </div>
+
+  <ion-item>
+    <ion-label position="stacked" >Kedy? *</ion-label>
+    <ion-datetime displayFormat="MM/DD/YYYY" [min]="minDate" placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
+  </ion-item>
+</form>

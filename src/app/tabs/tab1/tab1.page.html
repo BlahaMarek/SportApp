@@ -19,14 +19,14 @@
 </ion-header>
 
 <ion-content>
-    <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>
-    <ion-searchbar class="invisibleInput" type="hidden" value={{this.idZMapy}} (ionChange)="onSearchUpdateId($event)"></ion-searchbar>
-    <ion-segment [(ngModel)]="segment" (ionChange)="onFilterUpdate($event)">
-        <ion-segment-button #others value="others" checked>Všetky</ion-segment-button>
-        <ion-segment-button value="mine">Moje</ion-segment-button>
-        <ion-segment-button value="registered">Prihlásený</ion-segment-button>
-    </ion-segment>
+<!--    <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>-->
+<!--    <ion-searchbar class="invisibleInput" type="hidden" value={{this.idZMapy}} (ionChange)="onSearchUpdateId($event)"></ion-searchbar>-->
+<!--    <ion-segment [(ngModel)]="segment" (ionChange)="onFilterUpdate($event)">-->
+<!--        <ion-segment-button #others value="others" checked>Všetky</ion-segment-button>-->
+<!--        <ion-segment-button value="mine">Moje</ion-segment-button>-->
+<!--        <ion-segment-button value="registered">Prihlásený</ion-segment-button>-->
+<!--    </ion-segment>-->
 
-    <app-activity-list (setSegment)="onActivityClosed($event)"  [filteredList]="filteredList" ></app-activity-list>
+    <app-activity-list (setSegment)="onActivityClosed($event)"  [filteredList]="activityList" ></app-activity-list>
 
 </ion-content>

@@ -1,30 +1,24 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MenuController, ModalController, ToastController} from '@ionic/angular';
+import {ModalController, ToastController} from '@ionic/angular';
 import {ActivityNewComponent} from '../../components/activities/activity-new/activity-new.component';
 import {LanguageService} from '../../services/language.service';
 import {Activity} from '../../models/activity';
 import {ActivityService} from '../../services/activity.service';
 import {AuthService} from '../../auth/auth.service';
 import {DataService} from '../../data/data.service';
-import * as firebase from "firebase";
-import {forEach} from "@angular-devkit/schematics";
 import {Geolocation} from "@ionic-native/geolocation/ngx";
 import {Router} from "@angular/router";
-import {FilterComponent} from "../../components/filter/filter.component";
 
 let a1;
 let b1;
-var zoradeneSporty = [];
-var datumZAktivity;
 @Component({
     selector: 'app-tab1',
     templateUrl: 'tab1.page.html',
     styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-    // @ts-ignore
-    @ViewChild('others') others: ElementRef;
+    @ViewChild('others', {static: true}) others: ElementRef;
     activityList: Activity[];
     activityListByUser: Activity[];
     user: any = {};
@@ -89,14 +83,9 @@ export class Tab1Page implements OnInit {
         this.locate();
         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
-            console.log("toto je moj arraik");
-            console.log(this.activityList);
-
-            //moja ultra total algo na zoradenie aktivit podla polohy
 
             this.activityList.forEach(function (value) {
                 var hodnota = parseFloat(value.lattitude) - 48.717110; // tu ma byt poloha pouzivatela ...a1 b1
-
                 var hodnota2 = parseFloat(value.longtitude) - 21.259781;
 
                 if (hodnota < 0){

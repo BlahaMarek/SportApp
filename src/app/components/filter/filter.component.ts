@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {FormBuilder, Validators} from "@angular/forms";
 import {Sport} from "../../models/sport";
@@ -10,12 +10,12 @@ import {DataService} from "../../data/data.service";
   styleUrls: ['./filter.component.scss'],
 })
 export class FilterComponent implements OnInit {
+  @Output() onSearchClicked = new EventEmitter();
   sportOptions: Sport[] = [];
   minDate: any;
   constructor(
       private fb: FormBuilder,
       private dataService: DataService,
-      private modalController: ModalController,
   ) {
     this.sportOptions = this.dataService.getSportsSk();
     this.minDate = new Date().toISOString();
@@ -25,13 +25,14 @@ export class FilterComponent implements OnInit {
     date: [''],
     sport: [''],
   });
-  ngOnInit() {}
-
-  onCancel() {
-    this.modalController.dismiss([]);
+  ngOnInit() {
+    this.activityForm.valueChanges.subscribe(() => {
+      this.prepareData();
+    })
   }
 
-  onFormSubmit() {
+
+  prepareData() {
     let filterData = [];
     if (this.activityForm.get('sport').value) {
       filterData.push({field: "sport", value: this.activityForm.get('sport').value})
@@ -39,6 +40,6 @@ export class FilterComponent implements OnInit {
     if (this.activityForm.get('date').value) {
       filterData.push({field: "date", value: this.activityForm.get('date').value})
     }
-    this.modalController.dismiss(filterData);
+    this.onSearchClicked.emit(filterData);
   }
 }
