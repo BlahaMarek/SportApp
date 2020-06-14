@@ -130,6 +130,8 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
         // tslint:disable-next-line:only-arrow-functions
         map.on('click', function (evt) {
+            document.getElementById('testButton').style.display = "none";
+            document.getElementById('testButton3').style.display = "none";
             idDoButtonu = [];
             const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                 var features = feature.get('features');
@@ -203,6 +205,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         document.getElementById('testButton3').style.left = rect.left - 35 + "px";
                     }
                     if (!vsetkyRovnake) {
+                        // TODO: opravit chybny popup pri kliku z otvoreneho popupu na inu aktivitu/ event
                         $(document.getElementById('popup')).popover({
                             placement: 'top',
                             html: true,
@@ -230,7 +233,13 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                     $(document.getElementById('popup')).popover({
                         placement: 'top',
                         html: true,
-                        content: feature.get('name')
+                        title: feature.get('name'),
+                        content: feature.get('place') + `<br>`+ feature.get('peopleCount'), //bu takto ,alebo tak ako to je dole to nastylovat
+                        // template: '<div class="popover" role="tooltip"><' +
+                        //     'div class="popover-header">'+feature.get('name')+'</div>' +
+                        //     '<div class="popover-body">'+feature.get('place')+'</div>' +
+                        //     // '<div class="popover-body2">'+feature.get('peopleCount')+'</div>' +
+                        //     '</div>'
                     });
                     console.log("Toto je cislo kativity omg");
                     console.log(feature.get('id'));
@@ -246,13 +255,13 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         document.getElementById('testButton').style.top = rect.top - 55 + "px";
                         document.getElementById('testButton').style.left = rect.left - 35 + "px";
                     }
-                    if (feature.values_.zdroj == "event") {
+                   else if (feature.values_.zdroj == "event") {
                         document.getElementById('testButton3').style.display = "block";
                         document.getElementById('testButton3').style.position = "absolute";
                         document.getElementById('testButton3').style.top = rect.top - 55 + "px";
                         document.getElementById('testButton3').style.left = rect.left - 35 + "px";
                     } else {
-                        console.error("vlastne ani neviem aky vyznam ma tento else, ale funguje to, tak to nemenim")
+                        console.error("mame nieco ine ako event/aktrivita?")
                     }
                 }
 
@@ -424,17 +433,23 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
 
             const resEvent = Array.from(Object.values(this.dataService.getEvent()), //eventy
-                ({lattitude, longtitude, sport, id, peopleCount}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id]);
+                ({lattitude, longtitude, sport, id, peopleCount,place}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place]);
             console.log("toto je res event");
             console.log(resEvent);
 
 
+
             for (let o = 0; o < resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
+                if (resEvent[o][5].toString().length > 12){
+                    resEvent[o][5] = resEvent[o][5].toString().substring(0,12) + "..."
+                }
                 markiza = new Feature({                 //uz nie lebo som to upravil na klastre, pro
                     geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
-                    name: 'Event',
+                    name: this.dataService.getSportNameByValue(Number(resEvent[o][2])),
                     id: resEvent[o][3],
-                    zdroj: 'event'
+                    zdroj: 'event',
+                    place: resEvent[o][5],
+                    peopleCount: resEvent[o][4]
                 });
                 markres.push(markiza);
 
@@ -443,14 +458,19 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         }
 
         const res = Array.from(Object.values(this.dataService.getAktivitz()), //aktivity
-            ({lattitude, longtitude, sport, id, peopleCount}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id]);
+            ({lattitude, longtitude, sport, id, peopleCount,place}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place]);
 
         for (let o = 0; o < res.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
+            if (res[o][5].toString().length > 12){
+                res[o][5] = res[o][5].toString().substring(0,12) + "..."
+            }
             markiza = new Feature({
                 geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
                 name: this.dataService.getSportNameByValue(Number(res[o][2])),
                 id: res[o][3],
-                zdroj: 'aktivita'
+                zdroj: 'aktivita',
+                place: res[o][5],
+                peopleCount: res[o][4]
             });
             markiza.setStyle(new Style({
                 image: new Icon({
