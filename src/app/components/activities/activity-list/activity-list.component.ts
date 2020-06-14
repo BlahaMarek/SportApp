@@ -1,12 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivityService} from '../../../services/activity.service';
 import {Activity} from '../../../models/activity';
 import {ModalController, ToastController} from '@ionic/angular';
 import {ActivityDetailComponent} from '../activity-detail/activity-detail.component';
 import {Sport} from '../../../models/sport';
 import {DataService} from '../../../data/data.service';
-import {AuthService} from '../../../auth/auth.service';
-import * as firebase from "firebase";
 import {FilterComponent} from "../../filter/filter.component";
 
 @Component({
@@ -17,6 +15,7 @@ import {FilterComponent} from "../../filter/filter.component";
 export class ActivityListComponent implements OnInit {
 
     @Input() filteredList: Activity[];
+    @Output() setSegment = new EventEmitter()
     sportOptions: Sport[] = [];
     user: any = {};
     filterCriteria = [];
@@ -30,11 +29,9 @@ export class ActivityListComponent implements OnInit {
 
     ngOnInit() {
         this.user = this.dataService.getSignInUser();
-        console.log("som v liste, lol");
     }
 
     onActivityClicked(id: string) {
-        console.log("Klikol som na aktivitu" + id);
         this.user= this.dataService.getSignInUser();
         var logged= this.dataService.getSignInUser();
         if (this.dataService.logged != false) {
@@ -46,7 +43,6 @@ export class ActivityListComponent implements OnInit {
                         bookable: !(this.activityService.getActivityById(id).createdBy === this.user.user.uid),
                         reserved: (this.activityService.getActivityById(id).bookedBy.find(function (prihlaseny) {
                             return prihlaseny.includes(logged.user.uid)
-
                         })),
                         overdue: (new Date(this.activityService.getActivityById(id).date).getTime() < new Date().getTime()),
                         unSigned: (this.user.user.uid == 0)
@@ -58,6 +54,7 @@ export class ActivityListComponent implements OnInit {
                 })
                 .then(result => {
                     console.log(result);
+                    this.setSegment.emit('others');
                 });
         }else {
             this.modalController
@@ -83,8 +80,6 @@ export class ActivityListComponent implements OnInit {
                 });
         }
     }
-
-
 
     getCssClass(activity: Activity) {
         return "item-content " + this.dataService.getSportIconByValue(activity.sport);
