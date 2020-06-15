@@ -138,7 +138,7 @@ export class Tab1Page implements OnInit {
                 });
             } else if (event.detail.value === 'registered') {
                 //TODO: Really hovno? :D
-                //TODO: hej....som bol nasraty lebo to neficalo ako som planoval tak som to spravil cez pomocnu premennu.. :D
+                //TODO: hej....som bol nasraty lebo to neficalo ako som planoval tak som to spravil cez pomocnu premennu...zasluzila si taky nazov :D
                 let hovno = [];
                 let prihlaseny = this.user.user.uid;
                 this.activityListByUser = this.activityList.filter(activity => activity.bookedBy.forEach(function (value) {

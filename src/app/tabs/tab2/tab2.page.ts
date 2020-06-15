@@ -68,6 +68,7 @@ const popup2 = new Overlay({
 export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     map: Map;
     user: any = {};
+    featureName: any = {};
     image: any = '';
     private win: any = window;
     activityList: Activity[];
@@ -130,6 +131,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
         // tslint:disable-next-line:only-arrow-functions
         map.on('click', function (evt) {
+            $(document.getElementById('popup')).popover('destroy');
             document.getElementById('testButton').style.display = "none";
             document.getElementById('testButton3').style.display = "none";
             idDoButtonu = [];
@@ -180,7 +182,8 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         $(document.getElementById('popup')).popover({
                             placement: 'top',
                             html: true,
-                            content: "Viacero športov"
+                            content: "Viacero športov",
+                            animation: false,
                         });
                         var rect = document.getElementById('popup').getBoundingClientRect();
                         console.log("toto je voncooo");
@@ -194,7 +197,8 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         $(document.getElementById('popup')).popover({
                             placement: 'top',
                             html: true,
-                            content: "Viacero eventov"
+                            content: "Viacero eventov",
+                            animation: false,
                         });
                         var rect = document.getElementById('popup').getBoundingClientRect();
                         console.log("toto je voncooo");
@@ -209,7 +213,8 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         $(document.getElementById('popup')).popover({
                             placement: 'top',
                             html: true,
-                            content: "Športy a aktivity"
+                            content: "Športy a aktivity",
+                            animation: false,
                         });
                         var rect = document.getElementById('popup').getBoundingClientRect();
                         console.log("toto je voncooo");
@@ -230,25 +235,29 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 } else {
                     var coordinates = feature.getGeometry().getCoordinates();
                     popup.setPosition(coordinates);
+                    // this.featureName = feature.get('name');
                     $(document.getElementById('popup')).popover({
                         placement: 'top',
                         html: true,
                         title: feature.get('name'),
+                        animation: false,
+                        // content: ['<div style="background: #0ec254" class="place">'+feature.get('place')+'</div>',
+                        //     '<div class="people">'+ feature.get('peopleCount')+'</div>',
+                        //     ].join(''),
+
                         content: feature.get('place') + `<br>`+ feature.get('peopleCount'), //bu takto ,alebo tak ako to je dole to nastylovat
-                        // template: '<div class="popover" role="tooltip"><' +
-                        //     'div class="popover-header">'+feature.get('name')+'</div>' +
-                        //     '<div class="popover-body">'+feature.get('place')+'</div>' +
-                        //     // '<div class="popover-body2">'+feature.get('peopleCount')+'</div>' +
-                        //     '</div>'
+                        // content: ['<div class="popover-header">pro</div>',
+                        //     '<div class="popover-body">pro1</div>',
+                        //     ].join(''),
+                        //
+                        template: 	'<div class="popover" role="tooltip">' +
+                            '<div style="color: #0ec254" class="popover-title"></div>' + //neche to stylovaty :{
+                            '<div style="background: #0ec254" class="popover-content"></div>' +
+                            '</div>'
                     });
-                    console.log("Toto je cislo kativity omg");
-                    console.log(feature.get('id'));
                     idDoButtonu = feature.get('id');
                     idDoButtonuEvent = feature.get('id');
-                    console.log(feature.get('idcka'));
                     var rect = document.getElementById('popup').getBoundingClientRect();
-                    console.log("toto je voncooo");
-                    console.log(feature);
                     if (feature.values_.zdroj == "aktivita") {
                         document.getElementById('testButton').style.display = "block";
                         document.getElementById('testButton').style.position = "absolute";
