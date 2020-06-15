@@ -3,30 +3,20 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
+
         <ion-title>{{'HEADERS.tab1' | translate}} </ion-title>
 
+<!--        TODO: toto sa prerobi ked budeme mat auth guarda-->
         <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
-            <ion-img routerLink="/profile" *ngIf="this.dataService.logged && !!this.user" class="profile-image" [src]="this.user.user.photoURL"> </ion-img>
+            <ion-img routerLink="/profile" *ngIf="this.dataService.logged && !!this.dataService.getSignInUser()" class="profile-image" [src]="this.dataService.getSignInUser().user.photoURL"> </ion-img>
             <ion-button (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
         </ion-buttons>
 
-        <ion-buttons slot="end" *ngIf="this.dataService.logged == false">
-            <ion-buttons class="login" *ngIf="this.dataService.logged == false" (click)="login()" slot="end">
-                Login
-            </ion-buttons>
-        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<!--    <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>-->
-<!--    <ion-searchbar class="invisibleInput" type="hidden" value={{this.idZMapy}} (ionChange)="onSearchUpdateId($event)"></ion-searchbar>-->
-<!--    <ion-segment [(ngModel)]="segment" (ionChange)="onFilterUpdate($event)">-->
-<!--        <ion-segment-button #others value="others" checked>Všetky</ion-segment-button>-->
-<!--        <ion-segment-button value="mine">Moje</ion-segment-button>-->
-<!--        <ion-segment-button value="registered">Prihlásený</ion-segment-button>-->
-<!--    </ion-segment>-->
 
-    <app-activity-list (setSegment)="onActivityClosed($event)"  [filteredList]="activityList" ></app-activity-list>
+    <app-activity-list [filteredList]="activityList" ></app-activity-list>
 
 </ion-content>

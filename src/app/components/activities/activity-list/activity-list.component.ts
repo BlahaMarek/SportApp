@@ -17,6 +17,7 @@ export class ActivityListComponent implements OnInit {
     @Output() setSegment = new EventEmitter()
     sportOptions: Sport[] = [];
     user: any = {};
+    segmentValue = 'others';
     filterCriteria = [];
     constructor(
         private activityService: ActivityService,

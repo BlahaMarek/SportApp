@@ -1,12 +1,11 @@
 <ion-content>
     <app-filter (onSearchClicked)="onSearchClicked($event)"></app-filter>
-    <ion-segment>
+    <ion-segment [(ngModel)]="segmentValue" >
         <ion-segment-button #others value="others" checked>Všetky</ion-segment-button>
         <ion-segment-button value="mine">Moje</ion-segment-button>
         <ion-segment-button value="registered">Prihlásený</ion-segment-button>
     </ion-segment>
-
-    <ion-virtual-scroll [items]="filteredList | filter: filterCriteria" approxItemHeight="20px">
+    <ion-virtual-scroll [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="20px">
         <ion-item-sliding *virtualItem="let activity">
 
             <ion-item lines="none" (click)="onActivityClicked(activity.id)">
