@@ -11,6 +11,7 @@ export class FilterPipe implements PipeTransform {
   }
 
   transform(value: Activity[], props: {field: string, value: string}[], group: string): any {
+
     let list = [];
     // FILTROVANIE AKTIVIT PODLA SEGMENTOV (AKTIVITY OSTATNYCH/MOJE/NA KTORYCH SOM PRIHLASENY
 

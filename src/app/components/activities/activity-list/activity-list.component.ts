@@ -14,6 +14,9 @@ import {DataService} from '../../../data/data.service';
 export class ActivityListComponent implements OnInit {
 
     @Input() filteredList: Activity[];
+    @Input() idSportsFromMap: string[];
+    @Input() fromMap: boolean;
+
     @Output() setSegment = new EventEmitter()
     sportOptions: Sport[] = [];
     user: any = {};
@@ -29,6 +32,8 @@ export class ActivityListComponent implements OnInit {
 
     ngOnInit() {
         this.user = this.dataService.getSignInUser();
+        if (this.fromMap)
+        this.filterActivitiesByIdFromMap();
     }
 
     onActivityClicked(id: string) {
@@ -55,30 +60,36 @@ export class ActivityListComponent implements OnInit {
                 .then(result => {
                     this.setSegment.emit('others');
                 });
-        }else {
-            this.modalController
-                .create({
-                    component: ActivityDetailComponent,
-                    componentProps: {
-                        selectedActivity: this.activityService.getActivityById(id),
-                        bookable: !(this.activityService.getActivityById(id).createdBy === "guest"),
-                        reserved: (this.activityService.getActivityById(id).bookedBy.find(function (prihlaseny) {
-                            return prihlaseny.includes("guest")
-
-                        })),
-                        overdue: (new Date(this.activityService.getActivityById(id).date).getTime() < new Date().getTime()),
-                        unSigned: (this.dataService.logged == false)
-                    }
-                })
-                .then(modalEl => {
-                    modalEl.present();
-                    return modalEl.onDidDismiss();
-                })
-                .then(result => {
-                    console.log(result);
-                });
         }
+        // if (this.fromMap) {
+        //     this.modalController
+        //         .create({
+        //             component: ActivityDetailComponent,
+        //             componentProps: {
+        //                 selectedActivity: this.activityService.getActivityById(id),
+        //                 bookable: !(this.activityService.getActivityById(id).createdBy === "guest"),
+        //                 reserved: (this.activityService.getActivityById(id).bookedBy.find(function (prihlaseny) {
+        //                     return prihlaseny.includes("guest")
+        //
+        //                 })),
+        //                 overdue: (new Date(this.activityService.getActivityById(id).date).getTime() < new Date().getTime()),
+        //                 unSigned: (this.dataService.logged == false)
+        //             }
+        //         })
+        //         .then(modalEl => {
+        //             modalEl.present();
+        //             return modalEl.onDidDismiss();
+        //         })
+        //         .then(result => {
+        //             console.log(result);
+        //         });
+        // }
     }
+    //ak pridem z mapy filitrujem len tie aktivity
+    filterActivitiesByIdFromMap(){
+        this.filteredList = this.dataService.getAktivitz().filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
+    }
+
 
     getCssClass(activity: Activity) {
         return "item-content " + this.dataService.getSportIconByValue(activity.sport);
@@ -86,6 +97,9 @@ export class ActivityListComponent implements OnInit {
 
     onSearchClicked(data) {
         this.filterCriteria = data;
+    }
+    onCancel() {
+        this.modalController.dismiss({message: 'ActivityList closed'}, 'cancel');
     }
 
 }

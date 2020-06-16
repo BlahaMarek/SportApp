@@ -1,3 +1,15 @@
+<ion-header *ngIf="fromMap">
+    <ion-toolbar>
+        <ion-title>Aktivity z mapy</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="onCancel()">
+                <ion-icon name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
 <ion-content>
     <app-filter (onSearchClicked)="onSearchClicked($event)"></app-filter>
     <ion-segment [(ngModel)]="segmentValue" >
@@ -6,6 +18,7 @@
         <ion-segment-button value="registered">Prihlásený</ion-segment-button>
     </ion-segment>
     <ion-virtual-scroll [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="20px">
+
         <ion-item-sliding *virtualItem="let activity">
 
             <ion-item lines="none" (click)="onActivityClicked(activity.id)">

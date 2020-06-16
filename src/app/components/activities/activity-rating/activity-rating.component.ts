@@ -143,8 +143,6 @@ export class ActivityRatingComponent implements OnInit {
     }
   }
 
-
-
   onCancel() {
     this.modalController.dismiss({message: 'ActivityRating closed'}, 'cancel');
   }

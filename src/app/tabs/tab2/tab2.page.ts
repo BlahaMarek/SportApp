@@ -24,6 +24,8 @@ import {DataService} from 'src/app/data/data.service';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text, Icon} from 'ol/style';
 import {forEach} from "@angular-devkit/schematics";
 import {isBoolean} from "util";
+import {ActivityRatingComponent} from "../../components/activities/activity-rating/activity-rating.component";
+import {ActivityListComponent} from "../../components/activities/activity-list/activity-list.component";
 
 
 declare var ol: any;
@@ -421,7 +423,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         document.getElementById('testButton3').style.display = "none";
         idDoButtonu = [];
         idDoButtonuEvent = [];
-        this.router.navigateByUrl('/tabs/tabs/tab1');
+        this.filteredActivitiesList(this.dataService.getIdZMapy());
     }
 
     prejdiDoTab3() {
@@ -446,7 +448,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             console.log("toto je res event");
             console.log(resEvent);
 
-
+        console.log("pro pro pro")
 
             for (let o = 0; o < resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
                 if (resEvent[o][5].toString().length > 12){
@@ -465,11 +467,13 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
             }
         }
-
+            console.log("som pred resom");
         const res = Array.from(Object.values(this.dataService.getAktivitz()), //aktivity
             ({lattitude, longtitude, sport, id, peopleCount,place}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place]);
+        console.log(res);
 
-        for (let o = 0; o < res.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
+
+        for (let o = 0; o < res.length; o++) {
             if (res[o][5].toString().length > 12){
                 res[o][5] = res[o][5].toString().substring(0,12) + "..."
             }
@@ -530,5 +534,23 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
     ngOnInit() {
         this.user = this.dataService.getSignInUser();
+    }
+    filteredActivitiesList(activitiesId){
+        this.modalController
+            .create({component: ActivityListComponent,
+                componentProps:{
+                    idSportsFromMap: activitiesId,
+                    fromMap: true
+                }
+
+            })
+            .then(modalEl => {
+                console.log("Fus ro dah");
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+
+            });
     }
 }

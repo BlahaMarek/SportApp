@@ -30,6 +30,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {VisitUserProfileComponent} from "./pages/visit-user-profile/visit-user-profile.component";
 import { Network } from '@ionic-native/network/ngx';
+import {ActivityListComponent} from "./components/activities/activity-list/activity-list.component";
+import {SharedModule} from "./modules/shared/shared.module";
+import {ActivityDetailComponent} from "./components/activities/activity-detail/activity-detail.component";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -37,7 +40,7 @@ export function createTranslateLoader(http: HttpClient) {
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
     declarations: [AppComponent, MenuComponent, ActivityRatingComponent, VisitUserProfileComponent],
-    entryComponents: [ActivityRatingComponent, VisitUserProfileComponent],
+    entryComponents: [ActivityRatingComponent, VisitUserProfileComponent, ActivityListComponent, ActivityDetailComponent],
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
@@ -57,7 +60,8 @@ firebase.initializeApp(environment.firebaseConfig);
         AngularFirestoreModule,
         AngularFireDatabaseModule,
         AngularFireAuthModule,
-        StarRatingModule
+        StarRatingModule,
+        SharedModule
     ],
     providers: [
         Facebook,

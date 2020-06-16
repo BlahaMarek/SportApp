@@ -47,9 +47,11 @@ export class Tab1Page implements OnInit {
             this.activityList.sort(function(a,b){
                 return a.distanceFromUser - b.distanceFromUser
             });
+            this.dataService.setAktivity(this.activityList);
         });
 
     }
+
 
     // NASTAVENIE JAZYKA APLIKACIE
     initApp() {

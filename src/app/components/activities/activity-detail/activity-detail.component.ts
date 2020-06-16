@@ -46,7 +46,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     activity: Activity[];
     validations_form: FormGroup;
     sport2: any;
-
+    user: any = {};
     @Input() selectedActivity: Activity;
     @Input() bookable: boolean;
     @Input() reserved: boolean;
@@ -154,7 +154,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.activityForm.get('sport').setValue(this.selectedActivity.sport);
         this.activityForm.get('comment').patchValue(this.selectedActivity.comment);
         this.activityForm.get('time').patchValue(this.selectedActivity.time);
-
+        this.autocomplete.input = this.selectedActivity.place;
 
         this.activityForm.updateValueAndValidity();
         console.log(this.activityForm.value);
@@ -221,10 +221,18 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     }
 
     assignValueToActivity(): Activity {
+        console.log("toto je z firebase");
+        console.log(this.lattitudeFirebase);
+        let lattitude = this.selectedActivity.lattitude;
+        let longitude = this.selectedActivity.longtitude;
+        if (this.lattitudeFirebase != undefined){
+            lattitude = this.lattitudeFirebase;
+            longitude = this.longtitudeFirebase;
+        }
         return {
             // id: this.activityService.allActivitiesCount + 1,
             sport: this.activityForm.get('sport').value,
-            createdBy: this.authService.userIdAuth,
+            createdBy: this.dataService.getSignInUser().user.uid,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
@@ -232,8 +240,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             comment: this.activityForm.get('comment').value,
             time: this.activityForm.get('time').value,
             bookedBy: this.selectedActivity.bookedBy,
-            lattitude: this.lattitudeFirebase,
-            longtitude: this.longtitudeFirebase
+            lattitude: lattitude,
+            longtitude: longitude,
         };
     }
 
