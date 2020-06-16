@@ -1,14 +1,4 @@
-import {
-    AfterContentInit,
-    AfterViewInit,
-    Component,
-    ElementRef,
-    Inject,
-    Input,
-    NgZone,
-    OnInit,
-    ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, Input, NgZone, OnInit } from '@angular/core';
 import {Activity} from '../../../models/activity';
 import {ModalController} from '@ionic/angular';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -19,7 +9,6 @@ import {AuthService} from '../../../auth/auth.service';
 import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import { ToastController} from '@ionic/angular';
-import {source} from '@angular-devkit/schematics';
 import 'ol/ol.css';
 import Feature from 'ol/Feature';
 import {fromLonLat} from 'ol/proj';
@@ -31,10 +20,6 @@ import {Circle as CircleStyle, Fill, Stroke, Style, Icon} from 'ol/style';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {ActivatedRoute} from "@angular/router";
 import {ActivityRatingComponent} from "../activity-rating/activity-rating.component";
-
-
-const positionFeature = new Feature();
-
 
 @Component({
     selector: 'app-activity-detail',

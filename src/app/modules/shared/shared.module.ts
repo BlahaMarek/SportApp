@@ -5,8 +5,6 @@ import {ActivityNewComponent} from '../../components/activities/activity-new/act
 import {ActivityListComponent} from '../../components/activities/activity-list/activity-list.component';
 import {IonicModule} from '@ionic/angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {EventNewComponent} from "../../components/events/event-new/event-new.component";
-import {EventListComponent} from "../../components/events/event-list/event-list.component";
 import {EventDetailComponent} from "../../components/events/event-detail/event-detail.component";
 import {FilterComponent} from "../../components/filter/filter.component";
 import {AppModule} from "../../app.module";
@@ -18,10 +16,7 @@ import {VisitUserProfileComponent} from "../../pages/visit-user-profile/visit-us
         ActivityDetailComponent,
         ActivityNewComponent,
         ActivityListComponent,
-        EventNewComponent,
         EventDetailComponent,
-        EventListComponent,
-        // VisitUserProfileComponent,
         FilterComponent,
         FilterPipe,
     ],
@@ -35,13 +30,11 @@ import {VisitUserProfileComponent} from "../../pages/visit-user-profile/visit-us
         ActivityDetailComponent,
         ActivityNewComponent,
         ActivityListComponent,
-        EventNewComponent,
-        EventListComponent,
         EventDetailComponent,
         FilterComponent,
         FilterPipe
     ],
-    entryComponents: [EventNewComponent,EventDetailComponent]
+    entryComponents: [EventDetailComponent]
 })
 export class SharedModule {
 }

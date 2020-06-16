@@ -6,7 +6,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Tab3Page} from './tab3.page';
 import {SharedModule} from '../../modules/shared/shared.module';
 import {TranslateModule} from "@ngx-translate/core";
-import {EventNewComponent} from "../../components/events/event-new/event-new.component";
 import {EventDetailComponent} from "../../components/events/event-detail/event-detail.component";
 
 @NgModule({
@@ -23,7 +22,6 @@ import {EventDetailComponent} from "../../components/events/event-detail/event-d
         Tab3Page,
     ],
     entryComponents: [
-        EventNewComponent,
         EventDetailComponent
     ]
 })

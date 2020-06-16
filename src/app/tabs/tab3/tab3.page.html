@@ -6,36 +6,17 @@
     <ion-title>
       Udalosti
     </ion-title>
+<!--    TODO: vymazat logged in ako v tab1-->
+<!--    TODO: zamysliet sa, ci tento header nespravime ako komponent, aby sme ho plen prepouzili, pretoze ho mame na milion miestach-->
     <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
-      <ion-img routerLink="/profile" *ngIf="this.dataService.logged && !!this.user" class="profile-image" [src]="this.user.user.photoURL"> </ion-img>
+<!--      <ion-img routerLink="/profile" *ngIf="this.dataService.logged && !!this.user" class="profile-image" [src]="this.user.user.photoURL"> </ion-img>-->
       <ion-button (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
-    </ion-buttons>
-
-    <ion-buttons slot="end" *ngIf="this.dataService.logged == false">
-      <ion-buttons class="login" *ngIf="this.dataService.logged == false" (click)="login()" slot="end">
-        Login
-      </ion-buttons>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-searchbar (ionChange)="onSearchUpdate($event)" animated></ion-searchbar>
-  <ion-searchbar class="invisibleInput" type="hidden" value={{this.idEventZMapy}} (ionChange)="onSearchUpdateId($event)"></ion-searchbar>
-  <ion-segment [(ngModel)]="segment" (ionChange)="onFilterUpdate($event)">
-    <ion-segment-button #others value="others" checked>Všetky</ion-segment-button>
-    <ion-segment-button value="mine">Moje</ion-segment-button>
-    <ion-segment-button value="registered">Prihlásený</ion-segment-button>
-
-  </ion-segment>
-
-  <app-event-list [filteredList]="filteredList" ></app-event-list>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="flame" color="medium" (click)="onFabClicked($event)"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <app-activity-list [filteredList]="activityList" ></app-activity-list>
 
 </ion-content>
