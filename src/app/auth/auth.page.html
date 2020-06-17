@@ -1,13 +1,7 @@
-<ion-content class="content" padding>
-  <h1 class="center">Login</h1>
-<!--  <ion-input placeholder="User name"></ion-input>-->
-<!--  <ion-input placeholder="Password"></ion-input>-->
-  <div class="center">
-    <ion-button color="dark" (click)="onSubmitClick()">Prihlásiť sa ako hosť</ion-button>
-  </div>
-  <p class="center"><small>Or</small></p>
-  <div class="divider"></div>
-  <div class="center">
-    <ion-button class="socialIcon" (click)="facebookLogin()" color="facebook"><ion-icon name="logo-facebook" ></ion-icon></ion-button>
-  </div>
-</ion-content>
+<img [@openClose]="isOpen ? 'open2' : 'closed'" src="../../assets/login/top1.svg" alt="no1">
+<h1 [@openClose]="isOpen ? 'open3' : 'closed2'" >ŠportApka</h1>
+<div class="login-wrap">
+    <span [@openClose]="isOpen ? 'open' : 'closed'" ><ion-icon (click)="facebookLogin()" name="logo-facebook"></ion-icon></span>
+    <span [@openClose]="isOpen ? 'open1' : 'closed'"><ion-icon name="logo-google"></ion-icon></span>
+</div>
+<img [@openClose]="isOpen ? 'open2' : 'closed'"id="bottom" src="../../assets/login/logo3.svg" alt="no1">

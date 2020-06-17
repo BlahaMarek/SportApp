@@ -33,6 +33,7 @@ import { Network } from '@ionic-native/network/ngx';
 import {ActivityListComponent} from "./components/activities/activity-list/activity-list.component";
 import {SharedModule} from "./modules/shared/shared.module";
 import {ActivityDetailComponent} from "./components/activities/activity-detail/activity-detail.component";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -43,6 +44,7 @@ firebase.initializeApp(environment.firebaseConfig);
     entryComponents: [ActivityRatingComponent, VisitUserProfileComponent, ActivityListComponent, ActivityDetailComponent],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         IonicModule.forRoot(),
         AppRoutingModule,
         FormsModule,

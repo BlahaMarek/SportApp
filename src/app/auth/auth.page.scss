@@ -1,25 +1,39 @@
-.socialIcon {
-    --border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    margin: 10px;   
-}
-.content {
-    --padding-top: 25vh;
-    h1 {
-        margin-bottom: 15;
-        color: #12b562;
-    }
-}
-.center {
-    text-align: center;
-}
-.divider {
-    height: 1px;
-    width: 100%;
-    border-bottom: 1px solid rgba(0,0,0,0.5)
+#bottom {
+    transform: rotate(-25deg);
+    position: relative;
+    top: -15px;
+    left: 5px;
 }
 
-ion-input {
-    color: #12b562;
+h1 {
+    color: white;
+    font-size: 25px;
+    top: 20px;
+    letter-spacing: 1px;
+    position: absolute;
+    left: 5%;
+    //font-family: "Balsamiq Sans", cursive;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
+}
+
+ion-icon {
+    font-size: 30px;
+    color: white;
+}
+.login-wrap {
+    text-align: center;
+    span {
+        position: relative;
+        display: inline-block;
+        background: linear-gradient(to right, #f96095 0%, #fd7c5e 100%), linear-gradient(to right, #f96095 0%, #fd7c5e 100%);
+        height: 70px;
+        width: 70px;
+        line-height: 90px;
+        border-radius: 50%;
+        margin: 0 30px;
+        &:last-child {
+            background: linear-gradient(to right, #22e1e3 0%, #18cacf 100%), linear-gradient(to right, #22e1e3 0%, #18cacf 100%);
+        }
+    }
 }
