@@ -60,12 +60,17 @@ export class ProfilePage implements OnInit {
 
 
   logout() {
-    this.fireAuth.auth.signOut().then(() => {
-      this.dataService.user = {};
-      this.dataService.logged = false;
-      this.dataService.refreshAfterLogin = false;
-      this.router.navigateByUrl('/login');
-    });
+    // this.fireAuth.auth.signOut().then(() => {
+    //   this.dataService.user = {};
+    //   this.dataService.logged = false;
+    //   this.dataService.refreshAfterLogin = false;
+    //   this.router.navigateByUrl('/login');
+    // });
+    localStorage.clear();
+    this.router.navigate(['login']);
+    this.dataService.user = {};
+    this.dataService.logged = false;
+     this.dataService.refreshAfterLogin = false;
   }
 
   login() {
