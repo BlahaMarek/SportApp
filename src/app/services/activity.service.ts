@@ -10,6 +10,7 @@ import * as firebase from "firebase";
 import {AuthService} from '../auth/auth.service';
 import {forEach} from "@angular-devkit/schematics";
 import {DataService} from "../data/data.service";
+import {Rating} from "../models/rating";
 
 
 
@@ -40,18 +41,29 @@ export class ActivityService {
         this.user = this.dataService.getSignInUser();
         fireService.readAllSports().subscribe(all => {
             this.sports2 = all;
-
+            console.log("toto su sports2");
+            console.log(this.sports2);
 
             this.activities =  this.sports2;
                 firebase.firestore().collection(`sports`).get().then((query) => {
                     this.sports2 = query.docs;
-            });
+                    console.log("toto su sports2 dole");
+                    console.log(this.sports2);
+
+                });
         });
 
         this.activities = this.sports2;
 
+        // this.getNewActivity().subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
+        //     console.log("toto su len novsie sportylol");
+        //     console.log(res);
+        // });
 
     }
+    // getNewActivity(){ // vyberiem vsetky ratingy pouzivatela
+    //     return this.afs.collection<Activity>('sports', ref => ref.where('date','>',Date.now().toString())).valueChanges();
+    // }
 
     private _activities = new BehaviorSubject<Activity[]>([]);
     readonly activities$ = this._activities.asObservable();

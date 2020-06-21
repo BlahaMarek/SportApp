@@ -95,7 +95,7 @@ export class ActivityNewComponent implements OnInit {
         datum.setHours(cas.getHours());                            // a potom ho rovno pri zobrazeni menil na timestamp
         datum.setMinutes(cas.getMinutes());
 
-        var datum2 = datum.toString();
+        var datum2 = datum.getTime();
         return {
             // id: this.activityService.allActivitiesCount + 1,
 
@@ -104,8 +104,8 @@ export class ActivityNewComponent implements OnInit {
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
-            date: datum2,
-            time: this.activityForm.get('time').value,
+            date: datum.getTime(),
+            // time: this.activityForm.get('time').value,
             comment: this.activityForm.get('comment').value,
             bookedBy: [],
             bookedByNames:[],

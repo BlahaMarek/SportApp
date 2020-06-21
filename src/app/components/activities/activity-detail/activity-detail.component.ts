@@ -135,10 +135,13 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.activityForm.get('peopleCount').patchValue(this.selectedActivity.peopleCount);
         this.activityForm.get('place').patchValue(this.selectedActivity.place);
         this.activityForm.get('topActivity').patchValue(this.selectedActivity.topActivity);
-        this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
+        // this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
+        this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toDateString());
         this.activityForm.get('sport').setValue(this.selectedActivity.sport);
         this.activityForm.get('comment').patchValue(this.selectedActivity.comment);
-        this.activityForm.get('time').patchValue(this.selectedActivity.time);
+        // this.activityForm.get('time').patchValue(this.selectedActivity.time);
+        this.activityForm.get('time').patchValue(new Date(this.selectedActivity.date).toString());
+
         this.autocomplete.input = this.selectedActivity.place;
 
         this.activityForm.updateValueAndValidity();
@@ -214,6 +217,11 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             lattitude = this.lattitudeFirebase;
             longitude = this.longtitudeFirebase;
         }
+        var cas = new Date(this.activityForm.get('time').value);
+
+        var datum =  new Date(this.activityForm.get('date').value); // toto robimlen preto aby som k datumu pridal rovno cas
+        datum.setHours(cas.getHours());                            // a potom ho rovno pri zobrazeni menil na timestamp
+        datum.setMinutes(cas.getMinutes());
         return {
             // id: this.activityService.allActivitiesCount + 1,
             sport: this.activityForm.get('sport').value,
@@ -221,9 +229,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
-            date: this.activityForm.get('date').value,
+            date: datum.getTime(),
             comment: this.activityForm.get('comment').value,
-            time: this.activityForm.get('time').value,
+            // time: this.activityForm.get('time').value,
             bookedBy: this.selectedActivity.bookedBy,
             lattitude: lattitude,
             longtitude: longitude,
