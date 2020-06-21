@@ -5,12 +5,12 @@
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-color-primary: #191919;
-  --ion-color-primary-rgb: 25, 25, 25;
+  --ion-color-primary: #0326b6;
+  --ion-color-primary-rgb: 3,38,182;
   --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #161616;
-  --ion-color-primary-tint: #303030;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+  --ion-color-primary-shade: #0321a0;
+  --ion-color-primary-tint: #1c3cbd;
 
   /** secondary **/
   --ion-color-secondary: #12b562;
@@ -61,12 +61,12 @@
   --ion-color-medium-tint: #eb3573;
 
   /** light **/
-  --ion-color-light: #e8e8e8;
-  --ion-color-light-rgb: 232, 232, 232;
+  --ion-color-light: #DDDDDD;
+  --ion-color-light-rgb: 221,221,221;
   --ion-color-light-contrast: #000000;
-  --ion-color-light-contrast-rgb: 0, 0, 0;
-  --ion-color-light-shade: #cccccc;
-  --ion-color-light-tint: #eaeaea;
+  --ion-color-light-contrast-rgb: 0,0,0;
+  --ion-color-light-shade: #c2c2c2;
+  --ion-color-light-tint: #e0e0e0;
 
   --ion-color-google: #DB4437;
   --ion-color-google-rgb: 219, 68, 55;
@@ -126,11 +126,11 @@ ion-content {
 
 ion-toolbar {
   --ion-background-color: var(--ion-color-primary);
-  color: var(--ion-color-light);
+  color: white;
 }
 
 ion-label, ion-icon {
-  color: var(--ion-color-secondary);
+  color: var(--ion-color-light);
 }
 
 ion-tabs {
@@ -142,17 +142,17 @@ ion-tabs {
   }
 }
 
-ion-menu-button {
-  color: var(--ion-color-secondary);
-  font-size: 20px;
-}
-
 .tab-selected {
   ion-icon, ion-label {
-    color: var(--ion-color-medium);
+    color: white;
     transform: scale(1.1);
   }
 }
+
+ion-menu-button {
+  font-size: 20px;
+}
+
 
 
 

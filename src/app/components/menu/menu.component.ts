@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {IonImg} from '@ionic/angular';
+import {IonImg, MenuController} from '@ionic/angular';
 import {LanguageService} from '../../services/language.service';
 import {Storage} from '@ionic/storage';
 import {DataService} from "../../data/data.service";
@@ -20,7 +20,8 @@ export class MenuComponent implements OnInit {
       private languageService: LanguageService,
       private storage: Storage,
       private dataService: DataService,
-      private router: Router
+      private router: Router,
+      private menu: MenuController
 ) { }
 
   ngOnInit() {
@@ -45,7 +46,7 @@ export class MenuComponent implements OnInit {
     console.log("Logout");
     localStorage.clear();
     this.router.navigate(['login']);
-
+    this.menu.close();
   }
 
   onLanguageIconClicked(lang: String) {

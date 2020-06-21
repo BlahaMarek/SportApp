@@ -43,18 +43,11 @@ export class ProfilePage implements OnInit {
               private ratingService: RatingService) { }
 
   ngOnInit() {
-
-    console.log(this.dataService.getSignInUser());
     this.user = this.dataService.getSignInUser();
-    console.log("totot je user");
-    console.log(this.user);
-    console.log("toto je user from dataservuice");
-    console.log(this.dataService.getSignInUser());
     this.userService.getOneUser(this.user.user.uid).subscribe(res=>{
       this.userFromTable = res;
     });
     this.getRatings();
-
   }
 
 
@@ -70,7 +63,7 @@ export class ProfilePage implements OnInit {
     this.router.navigate(['login']);
     this.dataService.user = {};
     this.dataService.logged = false;
-     this.dataService.refreshAfterLogin = false;
+    this.dataService.refreshAfterLogin = false;
   }
 
   login() {
@@ -86,7 +79,6 @@ export class ProfilePage implements OnInit {
 
         })
         .then(modalEl => {
-          console.log("som v tabe 1111  hore");
           modalEl.present();
           return modalEl.onDidDismiss();
         })
