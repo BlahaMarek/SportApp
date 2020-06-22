@@ -411,7 +411,12 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         setTimeout(() => {
             this.map.updateSize();
         }, 500);
-        this.ionViewWillLeave();
+    }
+
+    ionViewDidEnter(){
+        setTimeout(() => {
+            this.map.updateSize();
+        }, 500);
     }
 
     prejdiDoTab1() {
@@ -501,19 +506,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         console.log("toto je sringik");
 
 
-    }
-
-
-    ionViewWillLeave() {
-        // if (pocet > 0) {
-        //     console.log('ted to pujde ');
-        //     // this.map.setTarget(null); // toto to zavrie ale aj tak to nejde, gg
-        //     this.map = null;
-        // }
-        // if (pocet === 0) {
-        //     console.log('az teraz sa vypinam omg ');
-        //     pocet++;
-        // }
     }
 
     locate() {
