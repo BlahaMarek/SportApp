@@ -40,6 +40,10 @@ ion-badge {
   right: 10px;
 }
 
+ion-virtual-scroll {
+  max-height: 70vh;
+  overflow: auto;
+}
 
 //OBRAZKY
 //TODO-SPORTIO: Presunut do globalnych stylov

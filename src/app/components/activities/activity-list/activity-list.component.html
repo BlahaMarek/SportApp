@@ -17,22 +17,19 @@
         <ion-segment-button value="mine">Moje</ion-segment-button>
         <ion-segment-button value="registered">Prihlásený</ion-segment-button>
     </ion-segment>
-    <ion-virtual-scroll [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="20px">
-
-        <ion-item-sliding *virtualItem="let activity">
-
-            <ion-item lines="none" (click)="onActivityClicked(activity.id)">
-                <div [class]="getCssClass(activity)">
-                    <div class="wrapper">
-                        <ion-label>
-                            <h3 class="shade">{{this.dataService.getSportNameByValue(activity.sport)}}</h3>
-                            <p class="shade" >{{activity.date | date}}, {{activity.place}}</p>
-                        </ion-label>
-                        <ion-badge color="medium" *ngIf="activity.topActivity">TOP</ion-badge>
+    <div class="wrapper">
+        <ion-virtual-scroll  [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="120px">
+                <ion-item *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">
+                    <div [class]="getCssClass(activity)">
+                        <div class="wrapper">
+                            <ion-label>
+                                <h3 class="shade">{{this.dataService.getSportNameByValue(activity.sport)}}</h3>
+                                <p class="shade" >{{activity.date | date}}, {{activity.place}}</p>
+                            </ion-label>
+                            <ion-badge color="medium" *ngIf="activity.topActivity">TOP</ion-badge>
+                        </div>
                     </div>
-                </div>
-            </ion-item>
-
-        </ion-item-sliding>
-    </ion-virtual-scroll>
+                </ion-item>
+        </ion-virtual-scroll>
+    </div>
 </ion-content>

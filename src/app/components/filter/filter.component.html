@@ -1,24 +1,24 @@
 <form [formGroup]="activityForm">
-  <ion-fab vertical="start" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="refresh"  color="medium" (click)="activityForm.reset()"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
-  <div >
-    <ion-item>
-      <ion-label position="stacked" >Výber športu</ion-label>
-      <ion-select formControlName="sport" placeholder="Vyberte šport">
-        <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
-          {{ val.label }}
-        </ion-select-option>
-      </ion-select>
-
-    </ion-item>
+  <div class="search">
+    <div class="item-wrapper">
+        <ion-select formControlName="sport" placeholder="Vyberte šport" class="opacity">
+          <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
+            {{ val.label }}
+          </ion-select-option>
+        </ion-select>
+    </div>
+    <div class="icon-wrapper">
+      <ion-icon name="close"  color="medium" (click)="activityForm.reset()"></ion-icon>
+      <ion-icon [name]=" animationState == 'out' ? 'options' : 'arrow-dropup'" color="primary" (click)="toggleShowDiv()"></ion-icon>
+    </div>
   </div>
 
-  <ion-item>
-    <ion-label position="stacked" >Kedy? *</ion-label>
-    <ion-datetime displayFormat="MM/DD/YYYY" [min]="minDate" placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
-  </ion-item>
+  <div [@slideInOut]="animationState" >
+    <div class="item-wrapper">
+      <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="Vyberte dátum"></ion-input>
+    </div>
+    <div class="item-wrapper">
+      <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="Vyberte dátum"></ion-input>
+    </div>
+  </div>
 </form>

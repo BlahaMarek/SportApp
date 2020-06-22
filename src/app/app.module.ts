@@ -34,6 +34,7 @@ import {ActivityListComponent} from "./components/activities/activity-list/activ
 import {SharedModule} from "./modules/shared/shared.module";
 import {ActivityDetailComponent} from "./components/activities/activity-detail/activity-detail.component";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -75,6 +76,7 @@ firebase.initializeApp(environment.firebaseConfig);
         FilePath,
         ToastController,
         Network,
+        DatePicker,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     exports: [

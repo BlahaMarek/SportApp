@@ -5,6 +5,7 @@ import {ModalController, ToastController} from '@ionic/angular';
 import {ActivityDetailComponent} from '../activity-detail/activity-detail.component';
 import {Sport} from '../../../models/sport';
 import {DataService} from '../../../data/data.service';
+import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
 
 @Component({
     selector: 'app-activity-list',
