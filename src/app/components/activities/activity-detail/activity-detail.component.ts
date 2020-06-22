@@ -1,14 +1,13 @@
-import { AfterViewInit, Component, Input, NgZone, OnInit } from '@angular/core';
+import {AfterViewInit, Component, Input, NgZone, OnInit} from '@angular/core';
 import {Activity} from '../../../models/activity';
-import {ModalController} from '@ionic/angular';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ModalController, Platform, ToastController} from '@ionic/angular';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Sport} from '../../../models/sport';
 import {DataService} from '../../../data/data.service';
 import {ActivityService} from '../../../services/activity.service';
 import {AuthService} from '../../../auth/auth.service';
 import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
-import { ToastController} from '@ionic/angular';
 import 'ol/ol.css';
 import Feature from 'ol/Feature';
 import {fromLonLat} from 'ol/proj';
@@ -16,10 +15,12 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import Point from 'ol/geom/Point';
 import {OSM, Vector as VectorSource} from 'ol/source';
-import {Circle as CircleStyle, Fill, Stroke, Style, Icon} from 'ol/style';
+import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {ActivatedRoute} from "@angular/router";
 import {ActivityRatingComponent} from "../activity-rating/activity-rating.component";
+import {ELocalNotificationTriggerUnit, LocalNotifications} from '@ionic-native/local-notifications/ngx';
+
 
 @Component({
     selector: 'app-activity-detail',
@@ -54,7 +55,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         private dataService: DataService,
         private authService: AuthService,
         public zone: NgZone,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private plt: Platform,
+        private localNotification: LocalNotifications
     ) {
         if (this.dataService)
         // @ts-ignore
@@ -62,6 +65,16 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.autocomplete = {input: ''};
         this.autocompleteItems = [];
         const positionFeature = new Feature();
+        this.plt.ready().then(()=> {
+            this.localNotification.on('click').subscribe(res=> {
+            console.log('click', res);
+            let msg = res.data ? res.data.mydata :'';
+
+            });
+            this.localNotification.on('trigger').subscribe(res=> {
+                console.log('trigger', res);
+            });
+        })
 
     }
 
@@ -159,6 +172,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             this.activityService.addBookerToActivity(this.selectedActivity).then(()=>{
                 this.dataService.refreshAfterLogin = true;
             });
+            this.scheduleNotification();
         }
         else if (this.reserved) {
             this.activityService.removeBookerFromActivity(this.selectedActivity).then(()=>{
@@ -359,4 +373,15 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
             });
     }
+    scheduleNotification(){
+        var minusOneHour = this.selectedActivity.date - (3600*1000); // lebo timestamp mame in da miliseconds, preto * 1000
+        this.localNotification.schedule({
+            id: 2,
+            title: this.dataService.getSportNameByValue(Number(this.selectedActivity.sport)),
+            text: new Date(this.selectedActivity.date).getHours()+ ':' + new Date(this.selectedActivity.date).getMinutes() +'\n'+this.selectedActivity.place,
+            trigger: {at: new Date(minusOneHour)}, // hodinu pred aktivitou chceme notifikaciu
+            foreground: true
+        });
+    }
+
 }

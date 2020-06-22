@@ -31,6 +31,7 @@
     "@ionic-native/file-path": "^5.0.0",
     "@ionic-native/geolocation": "^5.15.0",
     "@ionic-native/ionic-webview": "^5.0.0",
+    "@ionic-native/local-notifications": "^5.26.0",
     "@ionic-native/native-geocoder": "^5.14.0",
     "@ionic-native/network": "^5.26.0",
     "@ionic-native/splash-screen": "^5.0.0",
@@ -120,7 +121,8 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-network-information": {},
-      "cordova-plugin-datepicker": {}
+      "cordova-plugin-datepicker": {},
+      "cordova-plugin-local-notification": {}
     },
     "platforms": [
       "android"

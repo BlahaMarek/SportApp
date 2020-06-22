@@ -29,6 +29,7 @@ export class ActivityRatingComponent implements OnInit {
   ratingsUserBySportId: any = [];
   friendsFromProfile:User[] = [];
   loggedUser: any = {};
+  finishDwonloading: boolean = true;
   constructor(private ratingService: RatingService,private firestoreService: FirestoreService,private dataService: DataService,private userService: UserService, private modalController: ModalController) { }
   // this.loggedUser.user.uid
   ngOnInit() {
@@ -73,8 +74,12 @@ export class ActivityRatingComponent implements OnInit {
           }
           hodnotenie = hodnotenie / res.length;
           this.usersFromDatabase[this.usersFromDatabase.length-1].behavior = hodnotenie;
-
+          this.finishDwonloading = false;
         });
+
+      }
+      if (this.usersId.length == 0){
+        this.finishDwonloading = false;
       }
 
     }

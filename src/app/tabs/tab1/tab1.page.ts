@@ -30,11 +30,11 @@ export class Tab1Page implements OnInit {
         this.initApp();
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.loadLocalUser();
         this.locate();
 
-        this.activityService.activities$.subscribe(list => {
+         this.activityService.activities$.subscribe(list => {
             this.activityList = list;
 
             // SORTOVANIE AKTIVIT PODLA VZDIALENOSTI
@@ -48,9 +48,11 @@ export class Tab1Page implements OnInit {
                 return a.distanceFromUser - b.distanceFromUser
             });
             this.dataService.setAktivity(this.activityList);
-        });
+         });
 
     }
+
+
 
 
     // NASTAVENIE JAZYKA APLIKACIE

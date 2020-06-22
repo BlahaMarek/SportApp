@@ -31,6 +31,8 @@ export class ActivityListComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log("this is filteredlist")
+        console.log(this.filteredList);
         this.user = this.dataService.getSignInUser();
         if (this.fromMap) {
             this.filterActivitiesByIdFromMap();

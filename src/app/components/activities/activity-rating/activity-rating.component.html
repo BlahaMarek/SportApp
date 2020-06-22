@@ -11,7 +11,17 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content *ngIf="overdue && usersId.length == 0">
+  <p>Nikto nebol prihlaseny.</p>
+</ion-content>
+
 <ion-content *ngIf="!this.profile && !overdue">
+<!--loading gif-->
+  <img class="loadingImage" *ngIf="this.finishDwonloading" src='assets/loading/loadingBallGif.gif' height="90">
+
+    <p *ngIf="usersId.length == 0 && !this.overdue">Nikto nie je prihlaseny.</p>
+
+
   <ion-list padding *ngFor="let user of this.usersFromDatabase">
     <ion-item>
       <ion-avatar><img src="{{user.photoUrl}}"></ion-avatar>
@@ -41,9 +51,10 @@
   </ion-list>
 
 
-  <ion-item class="allLogin" *ngIf="this.usersFromDatabase.length==0">
-    <p *ngIf="!overdue">Všetci boli ohodnotení</p>
+  <ion-item class="allLogin" *ngIf="this.usersFromDatabase.length==0 && finishDwonloading">
+    <p *ngIf="overdue ">Všetci boli ohodnotení</p>
   </ion-item>
+
   <p *ngIf="this.usersRated.length >0 && !overdue">Ohodnoteni pouzivatelia</p>
   <ion-list  padding *ngFor="let user of this.usersRated">
 <!--    toto bude treba klepnut hore, lebo este pri nehranej aktivite to tu je na 2 veci-->

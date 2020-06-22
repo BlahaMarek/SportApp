@@ -17,6 +17,7 @@
         <ion-segment-button value="mine">Moje</ion-segment-button>
         <ion-segment-button value="registered">Prihlásený</ion-segment-button>
     </ion-segment>
+    <img class="loadingImage" *ngIf="filteredList.length==0" src='assets/loading/loadingBallGif.gif' height="90">
     <div class="wrapper">
         <ion-virtual-scroll  [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="120px">
                 <ion-item *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">

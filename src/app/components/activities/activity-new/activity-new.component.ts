@@ -1,12 +1,12 @@
 import {Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {ModalController} from '@ionic/angular';
+import {ModalController, Platform} from '@ionic/angular';
 import {ActivityService} from '../../../services/activity.service';
 import {Activity} from '../../../models/activity';
 import {DataService} from '../../../data/data.service';
 import {Sport} from '../../../models/sport';
 import {AuthService} from '../../../auth/auth.service';
-// import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import {ELocalNotificationTriggerUnit, LocalNotifications} from '@ionic-native/local-notifications/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {NativeGeocoderOptions, NativeGeocoderResult} from '@ionic-native/native-geocoder';
 import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
@@ -42,6 +42,8 @@ export class ActivityNewComponent implements OnInit {
         private dataService: DataService,
         private authService: AuthService,
         public zone: NgZone,
+        private plt: Platform,
+        private localNotification: LocalNotifications
     ) {
         this.sportOptions = this.dataService.getSportsSk();
         // @ts-ignore
@@ -85,6 +87,7 @@ export class ActivityNewComponent implements OnInit {
 
         this.activityService.addActivity(this.assignValueToActivity());
         this.fireService.createSport(this.assignValueToActivity());
+        this.scheduleNotification(); //notifikaciaaa
         this.modalController.dismiss({message: 'Add new activity!'}, 'add');
     }
 
@@ -175,5 +178,17 @@ export class ActivityNewComponent implements OnInit {
             message: msg , duration: 2000
         });
         toast.present();
+    }
+    scheduleNotification(){
+        //TODO: upravit idcka na nieco rozumne..musi to byt number ...aj v detaile
+        var minusOneHour = this.assignValueToActivity().date - (3600*1000); // lebo timestamp mame in da miliseconds, preto * 1000
+        this.localNotification.schedule({
+            id: 2,
+            title: this.dataService.getSportNameByValue(Number(this.assignValueToActivity().sport)),
+            text: new Date(this.assignValueToActivity().date).getHours()+ ':' + new Date(this.assignValueToActivity().date).getMinutes() +'\n'+
+                this.assignValueToActivity().place,
+            trigger: {at: new Date(minusOneHour)}, // hodinu pred aktivitou chceme notifikaciu
+            foreground: true
+        });
     }
 }
