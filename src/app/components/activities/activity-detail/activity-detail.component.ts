@@ -20,6 +20,8 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {ActivatedRoute} from "@angular/router";
 import {ActivityRatingComponent} from "../activity-rating/activity-rating.component";
 import {ELocalNotificationTriggerUnit, LocalNotifications} from '@ionic-native/local-notifications/ngx';
+// import {File} from "@ionic-native/file/ngx"; ak budeme chciet k sharovanie prilozit aj obrazok
+import {SocialSharing} from "@ionic-native/social-sharing/ngx";
 
 
 @Component({
@@ -57,7 +59,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         public zone: NgZone,
         private route: ActivatedRoute,
         private plt: Platform,
-        private localNotification: LocalNotifications
+        private localNotification: LocalNotifications,
+        private socialSharing: SocialSharing,
     ) {
         if (this.dataService)
         // @ts-ignore
@@ -382,6 +385,44 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             trigger: {at: new Date(minusOneHour)}, // hodinu pred aktivitou chceme notifikaciu
             foreground: true
         });
+    }
+
+      facebookShare(){
+        //tu bude url nasej appky v obchode playyy
+        var url = 'https://i.guim.co.uk/img/media/0e5ba031e776c312d744077a9aa1467815849e42/923_166_2287_1372/master/2287.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=b723b8f70c073e45b0c5cddbc6e5cade';
+
+          this.socialSharing.canShareVia('facebook').then(() => {
+
+              this.socialSharing.shareVia('facebook','SportFriend: ' + this.selectedActivity.peopleCount + ' ludi, ' +
+                  this.selectedActivity.place,null,null, 'https://www.google.sk')
+                  .then((success) =>{
+
+                  })
+                  .catch((e)=>{
+
+                  });
+          }).catch(()=>{
+              this.openToast("Nepodarilo sa nacitat aplikaciu facebook");
+          })
+
+
+      }
+
+    instagramShare(){
+        this.socialSharing.canShareVia('instagram').then(() => {
+
+            this.socialSharing.shareVia('instagram','SportFriend: ' + this.selectedActivity.peopleCount + ' ludi, ' +
+                this.selectedActivity.place,null,null, 'https://www.google.sk')
+                .then((success) =>{
+                })
+                .catch((e)=>{
+                });
+        }).catch(()=>{
+            this.openToast("Nepodarilo sa nacitat aplikaciu instagram");
+
+        })
+
+
     }
 
 }

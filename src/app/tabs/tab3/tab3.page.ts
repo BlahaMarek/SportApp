@@ -48,7 +48,7 @@ export class Tab3Page {
             this.activityList.sort(function(a,b){
                 return a.distanceFromUser - b.distanceFromUser
             });
-            this.dataService.setAktivity(this.activityList);
+            this.dataService.setEvent(this.activityList);
         });
     }
 

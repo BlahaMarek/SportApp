@@ -36,6 +36,8 @@ import {ActivityDetailComponent} from "./components/activities/activity-detail/a
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
+import {File} from '@ionic-native/file/ngx';
+import {SocialSharing} from '@ionic-native/social-sharing/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -76,6 +78,7 @@ firebase.initializeApp(environment.firebaseConfig);
         WebView,
         FilePath,
         LocalNotifications,
+        SocialSharing,
         ToastController,
         Network,
         DatePicker,

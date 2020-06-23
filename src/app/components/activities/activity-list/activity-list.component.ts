@@ -17,6 +17,7 @@ export class ActivityListComponent implements OnInit {
     @Input() filteredList: Activity[];
     @Input() idSportsFromMap: string[];
     @Input() fromMap: boolean;
+    @Input() aktivita: boolean; //ci prisiel event z mapy alebo aktivita
 
     sportOptions: Sport[] = [];
     user: any = {};
@@ -65,7 +66,11 @@ export class ActivityListComponent implements OnInit {
 
     //ak pridem z mapy filitrujem len tie aktivity
     filterActivitiesByIdFromMap(){
-        this.filteredList = this.dataService.getAktivitz().filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
+        if (this.aktivita) {
+            this.filteredList = this.dataService.getAktivitz().filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
+        }else
+            this.filteredList = this.dataService.getEvent().filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
+
     }
 
     getCssClass(activity: Activity) {

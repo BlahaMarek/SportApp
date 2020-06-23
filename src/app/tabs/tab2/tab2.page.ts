@@ -428,7 +428,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         document.getElementById('testButton3').style.display = "none";
         idDoButtonu = [];
         idDoButtonuEvent = [];
-        this.filteredActivitiesList(this.dataService.getIdZMapy());
+        this.filteredActivitiesList(this.dataService.getIdZMapy(),true); //true aktivity
     }
 
     prejdiDoTab3() {
@@ -440,20 +440,15 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         document.getElementById('testButton3').style.display = "none";
         idDoButtonu = [];
         idDoButtonuEvent = [];
-        this.router.navigateByUrl('/tabs/tabs/tab3');
+        this.filteredActivitiesList(this.dataService.getidEventZMapy(), false); //false eventy
     }
 
     pridanieMarkerov() {
 
         if (this.dataService.getEvent() != null) {
 
-
             const resEvent = Array.from(Object.values(this.dataService.getEvent()), //eventy
                 ({lattitude, longtitude, sport, id, peopleCount,place}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place]);
-            console.log("toto je res event");
-            console.log(resEvent);
-
-        console.log("pro pro pro")
 
             for (let o = 0; o < resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
                 if (resEvent[o][5].toString().length > 12){
@@ -472,10 +467,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
             }
         }
-            console.log("som pred resom");
         const res = Array.from(Object.values(this.dataService.getAktivitz()), //aktivity
             ({lattitude, longtitude, sport, id, peopleCount,place}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place]);
-        console.log(res);
+
 
 
         for (let o = 0; o < res.length; o++) {
@@ -490,14 +484,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 place: res[o][5],
                 peopleCount: res[o][4]
             });
-            markiza.setStyle(new Style({
-                image: new Icon({
-                    color: '#8959A8',
-                    crossOrigin: 'anonymous',
-                    src: 'assets/sports/hockey.svg',
-                    scale: 0.2
-                })
-            }));
             markres.push(markiza);
 
 
@@ -527,12 +513,13 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     ngOnInit() {
         this.user = this.dataService.getSignInUser();
     }
-    filteredActivitiesList(activitiesId){
+    filteredActivitiesList(activitiesId, aktivityChcem){
         this.modalController
             .create({component: ActivityListComponent,
                 componentProps:{
                     idSportsFromMap: activitiesId,
-                    fromMap: true
+                    fromMap: true,
+                    aktivita: aktivityChcem
                 }
 
             })
