@@ -103,7 +103,7 @@ export class ActivityNewComponent implements OnInit {
             // id: this.activityService.allActivitiesCount + 1,
 
             sport: this.activityForm.get('sport').value,
-            createdBy: this.user.user.uid,
+            createdBy: this.user.id,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,

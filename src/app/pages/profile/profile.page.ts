@@ -44,7 +44,7 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.user = this.dataService.getSignInUser();
-    this.userService.getOneUser(this.user.user.uid).subscribe(res=>{
+    this.userService.getOneUser(this.user.id).subscribe(res=>{
       this.userFromTable = res;
     });
     this.getRatings();
@@ -98,7 +98,7 @@ export class ProfilePage implements OnInit {
 
 
   getRatings(){
-    this.ratingService.getAllRatingsByUser(this.user.user.uid).subscribe(res =>{
+    this.ratingService.getAllRatingsByUser(this.user.id).subscribe(res =>{
       res.forEach(res2 => {
         switch (res2.idSportu) {
           case "1":
@@ -134,9 +134,6 @@ export class ProfilePage implements OnInit {
   }
 
   get userPhoto() {
-    if (!this.user || !this.user.user || !this.user.user.photoURL) {
-      return "";
-    }
-    return this.user.user.photoURL + "?type=large";
+    return this.user.photoUrl + "?type=large";
   }
 }

@@ -36,7 +36,7 @@ import {ActivityDetailComponent} from "./components/activities/activity-detail/a
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
-import {File} from '@ionic-native/file/ngx';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -72,6 +72,7 @@ firebase.initializeApp(environment.firebaseConfig);
     providers: [
         Facebook,
         Geolocation,
+        GooglePlus,
         NativeGeocoder,
         StatusBar,
         SplashScreen,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
 import { Facebook } from '@ionic-native/facebook/ngx';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {NavController, ToastController} from "@ionic/angular";
 import {DataService} from "../data/data.service";
 import {UserService} from "../services/user.service";
@@ -15,6 +16,7 @@ import {
     animate,
     transition,
 } from '@angular/animations';
+import {take} from "rxjs/operators";
 
 @Component({
     selector: 'app-auth',
@@ -64,7 +66,7 @@ import {
     ],
 })
 export class AuthPage implements OnInit {
-    user: User = {behavior: 0, friends: [], id: "", name: "", photoUrl: ""};
+    user: User = {friends: [], id: "", name: "", photoUrl: ""};
     hasConnection = true;
     isOpen = true;
 
@@ -75,6 +77,7 @@ export class AuthPage implements OnInit {
         private dataService: DataService,
         public navCtrl: NavController,
         private facebook: Facebook,
+        private googlePlus: GooglePlus,
         private router: Router,
         public toastController: ToastController
     ) {}
@@ -107,8 +110,14 @@ export class AuthPage implements OnInit {
 
           firebase.auth().signInWithCredential(facebookCredential)
               .then((user) => {
-                this.dataService.user = user;
-                localStorage.setItem("user", JSON.stringify(user))
+
+
+                // this.dataService.user = user;
+                console.log(user);
+
+                this.setDataserviceUserFb(user);
+
+
                 this.dataService.logged = true;
                 this.dataService.refreshAfterLogin = true;
                 this.router.navigateByUrl('/tabs/tabs/tab1');
@@ -119,6 +128,41 @@ export class AuthPage implements OnInit {
     }).catch((error) => { console.log(error) });
   }
 
+    googleSignIn() {
+        this.googlePlus.login({
+
+        })
+            .then((res) => {
+                console.log(res)
+                this.setDataserviceUserGoogle(res);
+                this.createUserToDataabseGoogle();
+                this.dataService.logged = true;
+                this.dataService.refreshAfterLogin = true;
+                this.router.navigateByUrl('/tabs/tabs/tab1');
+            })
+            .catch(err => this.presentToast("Prihlásenie neúspešné"));
+    }
+
+    //aby sme ukladali usera v normalnom formate do dateservisu
+    setDataserviceUserFb(user){
+        console.log(user.user);
+        this.user.id = user.user.uid;
+        this.user.name = user.additionalUserInfo.profile.first_name;
+        this.user.photoUrl = user.user.photoURL;
+        this.dataService.user = this.user;
+    }
+    setDataserviceUserGoogle(user){
+        console.log(user.user);
+        this.user.id = user.userId;
+        this.user.name = user.givenName;
+        this.dataService.user = this.user;
+        console.log(this.user);
+        // "113961267337708956071"
+
+    }
+
+
+
   async presentToast(message:any) {
         const toast = await this.toastController.create({
             message: message,
@@ -128,29 +172,48 @@ export class AuthPage implements OnInit {
         toast.present();
     }
 
+
     ionViewWillLeave(){
-        if (this.dataService.logged == true){
-            this.createUserToDataabse()
-        }
+            this.createUserToDataabse();
     }
 
+    //skontroluje ci je user uz v databaze vytvoreny, ak nie vytvori, ak hej natiahne o nom udaje
     createUserToDataabse(){
-        this.userService.getOneUser(this.dataService.getSignInUser().user.uid).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
+        console.log(this.dataService.getSignInUser());
+        this.userService.getOneUser(this.dataService.getSignInUser().id).pipe(take(1)).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
             if (res==undefined){
                 this.user = {
-                    id: this.dataService.getSignInUser().user.uid,
-                    name: this.dataService.getSignInUser().additionalUserInfo.profile.first_name,
-                    photoUrl: this.dataService.getSignInUser().user.photoURL,
+                    id: this.dataService.getSignInUser().id,
+                    name: this.dataService.getSignInUser().name,
+                    photoUrl: this.dataService.getSignInUser().photoUrl,
                     friends: [],
-                    behavior: 0
                 };
                 this.firestore.createUser(this.user);
                 this.dataService.userFromDatabase = this.user;
             }
             else {
                 this.dataService.userFromDatabase = res;
-
             }
+            localStorage.setItem("user", JSON.stringify(this.user));
+        });
+    }
+    createUserToDataabseGoogle(){
+        console.log(this.dataService.getSignInUser());
+        this.userService.getOneUser(this.dataService.getSignInUser().id).pipe(take(1)).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
+            if (res==undefined){
+                this.user = {
+                    id: this.dataService.getSignInUser().id,
+                    name: this.dataService.getSignInUser().name,
+                    photoUrl: this.dataService.getSignInUser().photoUrl,
+                    friends: [],
+                };
+                this.firestore.createUser(this.user);
+                this.dataService.userFromDatabase = this.user;
+            }
+            else {
+                this.dataService.userFromDatabase = res;
+            }
+            localStorage.setItem("user", JSON.stringify(this.user));
         });
     }
 }

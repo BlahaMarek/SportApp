@@ -44,6 +44,8 @@ export class MenuComponent implements OnInit {
 
   onLogout() {
     console.log("Logout");
+    this.dataService.user = {};
+    this.dataService.userFromDatabase = {};
     localStorage.clear();
     this.router.navigate(['login']);
     this.menu.close();

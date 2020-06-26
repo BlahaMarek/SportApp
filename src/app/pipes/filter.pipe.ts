@@ -17,19 +17,19 @@ export class FilterPipe implements PipeTransform {
 
     // TAKE AKTIVITY, KT. SOM NEVYTVORIL && SU TAM ESTE VOLNE MIESTA && ESTE SA NEODOHRALA && ESTE SOM SA NA NU NEPRIHLASIL
     if( group == 'others' ) {
-      list = value.filter(activity => ((activity.createdBy !== this.dataService.getSignInUser().user.uid) &&
-          (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= (new Date()).getTime()) && !activity.bookedBy.includes(this.dataService.getSignInUser().user.uid)));
+      list = value.filter(activity => ((activity.createdBy !== this.dataService.getSignInUser().id) &&
+          (activity.peopleCount > activity.bookedBy.length) && (new Date(activity.date).getTime() >= (new Date()).getTime()) && !activity.bookedBy.includes(this.dataService.getSignInUser().id)));
     }
     // TAKE AKTIVITY, KT. SOM VYTVORIL JA
     else if ( group == 'mine' ) {
-      list = value.filter(activity => activity.createdBy === this.dataService.getSignInUser().user.uid);
+      list = value.filter(activity => activity.createdBy === this.dataService.getSignInUser().id);
 
       list.sort( (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     }
     // TAKE AKTIVITY, NA KT. SOM SA PRIHLASIL
     else if ( group == 'registered' ) {
       value.filter(activity => activity.bookedBy.forEach(value =>  {
-        if (value == this.dataService.getSignInUser().user.uid) {
+        if (value == this.dataService.getSignInUser().id) {
           list.push(activity);
         }
       }));

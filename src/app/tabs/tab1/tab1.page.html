@@ -8,7 +8,7 @@
 
 <!--        TODO: toto sa prerobi ked budeme mat auth guarda-->
         <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
-            <ion-img routerLink="/profile" *ngIf="this.dataService.logged && !!this.dataService.getSignInUser()" class="profile-image" [src]="this.dataService.getSignInUser().user.photoURL"> </ion-img>
+            <ion-img routerLink="/profile" *ngIf="this.dataService.logged && !!this.dataService.getSignInUser()" class="profile-image" [src]="this.dataService.getSignInUser().photoUrl"> </ion-img>
             <ion-button (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
         </ion-buttons>
 

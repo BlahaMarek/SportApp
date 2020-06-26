@@ -11,7 +11,7 @@
       Mapa aktivít
     </ion-title>
       <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
-          <ion-img *ngIf="this.dataService.logged && !!this.user" class="profile-image" [src]="this.user.user.photoURL"> </ion-img>
+          <ion-img *ngIf="this.dataService.logged && !!this.user" class="profile-image" [src]="this.user.photoUrl"> </ion-img>
           <ion-button routerLink="/profile" class="hidden"><ion-icon name="add"></ion-icon></ion-button>
       </ion-buttons>
   </ion-toolbar>

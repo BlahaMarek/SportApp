@@ -49,12 +49,12 @@ export class ActivityListComponent implements OnInit {
                     component: ActivityDetailComponent,
                     componentProps: {
                         selectedActivity: this.activityService.getActivityById(id),
-                        bookable: !(this.activityService.getActivityById(id).createdBy === this.user.user.uid),
+                        bookable: !(this.activityService.getActivityById(id).createdBy === this.user.id),
                         reserved: (this.activityService.getActivityById(id).bookedBy.find(function (prihlaseny) {
-                            return prihlaseny.includes(logged.user.uid)
+                            return prihlaseny.includes(logged.id)
                         })),
                         overdue: (new Date(this.activityService.getActivityById(id).date).getTime() < new Date().getTime()),
-                        unSigned: (this.user.user.uid == 0)
+                        unSigned: (this.user.id == 0)
                     }
                 })
                 .then(modalEl => {

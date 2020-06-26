@@ -2,6 +2,6 @@
 <h1 [@openClose]="isOpen ? 'open3' : 'closed2'" >ŠportApka</h1>
 <div class="login-wrap">
     <span [@openClose]="isOpen ? 'open' : 'closed'" ><ion-icon (click)="facebookLogin()" name="logo-facebook"></ion-icon></span>
-    <span [@openClose]="isOpen ? 'open1' : 'closed'"><ion-icon name="logo-google"></ion-icon></span>
+    <span [@openClose]="isOpen ? 'open1' : 'closed'"><ion-icon (click)="googleSignIn()" name="logo-google"></ion-icon></span>
 </div>
 <img [@openClose]="isOpen ? 'open2' : 'closed'"id="bottom" src="../../assets/login/logo3.svg" alt="no1">

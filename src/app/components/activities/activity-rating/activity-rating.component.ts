@@ -31,7 +31,6 @@ export class ActivityRatingComponent implements OnInit {
   loggedUser: any = {};
   finishDwonloading: boolean = true;
   constructor(private ratingService: RatingService,private firestoreService: FirestoreService,private dataService: DataService,private userService: UserService, private modalController: ModalController) { }
-  // this.loggedUser.user.uid
   ngOnInit() {
     this.loggedUser = this.dataService.getSignInUser();
     if (this.profile) { // ak pridem z profilu
@@ -47,7 +46,7 @@ export class ActivityRatingComponent implements OnInit {
     // this.loggedUser.user.uid
     // 1MUxrZRhP0Wsdad54w83Icw0y3k2
     else {       // ak pridem from da aktivity
-      this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.user.uid).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
+      this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.id).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
         this.ratingsFromAktivity = res;
       });
 
@@ -122,16 +121,8 @@ export class ActivityRatingComponent implements OnInit {
 
 
   addFriend(friend){
-    console.log("toto je whaaaat");
-    console.log(this.ratingsUserBySportId);
-    var user: User = this.dataService.getUserFromDatabase().id;
-
-    console.log(this.dataService.getUserFromDatabase().id);
-    console.log("toto je user");
-    console.log("toto je friend");
-    console.log(friend);
     this.dataService.getUserFromDatabase().friends.push(friend);
-    this.userService.updateUser(this.loggedUser.user.uid, this.dataService.getUserFromDatabase());
+    this.userService.updateUser(this.loggedUser.id, this.dataService.getUserFromDatabase());
   }
 
   deleteFriend(friend){ //vymaze priatela ale v liste ostane
