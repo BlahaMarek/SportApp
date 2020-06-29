@@ -168,9 +168,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         if (!this.bookable && !this.reserved) {
             this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
                 this.dataService.refreshAfterLogin = true;
-
             });
-            console.log("upravujem aktivitu");
+
         } else if (this.bookable && !this.reserved) {
             this.activityService.addBookerToActivity(this.selectedActivity).then(()=>{
                 this.dataService.refreshAfterLogin = true;
@@ -226,8 +225,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     }
 
     assignValueToActivity(): Activity {
-        console.log("toto je z firebase");
-        console.log(this.lattitudeFirebase);
         let lattitude = this.selectedActivity.lattitude;
         let longitude = this.selectedActivity.longtitude;
         if (this.lattitudeFirebase != undefined){
@@ -242,7 +239,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         return {
             // id: this.activityService.allActivitiesCount + 1,
             sport: this.activityForm.get('sport').value,
-            createdBy: this.dataService.getSignInUser().user.uid,
+            createdBy: this.dataService.getSignInUser().id,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,
             peopleCount: this.activityForm.get('peopleCount').value,
@@ -363,7 +360,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                     usersId: this.selectedActivity.bookedBy,
                     overdue: this.overdue,
                     profile: false,
-                    idSportu: this.selectedActivity.sport
+                    idSportu: this.selectedActivity.sport,
+                    createdBy: this.selectedActivity.createdBy
                 }
 
             })

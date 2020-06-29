@@ -85,11 +85,9 @@ export class ActivityService {
 
     // add person, who booked activity to list of users, who booked
     addBookerToActivity(sport: Activity) {
-        console.log("toto je moje userik meno");
-        console.log(this.user.additionalUserInfo.profile.first_name);
         let activity: Activity = this.getActivityById(sport.id);
-        activity.bookedBy.push(this.user.user.uid);
-        activity.bookedByNames.push(this.user.additionalUserInfo.profile.first_name);
+        activity.bookedBy.push(this.user.id);
+        activity.bookedByNames.push(this.user.name);
         activity.peopleCount = activity.peopleCount -1;
         return this.sportsCollection.doc(sport.id).update(activity);
 
@@ -99,14 +97,15 @@ export class ActivityService {
     updateActivity(sport: Activity, sportNew: Activity) { // toto treba dorobit
         let activity: Activity = this.getActivityById(sport.id);
         activity = sportNew;
-
+        console.log("ipravujem");
+        console.log(activity);
         return this.sportsCollection.doc(sport.id).update(activity);
     }
 
     removeBookerFromActivity(sport: Activity) {
         let activity: Activity = this.getActivityById(sport.id);
         for (var i = 0 ; i< activity.bookedBy.length ; i++){
-            if (activity.bookedBy[i] == this.user.user.uid){
+            if (activity.bookedBy[i] == this.user.id){
                 activity.bookedBy.splice(i,1);
                 activity.bookedByNames.splice(i,1);
                 break;

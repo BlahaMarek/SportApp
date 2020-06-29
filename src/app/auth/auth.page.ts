@@ -151,10 +151,12 @@ export class AuthPage implements OnInit {
         this.user.photoUrl = user.user.photoURL;
         this.dataService.user = this.user;
     }
+
     setDataserviceUserGoogle(user){
         console.log(user.user);
         this.user.id = user.userId;
         this.user.name = user.givenName;
+        this.user.photoUrl = user.imageUrl;
         this.dataService.user = this.user;
         console.log(this.user);
         // "113961267337708956071"

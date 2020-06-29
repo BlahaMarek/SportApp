@@ -8,6 +8,8 @@ import {FirestoreService} from "../../../services/firestore.service";
 import {Rating} from "../../../models/rating";
 import {RatingService} from "../../../services/rating.service";
 import {VisitUserProfileComponent} from "../../../pages/visit-user-profile/visit-user-profile.component";
+import {ActivityService} from "../../../services/activity.service";
+import {Activity} from "../../../models/activity";
 
 @Component({
   selector: 'app-activity-rating',
@@ -22,6 +24,7 @@ export class ActivityRatingComponent implements OnInit {
   @Input() overdue: boolean;
   @Input() profile: boolean;
   @Input() idSportu: string;
+  @Input() createdBy: string
 
   usersFromDatabase:User[] = [];
   usersRated:User[] = [];
@@ -30,7 +33,12 @@ export class ActivityRatingComponent implements OnInit {
   friendsFromProfile:User[] = [];
   loggedUser: any = {};
   finishDwonloading: boolean = true;
-  constructor(private ratingService: RatingService,private firestoreService: FirestoreService,private dataService: DataService,private userService: UserService, private modalController: ModalController) { }
+  constructor(private ratingService: RatingService,
+              private firestoreService: FirestoreService,
+              private dataService: DataService,
+              private userService: UserService,
+              private modalController: ModalController,
+              private activityService: ActivityService) { }
   ngOnInit() {
     this.loggedUser = this.dataService.getSignInUser();
     if (this.profile) { // ak pridem z profilu
@@ -128,6 +136,22 @@ export class ActivityRatingComponent implements OnInit {
   deleteFriend(friend){ //vymaze priatela ale v liste ostane
     this.userService.removeFriend(friend);
   }
+
+  deteleUser(playerId:string){
+    let activity: Activity = this.activityService.getActivityById(this.idAktivity);
+    let updated: Activity = activity;
+    for (var i = 0 ; i< updated.bookedBy.length ; i++){
+      if (updated.bookedBy[i] == playerId){
+        updated.bookedBy.splice(i,1);
+        this.usersFromDatabase = this.usersFromDatabase.filter(user => user.id != playerId);
+        break;
+      }
+    }
+    this.activityService.updateActivity(activity,updated);
+
+
+  }
+
 
   deleteFriendFomFriendList(friendId){ // toto mam pre vymazanie z priatela profilu...aby aj zmizol z listu
     this.userService.removeFriend(friendId);
