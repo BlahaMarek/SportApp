@@ -68,6 +68,7 @@ const popup2 = new Overlay({
 
 })
 export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
+
     map: Map;
     user: any = {};
     featureName: any = {};
@@ -109,199 +110,10 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         } else {
             console.log('kures fakt preskakuje null');
         }
-
-        const map = new Map({
-            layers: [
-                new TileLayer({
-                    source: new OSM()
-                })],
-            target: document.getElementById('map'),
-            view: new View({
-                center: fromLonLat([a1, b1]),
-                zoom: 12
-            }),
-        });
-
-        const popup = new Overlay({
-            element: document.getElementById('popup'),
-            positioning: 'bottom-center',
-            stopEvent: false,
-            offset: [0, -50]
-        });
-
-        map.addOverlay(popup);
-
-        // tslint:disable-next-line:only-arrow-functions
-        map.on('click', function (evt) {
-            $(document.getElementById('popup')).popover('destroy');
-            document.getElementById('testButton').style.display = "none";
-            document.getElementById('testButton3').style.display = "none";
-            idDoButtonu = [];
-            const feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-                var features = feature.get('features');
-                if (features.length == 1) { // jedna aktivita
-                    console.log(features.length);
-                    return features[0];
-                }
-                if (features.length > 1) { // viacej aktivit pod klastrom
-                    console.log(features.length);
-                    return features;
-                }
-                return feature;
-            });
-
-            if (feature) {
-                console.log("som tuu kde chcem byt");
-                console.log(feature.length);
-                if (feature.length >= 2) {
-                    var coordinates = feature[0].getGeometry().getCoordinates();
-                    popup.setPosition(coordinates);
-
-                    var vsetkyRovnake = feature[0].values_.zdroj;
-                    for (var i = 0; i < feature.length; i++) { // rozdelujem idcka podla zdroja ... aktivitu do id buttona  a event do iddobutttonaevent... necakane
-                        if (vsetkyRovnake != feature[i].values_.zdroj) { //ak sa nahodou nejaka nebude rovnat 1. prvu nastavi  sa na false
-                            vsetkyRovnake = false;
-                        }
-                        if (feature[i].values_.zdroj == "aktivita") {
-                            try {
-                                idDoButtonu.push(feature[i].get('id'))
-                            } catch (error) {
-                                console.error(error);
-                                // idDoButtonu = [];
-                            }
-                        }
-                        if (feature[i].values_.zdroj == "event") {
-                            try {
-                                idDoButtonuEvent.push(feature[i].get('id'))
-                            } catch (error) {
-                                console.error(error);
-                                // idDoButtonuEvent = [];
-                            }
-                        }
-                    }
-
-                    if (vsetkyRovnake && feature[0].values_.zdroj == "aktivita") {
-                        $(document.getElementById('popup')).popover({
-                            placement: 'top',
-                            html: true,
-                            content: "Viacero športov",
-                            animation: false,
-                        });
-                        var rect = document.getElementById('popup').getBoundingClientRect();
-                        console.log("toto je voncooo");
-
-                        document.getElementById('testButton').style.display = "block";
-                        document.getElementById('testButton').style.position = "absolute";
-                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
-                        document.getElementById('testButton').style.left = rect.left - 35 + "px";
-                    }
-                    if (vsetkyRovnake && feature[0].values_.zdroj == "event") {
-                        $(document.getElementById('popup')).popover({
-                            placement: 'top',
-                            html: true,
-                            content: "Viacero eventov",
-                            animation: false,
-                        });
-                        var rect = document.getElementById('popup').getBoundingClientRect();
-                        console.log("toto je voncooo");
-
-                        document.getElementById('testButton3').style.display = "block";
-                        document.getElementById('testButton3').style.position = "absolute";
-                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
-                        document.getElementById('testButton3').style.left = rect.left - 35 + "px";
-                    }
-                    if (!vsetkyRovnake) {
-                        // TODO: opravit chybny popup pri kliku z otvoreneho popupu na inu aktivitu/ event
-                        $(document.getElementById('popup')).popover({
-                            placement: 'top',
-                            html: true,
-                            content: "Športy a aktivity",
-                            animation: false,
-                        });
-                        var rect = document.getElementById('popup').getBoundingClientRect();
-                        console.log("toto je voncooo");
-
-                        document.getElementById('testButton').style.display = "block";
-                        document.getElementById('testButton').style.position = "absolute";
-                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
-                        document.getElementById('testButton').style.left = rect.left - 75 + "px";
+        a1 = 10;
+        b1 = 10;
 
 
-                        document.getElementById('testButton3').style.display = "block";
-                        document.getElementById('testButton3').style.position = "absolute";
-                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
-                        document.getElementById('testButton3').style.left = rect.left - 1 + "px";
-                    }
-
-
-                } else {
-                    var coordinates = feature.getGeometry().getCoordinates();
-                    popup.setPosition(coordinates);
-                    // this.featureName = feature.get('name');
-                    $(document.getElementById('popup')).popover({
-                        placement: 'top',
-                        html: true,
-                        title: feature.get('name'),
-                        animation: false,
-                        // content: ['<div style="background: #0ec254" class="place">'+feature.get('place')+'</div>',
-                        //     '<div class="people">'+ feature.get('peopleCount')+'</div>',
-                        //     ].join(''),
-
-                        content: feature.get('place') + `<br>`+ feature.get('peopleCount'), //bu takto ,alebo tak ako to je dole to nastylovat
-                        // content: ['<div class="popover-header">pro</div>',
-                        //     '<div class="popover-body">pro1</div>',
-                        //     ].join(''),
-                        //
-                        template: 	'<div class="popover" role="tooltip">' +
-                            '<div style="color: #0ec254" class="popover-title"></div>' + //neche to stylovaty :{
-                            '<div style="background: #0ec254" class="popover-content"></div>' +
-                            '</div>'
-                    });
-                    idDoButtonu = feature.get('id');
-                    idDoButtonuEvent = feature.get('id');
-                    var rect = document.getElementById('popup').getBoundingClientRect();
-                    if (feature.values_.zdroj == "aktivita") {
-                        document.getElementById('testButton').style.display = "block";
-                        document.getElementById('testButton').style.position = "absolute";
-                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
-                        document.getElementById('testButton').style.left = rect.left - 35 + "px";
-                    }
-                   else if (feature.values_.zdroj == "event") {
-                        document.getElementById('testButton3').style.display = "block";
-                        document.getElementById('testButton3').style.position = "absolute";
-                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
-                        document.getElementById('testButton3').style.left = rect.left - 35 + "px";
-                    } else {
-                        console.error("mame nieco ine ako event/aktrivita?")
-                    }
-                }
-
-                $(document.getElementById('popup')).popover('show');
-
-
-            } else {
-                idDoButtonu = [];
-                idDoButtonuEvent = [];
-                $(document.getElementById('popup')).popover('destroy');
-                document.getElementById('testButton').style.display = "none";
-                document.getElementById('testButton3').style.display = "none";
-            }
-        });
-
-
-        map.on('pointermove', function (e) {
-            if (e.dragging) {
-                idDoButtonu = [];
-                idDoButtonuEvent = [];
-                $(document.getElementById('popup')).popover('destroy');
-                document.getElementById('testButton').style.display = "none";
-                document.getElementById('testButton3').style.display = "none";
-                return;
-            }
-            const pixel = map.getEventPixel(e.originalEvent);
-            const hit = map.hasFeatureAtPixel(pixel);
-            map.getTarget().style.cursor = hit ? 'pointer' : '';
-        });
 
         var source = new VectorSource({
             features: markres
@@ -317,8 +129,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
 
         var styleCache = {};
-        new VectorLayer({
-            map: this.map = map,
+        var clusters = new VectorLayer({
             source: clusterSource,
             style: function (feature) {
                 var size = feature.get('features').length;
@@ -337,6 +148,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                         }
                     }
                 }
+
                 if (vsetkyRovnake == true) { //ked su v klastri len eventy/aktivitz
                     if (!style && feature.values_.features[0].values_.zdroj == 'aktivita') {
                         style = new Style({
@@ -404,10 +216,211 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 }
             }
         });
-        this.pridanieMarkerov();
-        this.locate();
-        // console.log('toto su markre');
-        // console.log(markre);
+
+        console.log('toto su markre');
+        console.log(markre);
+
+
+        this.map = new Map({
+            layers: [
+                new TileLayer({
+                    source: new OSM()
+                }), clusters],
+            target: document.getElementById('map'),
+            view: new View({
+                center: [0, 0],
+                zoom: 3
+            })
+        });
+        // setTimeout(() => {
+        //     this.map.updateSize();
+        // }, 500);
+
+
+        const popup = new Overlay({
+            element: document.getElementById('popup'),
+            positioning: 'bottom-center',
+            stopEvent: false,
+            offset: [0, -50]
+        });
+
+
+        this.map.addOverlay(popup);
+
+        // tslint:disable-next-line:only-arrow-functions
+        var totaMapa = this.map;
+        this.map.on('click', function (evt) {
+            console.log("som klikol")
+            $(document.getElementById('popup')).popover('destroy');
+            document.getElementById('testButton').style.display = "none";
+            document.getElementById('testButton3').style.display = "none";
+            idDoButtonu = [];
+            const feature = totaMapa.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                var features = feature.get('features');
+                if (features.length == 1) { // jedna aktivita
+                    console.log(features.length);
+                    return features[0];
+                }
+                if (features.length > 1) { // viacej aktivit pod klastrom
+                    console.log(features.length);
+                    return features;
+                }
+                return feature;
+            });
+
+
+
+            if (feature) {
+                console.log("som tuu kde chcem byt");
+                console.log(feature.length);
+                if (feature.length >= 2) {
+                    var coordinates = feature[0].getGeometry().getCoordinates();
+                    popup.setPosition(coordinates);
+
+                    var vsetkyRovnake = feature[0].values_.zdroj;
+                    for (var i = 0; i < feature.length; i++) { // rozdelujem idcka podla zdroja ... aktivitu do id buttona  a event do iddobutttonaevent... necakane
+                        if (vsetkyRovnake != feature[i].values_.zdroj) { //ak sa nahodou nejaka nebude rovnat 1. prvu nastavi  sa na false
+                            vsetkyRovnake = false;
+                        }
+                        if (feature[i].values_.zdroj == "aktivita") {
+                            try {
+                                idDoButtonu.push(feature[i].get('id'))
+                            } catch (error) {
+                                console.error(error);
+                                // idDoButtonu = [];
+                            }
+                        }
+                        if (feature[i].values_.zdroj == "event") {
+                            try {
+                                idDoButtonuEvent.push(feature[i].get('id'))
+                            } catch (error) {
+                                console.error(error);
+                                // idDoButtonuEvent = [];
+                            }
+                        }
+                    }
+
+                    if (vsetkyRovnake && feature[0].values_.zdroj == "aktivita") {
+                        $(document.getElementById('popup')).popover({
+                            placement: 'top',
+                            html: true,
+                            content: "Viacero športov",
+                            animation: false,
+                        });
+                        var rect = document.getElementById('popup').getBoundingClientRect();
+                        console.log("toto je voncooo");
+
+                        document.getElementById('testButton').style.display = "block";
+                        document.getElementById('testButton').style.position = "absolute";
+                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton').style.left = rect.left - 40 + "px";
+                    }
+                    if (vsetkyRovnake && feature[0].values_.zdroj == "event") {
+                        $(document.getElementById('popup')).popover({
+                            placement: 'top',
+                            html: true,
+                            content: "Viacero eventov",
+                            animation: false,
+                        });
+                        var rect = document.getElementById('popup').getBoundingClientRect();
+                        console.log("toto je voncooo");
+
+                        document.getElementById('testButton3').style.display = "block";
+                        document.getElementById('testButton3').style.position = "absolute";
+                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton3').style.left = rect.left - 40 + "px";
+                    }
+                    if (!vsetkyRovnake) {
+                        // TODO: opravit chybny popup pri kliku z otvoreneho popupu na inu aktivitu/ event
+                        $(document.getElementById('popup')).popover({
+                            placement: 'top',
+                            html: true,
+                            content: "Športy a aktivity",
+                            animation: false,
+                        });
+                        var rect = document.getElementById('popup').getBoundingClientRect();
+                        console.log("toto je voncooo");
+
+                        document.getElementById('testButton').style.display = "block";
+                        document.getElementById('testButton').style.position = "absolute";
+                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton').style.left = rect.left - 75 + "px";
+
+
+                        document.getElementById('testButton3').style.display = "block";
+                        document.getElementById('testButton3').style.position = "absolute";
+                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton3').style.left = rect.left - 1 + "px";
+                    }
+
+
+                } else {
+                    var coordinates = feature.getGeometry().getCoordinates();
+                    popup.setPosition(coordinates);
+                    // this.featureName = feature.get('name');
+                    $(document.getElementById('popup')).popover({
+                        placement: 'top',
+                        html: true,
+                        title: feature.get('name'),
+                        animation: false,
+                        // content: ['<div style="background: #0ec254" class="place">'+feature.get('place')+'</div>',
+                        //     '<div class="people">'+ feature.get('peopleCount')+'</div>',
+                        //     ].join(''),
+
+                        content: feature.get('place') + `<br>`+ feature.get('peopleCount'), //bu takto ,alebo tak ako to je dole to nastylovat
+                        // content: ['<div class="popover-header">pro</div>',
+                        //     '<div class="popover-body">pro1</div>',
+                        //     ].join(''),
+                        //
+                        template: 	'<div class="popover" role="tooltip">' +
+                            '<div style="color: #0ec254" class="popover-title"></div>' + //neche to stylovaty :{
+                            '<div style="background: #0ec254" class="popover-content"></div>' +
+                            '</div>'
+                    });
+                    idDoButtonu = feature.get('id');
+                    idDoButtonuEvent = feature.get('id');
+                    var rect = document.getElementById('popup').getBoundingClientRect();
+                    if (feature.values_.zdroj == "aktivita") {
+                        document.getElementById('testButton').style.display = "block";
+                        document.getElementById('testButton').style.position = "absolute";
+                        document.getElementById('testButton').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton').style.left = rect.left - 40 + "px";
+                    }
+                    else if (feature.values_.zdroj == "event") {
+                        document.getElementById('testButton3').style.display = "block";
+                        document.getElementById('testButton3').style.position = "absolute";
+                        document.getElementById('testButton3').style.top = rect.top - 55 + "px";
+                        document.getElementById('testButton3').style.left = rect.left - 40 + "px";
+                    } else {
+                        console.error("mame nieco ine ako event/aktrivita?")
+                    }
+                }
+
+                $(document.getElementById('popup')).popover('show');
+
+
+            } else {
+                idDoButtonu = [];
+                idDoButtonuEvent = [];
+                $(document.getElementById('popup')).popover('destroy');
+                document.getElementById('testButton').style.display = "none";
+                document.getElementById('testButton3').style.display = "none";
+            }
+        });
+
+        this.map.on('pointermove', function (e) {
+            if (e.dragging) {
+                idDoButtonu = [];
+                idDoButtonuEvent = [];
+                $(document.getElementById('popup')).popover('destroy');
+                document.getElementById('testButton').style.display = "none";
+                document.getElementById('testButton3').style.display = "none";
+                return;
+            }
+            const pixel = this.map.getEventPixel(e.originalEvent);
+            const hit = this.map.hasFeatureAtPixel(pixel);
+            this.map.getTarget().style.cursor = hit ? 'pointer' : '';
+        });
         setTimeout(() => {
             this.map.updateSize();
         }, 500);

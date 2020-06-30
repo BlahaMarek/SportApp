@@ -377,7 +377,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     scheduleNotification(){
         var minusOneHour = this.selectedActivity.date - (3600*1000); // lebo timestamp mame in da miliseconds, preto * 1000
         this.localNotification.schedule({
-            id: 2,
+            id: this.selectedActivity.date, // tu by som chcel dat id aktivity, ale firebase ma aj string v idcku..to je na ric,,zatim taketo trapne riesenie
             title: this.dataService.getSportNameByValue(Number(this.selectedActivity.sport)),
             text: new Date(this.selectedActivity.date).getHours()+ ':' + new Date(this.selectedActivity.date).getMinutes() +'\n'+this.selectedActivity.place,
             trigger: {at: new Date(minusOneHour)}, // hodinu pred aktivitou chceme notifikaciu
