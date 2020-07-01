@@ -3,12 +3,28 @@
 .item-wrapper {
   width: 90%;
   margin: 5px auto;
-  border: 1px solid var(--ion-color-primary);
-  color: var(--ion-color-primary) !important;
+  color: white !important;
+  opacity: 1;
   border-radius: 8px;
 
   ion-select {
-    padding-left: 8px;
+    --opacity: 1;
+    opacity: 1 !important;
+    padding: 8px;
+    border-radius: 8px;
+    background: linear-gradient(to right, #f96095 0%, #fd7c5e 100%), linear-gradient(to right, #f96095 0%, #fd7c5e 100%);
+    .select-placeholder {
+      opacity: 1 !important;
+    }
+  }
+  ion-input {
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--ion-color-primary);
+    background: linear-gradient(to right, #22e1e3 0%, #18cacf 100%), linear-gradient(to right, #22e1e3 0%, #18cacf 100%);
+  }
+  ion-select::placeholder {
+    opacity:1 !important;
   }
 }
 .primary{

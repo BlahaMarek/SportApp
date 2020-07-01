@@ -23,6 +23,7 @@ export class ActivityListComponent implements OnInit {
     user: any = {};
     segmentValue = 'others';
     filterCriteria = [];
+    virtualIndex = 1;
     constructor(
         private activityService: ActivityService,
         private modalController: ModalController,
@@ -32,8 +33,6 @@ export class ActivityListComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log("this is filteredlist")
-        console.log(this.filteredList);
         this.user = this.dataService.getSignInUser();
         if (this.fromMap) {
             this.filterActivitiesByIdFromMap();

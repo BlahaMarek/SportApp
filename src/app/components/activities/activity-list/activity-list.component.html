@@ -19,13 +19,16 @@
     </ion-segment>
     <img class="loadingImage" *ngIf="filteredList.length==0" src='assets/loading/loadingBallGif.gif' height="90">
     <div class="wrapper">
-        <ion-virtual-scroll  [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="120px">
-                <ion-item *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">
+        <ion-virtual-scroll id="myVirtual"  [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="120px">
+                <ion-item class="list-item" *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">
                     <div [class]="getCssClass(activity)">
                         <div class="wrapper">
                             <ion-label>
-                                <h3 class="shade">{{this.dataService.getSportNameByValue(activity.sport)}}</h3>
-                                <p class="shade" >{{activity.date | date}}, {{activity.place}}</p>
+                                <div class="topWrap">
+                                    <h3 class="shade">{{this.dataService.getSportNameByValue(activity.sport)}}</h3>
+                                    <span class="shade date">{{activity.date | date}}</span>
+                                </div>
+                                <p class="shade" >{{activity.place}}</p>
                             </ion-label>
                             <ion-badge color="medium" *ngIf="activity.topActivity">TOP</ion-badge>
                         </div>

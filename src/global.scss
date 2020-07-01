@@ -26,11 +26,12 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 ion-select {
-  --opacity: 0.7 !important;
+  --opacity: 1 !important;
+  opacity: 1 !important;
 }
 
 .opacity {
-  opacity: 0.7 !important;
+  opacity: 1 !important;
   font-family: 'Montserrat', sans-serif;
 }
 

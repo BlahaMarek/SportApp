@@ -19,12 +19,23 @@ ion-item {
   padding: 8px;
   color: black;
   border-radius: 8px;
+  display: inline-block;
 }
-h3.shade {
-  font-size: 1.1em;
+
+.date {
+  margin-left: 10px;
+  font-size: 0.7em;
+  position: relative;
+  top: 1px;
+}
+.topWrap {
+  top: 10px;
   position: absolute;
   top: 10px;
   left: 10px;
+}
+h3.shade {
+  font-size: 1.1em;
   font-weight: bold;
 }
 
@@ -48,6 +59,30 @@ ion-badge {
 ion-virtual-scroll {
   max-height: 70vh;
   overflow: auto;
+}
+
+//animacia
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(-8px);
+  }
+  50% {
+    transform: rotateX(-20deg) rotateZ(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+ion-virtual-scroll#myVirtual>.virtual-item{
+  position: unset !important;
+}
+
+ion-item {
+  animation: popIn 0.5s 700ms both ease-in;
 }
 
 //OBRAZKY
