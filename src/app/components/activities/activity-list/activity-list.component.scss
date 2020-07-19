@@ -61,29 +61,6 @@ ion-virtual-scroll {
   overflow: auto;
 }
 
-//animacia
-@keyframes popIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.6) translateY(-8px);
-  }
-  50% {
-    transform: rotateX(-20deg) rotateZ(-5deg);
-  }
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-
-ion-virtual-scroll#myVirtual>.virtual-item{
-  position: unset !important;
-}
-
-ion-item {
-  animation: popIn 0.5s 700ms both ease-in;
-}
 
 //OBRAZKY
 //TODO-SPORTIO: Presunut do globalnych stylov

@@ -20,7 +20,7 @@
     <img class="loadingImage" *ngIf="filteredList.length==0" src='assets/loading/loadingBallGif.gif' height="90">
     <div class="wrapper">
         <ion-virtual-scroll id="myVirtual"  [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="120px">
-                <ion-item class="list-item" *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">
+                <ion-item  *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">
                     <div [class]="getCssClass(activity)">
                         <div class="wrapper">
                             <ion-label>
