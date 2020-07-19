@@ -10,6 +10,7 @@ import {RatingService} from "../../../services/rating.service";
 import {VisitUserProfileComponent} from "../../../pages/visit-user-profile/visit-user-profile.component";
 import {ActivityService} from "../../../services/activity.service";
 import {Activity} from "../../../models/activity";
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-activity-rating',
@@ -38,7 +39,8 @@ export class ActivityRatingComponent implements OnInit {
               private dataService: DataService,
               private userService: UserService,
               private modalController: ModalController,
-              private activityService: ActivityService) { }
+              private activityService: ActivityService,
+              public alertController: AlertController) { }
   ngOnInit() {
     this.loggedUser = this.dataService.getSignInUser();
     if (this.profile) { // ak pridem z profilu
@@ -125,6 +127,32 @@ export class ActivityRatingComponent implements OnInit {
 
   this.usersRated.push(userr);
     this.firestoreService.createRating(ratingUkladam);
+  }
+
+  async presentAlertConfirm(name,userId) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Odstránenie!',
+      message: 'Naozaj chcete odstrániť používateľa <strong>'+name+'</strong> z aktivity?',
+      buttons: [
+        {
+          text: 'Zrušiť',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+
+          }
+        }, {
+          text: 'Odstrániť',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.deteleUser(userId);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 

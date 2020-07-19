@@ -47,7 +47,7 @@
                           fontSize = "25px"
                           (ratingChanged)="logRatingChange(user.id, $event)">
       </ionic4-star-rating>
-      <ion-button *ngIf="createdBy == this.dataService.getSignInUser().id" (click)="deteleUser(user.id)" color="danger">vymaz</ion-button>
+      <ion-icon class="close" name="close" *ngIf="createdBy == this.dataService.getSignInUser().id" (click)="presentAlertConfirm(user.name,user.id)"  color="medium"></ion-icon>
     </ion-item>
   </ion-list>
 

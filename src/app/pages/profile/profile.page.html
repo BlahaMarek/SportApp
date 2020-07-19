@@ -14,13 +14,14 @@
 <ion-content class="facebook-bg">
 <!--  *ngIf="this.dataService.logged && this.dataService.user"-->
   <div *ngIf="this.dataService.logged && this.dataService.user">
-    <ion-row>
-      <ion-col class="title">
-        {{this.user.name}}
 
-      </ion-col>
-    </ion-row>
+    <ion-avatar class="picture">
     <ion-img  [src]="userPhoto"> </ion-img>
+    </ion-avatar>
+<p>
+  {{this.user.name}}
+</p>
+
 
         <ion-button (click)="friends()" expand="block" fill="outline">
           {{ "Pocet prietelov: " + this.dataService.getUserFromDatabase().friends.length}}

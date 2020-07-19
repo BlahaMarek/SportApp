@@ -111,7 +111,6 @@
 
     </ion-button>
     <ion-button *ngIf="bookable && reserved && !overdue && !unSigned"  class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline">
-
         <!--        disabled="{{!activityForm.valid}}"-->
         {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
 
@@ -129,7 +128,7 @@
 
     <ion-button *ngIf="!overdue"  (click)="rateUsers()" class="ion-margin-top" expand="block" fill="outline">
         <!--        *ngIf="overdue && !unSigned"-->
-        {{ "Prihlaseni pouzivatelia: " + this.selectedActivity.bookedBy.length}}
+        {{ "Prihlaseni pouzivatelia: " + this.selectedActivity.bookedBy.length + " z " + this.selectedActivity.peopleCount}}
 
     </ion-button>
 
@@ -137,6 +136,5 @@
     <ion-img class="ins" src='assets/icon/facebook.png' (click)="facebookShare()"></ion-img>
 
     <div id="map2" class="map2"></div>
-
 
 </ion-content>
