@@ -19,8 +19,8 @@ export class ProfilePage implements OnInit {
   userFromTable:any={}
   rating:number = 0;
   allRatings:any[] = [];
+  ratings:any;
   customForm: FormGroup;
-
   ratingSport1:number[] = [];
   ratingSport2:number[] = [];
   ratingSport3:number[] = [];
@@ -99,6 +99,7 @@ export class ProfilePage implements OnInit {
 
   getRatings(){
     this.ratingService.getAllRatingsByUser(this.user.id).subscribe(res =>{
+      this.ratings = res;
       res.forEach(res2 => {
         switch (res2.idSportu) {
           case "1":

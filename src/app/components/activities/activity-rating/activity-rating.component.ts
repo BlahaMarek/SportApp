@@ -34,6 +34,8 @@ export class ActivityRatingComponent implements OnInit {
   friendsFromProfile:User[] = [];
   loggedUser: any = {};
   finishDwonloading: boolean = true;
+  creator: User;
+
   constructor(private ratingService: RatingService,
               private firestoreService: FirestoreService,
               private dataService: DataService,
@@ -42,6 +44,17 @@ export class ActivityRatingComponent implements OnInit {
               private activityService: ActivityService,
               public alertController: AlertController) { }
   ngOnInit() {
+    console.log("this is sdada")
+    console.log(this.overdue);
+    console.log(this.usersId);
+    console.log(this.usersId.length);
+
+    //stahujem creatora aktivity
+    this.userService.getOneUser(this.createdBy).pipe(take(1)).subscribe(res => {
+      this.creator = res
+      console.log(res);
+    });
+
     this.loggedUser = this.dataService.getSignInUser();
     if (this.profile) { // ak pridem z profilu
       for (var i = 0; i < this.usersId.length; i++) {
@@ -82,7 +95,24 @@ export class ActivityRatingComponent implements OnInit {
             hodnotenie += res[i].rating;
           }
           hodnotenie = hodnotenie / res.length;
-          this.usersFromDatabase[this.usersFromDatabase.length-1].behavior = hodnotenie;
+
+
+          var nehodnoteny = this.usersFromDatabase.filter(user => user.id == this.usersId[i]);
+          var hodnoteny = this.usersRated.filter(user => user.id == this.usersId[i]);
+          console.log("tak je to v usersfrom database")
+          console.log(nehodnoteny);
+          console.log("tak je to v usersfrom rated")
+          console.log(hodnoteny);
+
+          if (nehodnoteny.length > 0){
+            this.usersFromDatabase[this.usersFromDatabase.length-1].behavior = hodnotenie;
+
+          }
+          if (hodnoteny.length > 0) {
+            this.usersRated[this.usersRated.length-1].behavior = hodnotenie;
+          }
+
+
           this.finishDwonloading = false;
         });
 
@@ -96,8 +126,6 @@ export class ActivityRatingComponent implements OnInit {
   }
 
   checkFriends(friendsId:string){
-    console.log("userFromDatabase");
-    console.log(this.dataService.getUserFromDatabase());
     var pro = this.dataService.getUserFromDatabase().friends.filter(fr => fr == friendsId);
     if (pro.length>0){
       return true
@@ -120,7 +148,7 @@ export class ActivityRatingComponent implements OnInit {
     var ratingUkladam:Rating = {
       idAktivity: this.idAktivity,
       idHraca: userr.id,
-      isKritika: "1MUxrZRhP0Wsdad54w83Icw0y3k2",
+      isKritika: this.dataService.getSignInUser().id,
       rating: rating,
       idSportu: this.idSportu
   }

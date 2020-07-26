@@ -15,17 +15,32 @@
 <!--  *ngIf="this.dataService.logged && this.dataService.user"-->
   <div *ngIf="this.dataService.logged && this.dataService.user">
 
-    <ion-avatar class="picture">
-    <ion-img  [src]="userPhoto"> </ion-img>
-    </ion-avatar>
-<p>
+      <ion-button class="friends" (click)="friends()" expand="block" fill="outline">
+          {{ "Priatelia: " + this.dataService.getUserFromDatabase().friends.length}}
+      </ion-button>
+
+      <div class="card">
+          <div class="header">
+              <div class="avatar">
+                  <ion-avatar class="avatar2">
+                      <ion-img  [src]="userPhoto"> </ion-img>
+                  </ion-avatar>
+              </div>
+          </div>
+      </div>
+
+<p class="playerName">
   {{this.user.name}}
 </p>
 
 
-        <ion-button (click)="friends()" expand="block" fill="outline">
-          {{ "Pocet prietelov: " + this.dataService.getUserFromDatabase().friends.length}}
-        </ion-button>
+
+      <p class="rating" *ngIf="this.ratings!= undefined">Pocet hodnoteni</p>
+
+      <p *ngIf="this.ratings != undefined" class="playerName">
+          {{this.ratings.length}}
+      </p>
+
     <ion-item *ngIf="ratingSport1 != 0">
       <p>Tenis</p>
     <ionic4-star-rating  #rating
@@ -38,6 +53,7 @@
                         fontSize = "25px"
                         >
     </ionic4-star-rating>
+        <p slot="end">{{ratingSport1.length}}</p>
     </ion-item>
 
 
@@ -53,6 +69,7 @@
                         fontSize = "25px"
     >
     </ionic4-star-rating>
+        <p slot="end">{{ratingSport2.length}}</p>
     </ion-item>
 
     <ion-item *ngIf="ratingSport3 != 0">
@@ -67,6 +84,7 @@
                         fontSize = "25px"
     >
     </ionic4-star-rating>
+        <p slot="end">{{ratingSport3.length}}</p>
     </ion-item>
     <ion-item *ngIf="ratingSport4 != 0">
       <p>Futbal</p>

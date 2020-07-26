@@ -1,16 +1,38 @@
 ion-title {
   padding: 0;
 }
-.profile-image {
-  width: 20px;
-  margin: 20px;
-  padding: 20px;
+
+.card {
+  margin: 0 auto;
 }
-.picture{
-  margin-right: 20px;
-  margin-left: 20px;
-  margin-top: 20px;
-}
+
+  .header {
+    height: 150px;
+  }
+
+    .avatar {
+      width: 160px;
+      height: 160px;
+      position: relative;
+      margin: 0 auto;
+      margin-top: 10px;
+    }
+
+      ion-img {
+        display: block;
+        border-radius: 50%;
+        position: absolute;
+        border: 8px solid #00008b;
+        background-color: #fff;
+      }
+
+      .playerName{
+        font-size: 24px;
+        font-weight: 600;
+        color: #303940;
+        text-align: center;
+      }
+
 
 .button-login {
   background-color: #4CAF50; /* Green */
@@ -23,13 +45,32 @@ ion-title {
   font-size: 16px;
   border-radius: 25px;
 }
+
 .allLogin{
   padding-top: 50%;
   text-align: center;
-
 }
 
+.friends{
+  position: absolute;
+  margin-top: 10px;
+  right: 10px;
+}
+.rating{
+  font-size: 20px;
+  font-weight: 500;
+  color: #303940;
+  text-align: center;
+}
 
 ion-title {
   padding-left: 20px;
+}
+
+ion-item p{
+  font-size: 18px;
+  font-weight: 500;
+}
+ionic4-star-rating{
+  margin-left: auto;
 }

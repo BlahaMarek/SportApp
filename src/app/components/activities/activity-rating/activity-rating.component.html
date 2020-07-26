@@ -11,21 +11,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="overdue && usersId.length == 0">
-  <p>Nikto nebol prihlaseny.</p>
-</ion-content>
 
-<ion-content *ngIf="!this.profile && !overdue">
-<!--loading gif-->
+<ion-content>
+<!--  creator-->
+  <ion-avatar class="creator" *ngIf="creator != undefined"><img src="{{this.creator.photoUrl}}"></ion-avatar>
+  <ion-button class="creator-button" *ngIf="creator != undefined" (click)="visitProfile(this.creator)">{{this.creator.name}}</ion-button>
+  <p *ngIf="overdue && usersId.length == 0" class="noone">Nikto nebol prihlaseny.</p>
+  <p *ngIf="usersId.length == 0 && !this.overdue" class="noone">Nikto nie je prihlaseny.</p>
+
+  <!--loading gif-->
   <img class="loadingImage" *ngIf="this.finishDwonloading" src='assets/loading/loadingBallGif.gif' height="90">
-
-    <p *ngIf="usersId.length == 0 && !this.overdue">Nikto nie je prihlaseny.</p>
 
 
   <ion-list padding *ngFor="let user of this.usersFromDatabase">
     <ion-item>
-      <ion-avatar><img src="{{user.photoUrl}}"></ion-avatar>
-      <ion-button (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>
+      <ion-avatar (click)="visitProfile(user)" ><img src="{{user.photoUrl}}"></ion-avatar>
+      <ion-button *ngIf="this.dataService.getSignInUser().id == user.id" (click)="visitProfile(user)" color="success">{{user.name}}</ion-button>
+      <ion-button *ngIf="this.dataService.getSignInUser().id != user.id" (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>
 
       <ionic4-star-rating *ngIf="!this.overdue" #rating
                                                  activeIcon = "ios-star"
@@ -34,8 +36,8 @@
                                                  defaultColor = "#ccccff"
                                                  readonly="true"
                                                 rating="{{this.user.behavior}}"
-                                                 fontSize = "25px"
-                          >
+                                                 fontSize = "30px" >
+
     </ionic4-star-rating>
       <ionic4-star-rating *ngIf="this.overdue && this.loggedUser.id != user.id" #rating
                           activeIcon = "ios-star"
@@ -44,10 +46,10 @@
                           defaultColor = "#ccccff"
                           readonly="false"
                           rating="0"
-                          fontSize = "25px"
+                          fontSize = "30px"
                           (ratingChanged)="logRatingChange(user.id, $event)">
       </ionic4-star-rating>
-      <ion-icon class="close" name="close" *ngIf="createdBy == this.dataService.getSignInUser().id" (click)="presentAlertConfirm(user.name,user.id)"  color="medium"></ion-icon>
+      <ion-icon class="close" name="close" *ngIf="createdBy == this.dataService.getSignInUser().id && !overdue" (click)="presentAlertConfirm(user.name,user.id)"  color="medium"></ion-icon>
     </ion-item>
   </ion-list>
 
@@ -56,16 +58,25 @@
     <p *ngIf="overdue ">Všetci boli ohodnotení</p>
   </ion-item>
 
-  <p *ngIf="this.usersRated.length >0 && !overdue">Ohodnoteni pouzivatelia</p>
+  <p class="rated" *ngIf="this.usersRated.length >0 && overdue">Ohodnoteni pouzivatelia</p>
   <ion-list  padding *ngFor="let user of this.usersRated">
 <!--    toto bude treba klepnut hore, lebo este pri nehranej aktivite to tu je na 2 veci-->
-    <ion-avatar><img src="{{user.photoUrl}}"></ion-avatar> /
-    <ion-item>{{user.name}}
-      <ion-button (click)="visitProfile(user)" color="danger">Profil</ion-button>
-      <ion-button *ngIf="!checkFriends(user.id)" (click)="addFriend(user.id)" color="danger">Pridat priatela</ion-button>
-      <ion-button *ngIf="checkFriends(user.id)" (click)="deleteFriend(user.id)" color="danger">Odobrat priatela</ion-button>
-    </ion-item>
+    <ion-item>
+    <ion-avatar (click)="visitProfile(user)" ><img src="{{user.photoUrl}}" ></ion-avatar>
+      <ion-button (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>
+      <ionic4-star-rating
+                          activeIcon = "ios-star"
+                          defaultIcon = "ios-star-outline"
+                          activeColor = "#FFD700"
+                          defaultColor = "#ccccff"
+                          readonly="true"
+                          rating="{{user.behavior}}"
+                          fontSize = "30px" >
 
+      </ionic4-star-rating>
+<!--      <ion-button *ngIf="!checkFriends(user.id)" (click)="addFriend(user.id)" color="success">+</ion-button>-->
+<!--      <ion-button *ngIf="checkFriends(user.id)" (click)="deleteFriend(user.id)" color="danger">-</ion-button>-->
+    </ion-item>
 
   </ion-list>
 

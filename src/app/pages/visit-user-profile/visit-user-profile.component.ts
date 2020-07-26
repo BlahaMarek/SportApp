@@ -23,6 +23,8 @@ export class VisitUserProfileComponent implements OnInit {
   ratingSport9:number[] = [];
   ratingSport10:number[] = [];
 
+  allRatings:any;
+
 
 
 
@@ -56,6 +58,7 @@ export class VisitUserProfileComponent implements OnInit {
 
   getRatings(){
     this.ratingService.getAllRatingsByUser(this.user.id).subscribe(res =>{
+      this.allRatings = res;
       res.forEach(res2 => {
         switch (res2.idSportu) {
           case "1":
@@ -100,6 +103,10 @@ export class VisitUserProfileComponent implements OnInit {
 
   deleteFriend(){
     this.userService.removeFriend(this.user.id);
+  }
+
+  get userPhoto() {
+    return this.user.photoUrl + "?type=large";
   }
 
 }
