@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title *ngIf="overdue && !profile">Ohodnoť spoluhráčov</ion-title>
-    <ion-title *ngIf="!overdue && !profile">Prihlaseni pouzivatelia</ion-title>
+    <ion-title *ngIf="!overdue && !profile">Prihlasení používatelia</ion-title>
     <ion-title *ngIf="profile">Priatelia</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="onCancel()">
@@ -16,8 +16,8 @@
 <!--  creator-->
   <ion-avatar class="creator" *ngIf="creator != undefined"><img src="{{this.creator.photoUrl}}"></ion-avatar>
   <ion-button class="creator-button" *ngIf="creator != undefined" (click)="visitProfile(this.creator)">{{this.creator.name}}</ion-button>
-  <p *ngIf="overdue && usersId.length == 0" class="noone">Nikto nebol prihlaseny.</p>
-  <p *ngIf="usersId.length == 0 && !this.overdue" class="noone">Nikto nie je prihlaseny.</p>
+  <p *ngIf="overdue && usersId.length == 0" class="noone">Nikto nebol prihlasený.</p>
+  <p *ngIf="usersId.length == 0 && !this.overdue" class="noone">Nikto nie je prihlasený.</p>
 
   <!--loading gif-->
   <img class="loadingImage" *ngIf="this.finishDwonloading" src='assets/loading/loadingBallGif.gif' height="90">
@@ -53,16 +53,15 @@
     </ion-item>
   </ion-list>
 
-
   <ion-item class="allLogin" *ngIf="this.usersFromDatabase.length==0 && finishDwonloading">
     <p *ngIf="overdue ">Všetci boli ohodnotení</p>
   </ion-item>
 
-  <p class="rated" *ngIf="this.usersRated.length >0 && overdue">Ohodnoteni pouzivatelia</p>
+  <p class="rated" *ngIf="this.usersRated.length >0 && overdue">Ohodnotení používatelia</p>
   <ion-list  padding *ngFor="let user of this.usersRated">
 <!--    toto bude treba klepnut hore, lebo este pri nehranej aktivite to tu je na 2 veci-->
     <ion-item>
-    <ion-avatar (click)="visitProfile(user)" ><img src="{{user.photoUrl}}" ></ion-avatar>
+    <ion-avatar (click)="visitProfile(user)" ><img [src]="user.photoUrl" ></ion-avatar>
       <ion-button (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>
       <ionic4-star-rating
                           activeIcon = "ios-star"
@@ -84,10 +83,10 @@
 
 <ion-content *ngIf="profile">
   <ion-list  padding *ngFor="let user of this.friendsFromProfile">
-    <ion-avatar><img src="{{user.photoUrl}}"></ion-avatar>
+    <ion-avatar><img [src]="user.photoUrl"></ion-avatar>
     <ion-item>{{user.name}}
       <ion-button (click)="visitProfile(user)" color="danger">Profil</ion-button>
-      <ion-button (click)="deleteFriendFomFriendList(user.id)" color="danger">Odobrat priatela</ion-button>
+      <ion-button (click)="deleteFriendFomFriendList(user.id)" color="danger">Odobrať priateľa</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>

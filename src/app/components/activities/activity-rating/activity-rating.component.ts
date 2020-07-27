@@ -100,9 +100,10 @@ export class ActivityRatingComponent implements OnInit {
           var nehodnoteny = this.usersFromDatabase.filter(user => user.id == this.usersId[i]);
           var hodnoteny = this.usersRated.filter(user => user.id == this.usersId[i]);
           console.log("tak je to v usersfrom database")
-          console.log(nehodnoteny);
+          console.log(this.usersFromDatabase);
+
           console.log("tak je to v usersfrom rated")
-          console.log(hodnoteny);
+          console.log(this.usersRated);
 
           if (nehodnoteny.length > 0){
             this.usersFromDatabase[this.usersFromDatabase.length-1].behavior = hodnotenie;
