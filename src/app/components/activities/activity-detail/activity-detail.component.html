@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>{{dataService.getSportNameByValue(selectedActivity.sport)}}</ion-title>
+        <ion-title>Aktivita</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="onCancel()">
                 <ion-icon name="close"></ion-icon>
@@ -9,132 +9,128 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
-    <form [formGroup]="activityForm">
-        <div>
-            <ion-item>
-                <ion-label position="stacked">Výber športu *</ion-label>
-                <ion-select [compareWith]="compareWithFn" formControlName="sport" placeholder="Vyberte šport">
-                    <ion-select-option [value]="val.value" *ngFor="let val of sportOptions">
-                        {{ val.label }}
-                    </ion-select-option>
-                </ion-select>
-            </ion-item>
+    <div class="background">
+
+
+
+<!--        <div class="center">-->
+<!--            <p class="shade">proprorpo</p>-->
+<!--        </div>-->
+
+<!--        <div class="center" *ngIf="bookable || reserved">-->
+<!--            <p class="label first shade">Šport</p>-->
+
+<!--        </div>-->
+
+
+<div style="position: absolute; left: 50%">
+            <ion-chip class="ion-margin-start creatorPhoto">
+                <ion-avatar> <img [src]="this.userFromTable.photoUrl" >
+                </ion-avatar>
+                <ion-label>{{this.userFromTable.name}}</ion-label>
+            </ion-chip>
+</div>
+
+
+        <ul class="share">
+            <li>
+                <ion-img class="ins" src='assets/icon/instagram.png' (click)="instagramShare()"></ion-img>
+
+            </li>
+
+            <li>
+                <ion-img class="ins" src='assets/icon/facebook.png' (click)="facebookShare()"></ion-img>
+
+            </li>
+        </ul>
+
+
+        <div class="center">
+            <h1 class="place shade sport">{{this.dataService.getSportNameByValue(this.selectedActivity.sport)}}
+            </h1>
+
+
+        </div>
+<!--        <div class="center" *ngIf="bookable || reserved">-->
+<!--            <p class="label shade">Miesto</p>-->
+
+
+<!--        </div>-->
+        <div class="center">
+            <p class="place shade">{{this.selectedActivity.place}}</p>
+        </div>
+<!--        <div class="center" *ngIf="bookable || reserved">-->
+<!--            <p class="label shade">Čas</p>-->
+
+<!--        </div>-->
+        <div class="center" >
+            <p class="place shade">{{this.time}}</p>
+
+        </div>
+<!--        <div class="center" *ngIf="bookable || reserved">-->
+<!--            <p *ngIf="this.selectedActivity.comment.length > 0" class="label shade">Komentáre</p>-->
+
+<!--        </div>-->
+        <div class="center">
+            <p *ngIf="this.selectedActivity.comment.length > 0" class="place shade">{{this.selectedActivity.comment}}</p>
+
         </div>
 
-        <ion-item>
-            <ion-label position="stacked">Počet ľudí? * </ion-label>
-            <ion-input type="number" text-left placeholder="Zadajtee počet osôb" formControlName="peopleCount"></ion-input>
-        </ion-item>
+
+        <ion-list style="text-align: center">
+            <ion-button color="success" *ngIf="!reserved && !overdue && !unSigned" (click)="onFormSubmit()" fill="solid">
+
+                <!--        disabled="{{!activityForm.valid}}"-->
+                {{bookable ? "Prihlásiť" : "Uprav aktivitu"}}
 
 
-
-        <ion-item *ngIf="bookable">
-            <ion-label position="stacked">Kde? *</ion-label>
-
-            <!--            KVOLI TOMUTO NEJDE DOPLNANIE MIESTA -> PREROBIT NG-MODEL INAK NEPJDU REAKTIVNE FORMULARE-->
-            <ion-input
-                       type="miesto"
-                       formControlName="place"
-                       text-left
-                       placeholder="Zadajte miesto">
-            </ion-input>
-
-        </ion-item>
-
-        <ion-item *ngIf="!bookable">
-            <ion-label position="stacked">Kde? *</ion-label>
-            <!--                        <ion-input-->
-            <!--                                type="miesto"-->
-            <!--                                formControlName="place"-->
-            <!--                                text-left-->
-            <!--                                placeholder="Zadajte miesto"-->
-            <!--                        ></ion-input>-->
-
-            <!--            KVOLI TOMUTO NEJDE DOPLNANIE MIESTA -> PREROBIT NG-MODEL INAK NEPJDU REAKTIVNE FORMULARE-->
-            <ion-input type="miesto"
-                       formControlName="place"
-                       text-left
-                       placeholder="Zadajte miesto"
-                    [(ngModel)]="autocomplete.input"
-                       (ionInput)="updateSearchResults()"
-                       >
-
-            </ion-input>
-            <ion-list [hidden]="autocompleteItems.length == 0">
-                <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-                    {{ item.description}}
-                </ion-item>
-            </ion-list>
-        </ion-item>
-
-        <ion-item>
-            <ion-label position="stacked">Kedy? *</ion-label>
-            <ion-datetime placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
-        </ion-item>
-
-        <ion-item>
-            <ion-label position="stacked">Čas *</ion-label>
-            <ion-datetime displayFormat="HH:mm" placeholder="Zadajte čas" formControlName="time"></ion-datetime>
-        </ion-item>
-
-        <ion-item>
-            <ion-label position="stacked">Topovať aktivitu?</ion-label>
-            <ion-toggle
-                    formControlName="topActivity"
-                    text-left
-            ></ion-toggle>
-        </ion-item>
-        <ion-item>
-            <ion-label position="stacked" >Komentár</ion-label>
-            <ion-input
-                    type="comment"
-                    text-left
-                    formControlName="comment"
-                    placeholder="Zadajte komentár..."
-            ></ion-input>
-        </ion-item>
-    </form>
-    <ion-button *ngIf="!reserved && !overdue && !unSigned" class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline">
-
-<!--        disabled="{{!activityForm.valid}}"-->
-        {{bookable ? "Rezervuj miesto" : "Uprav aktivitu"}}
+            </ion-button>
 
 
-    </ion-button>
-
-    <ion-button *ngIf="!bookable && !overdue && !unSigned" class="ion-margin-top" (click)="onFormSubmitDelete()" expand="block" fill="outline">
+    <ion-button color="danger" *ngIf="!bookable && !overdue && !unSigned"
+                (click)="presentAlertConfirm('Vymazať','Naozaj chcete vymazať aktivitu?','Vymazať', true)" fill="solid">
 
         <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
+        {{reserved ? "Odhlasiť" : "Vymaz Aktivitu"}}
 
     </ion-button>
-    <ion-button *ngIf="bookable && reserved && !overdue && !unSigned"  class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline">
-        <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlas sa zo sportu" : "Vymaz Aktivitu"}}
 
-    </ion-button>
 
     <ion-text *ngIf="unSigned" color="danger">
         <h4 >Pre prihlásenie sa do aktivity sa najprv musíte prihlásiť!</h4>
     </ion-text>
 
-    <ion-button *ngIf="overdue"  (click)="rateUsers()" class="ion-margin-top" expand="block" fill="outline">
+    <ion-button *ngIf="overdue"  (click)="rateUsers()" expand="block" fill="outline">
 <!--        *ngIf="overdue && !unSigned"-->
         {{ "Ohodnot spoluhracov"}}
 
     </ion-button>
 
-    <ion-button *ngIf="!overdue"  (click)="rateUsers()" class="ion-margin-top" expand="block" fill="outline">
-        <!--        *ngIf="overdue && !unSigned"-->
-        {{ "Prihlaseni pouzivatelia: " + this.selectedActivity.bookedBy.length + " z " + this.selectedActivity.peopleCount}}
 
-    </ion-button>
+            <ion-button *ngIf="!overdue"  (click)="rateUsers()"  fill="solid">
+                <!--        *ngIf="overdue && !unSigned"-->
+                {{ "Používatelia: " + this.selectedActivity.bookedBy.length + " z " + this.selectedActivity.peopleCount}}
 
-    <ion-img class="ins" src='assets/icon/instagram.png' (click)="instagramShare()"></ion-img>
-    <ion-img class="ins" src='assets/icon/facebook.png' (click)="facebookShare()"></ion-img>
+            </ion-button>
+            <ion-button color="danger" *ngIf="bookable && reserved && !overdue && !unSigned"
+                        (click)="presentAlertConfirm('Odhlásenie!','Naozaj sa chcete odhlásiť z aktivity?', 'Odhlásiť',false)"
+                        fill="solid">
+                <!--        disabled="{{!activityForm.valid}}"-->
+                {{reserved ? "Odhlásiť" : "Vymaz Aktivitu"}}
+
+            </ion-button>
+
+        </ion-list>
+
+
 
     <div id="map2" class="map2"></div>
+
+
+
+    </div>
+
 
 </ion-content>

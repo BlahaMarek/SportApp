@@ -38,14 +38,15 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
+import {ActivityUpdateComponent} from "./components/activities/activity-update/activity-update.component";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
-    declarations: [AppComponent, MenuComponent, ActivityRatingComponent, VisitUserProfileComponent],
-    entryComponents: [ActivityRatingComponent, VisitUserProfileComponent, ActivityListComponent, ActivityDetailComponent],
+    declarations: [AppComponent, MenuComponent, ActivityRatingComponent, VisitUserProfileComponent, ActivityUpdateComponent],
+    entryComponents: [ActivityRatingComponent, VisitUserProfileComponent, ActivityListComponent,ActivityUpdateComponent, ActivityDetailComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,

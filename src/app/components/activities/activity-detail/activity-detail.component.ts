@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, NgZone, OnInit} from '@angular/core';
 import {Activity} from '../../../models/activity';
-import {ModalController, Platform, ToastController} from '@ionic/angular';
+import {AlertController, ModalController, Platform, ToastController} from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Sport} from '../../../models/sport';
 import {DataService} from '../../../data/data.service';
@@ -22,6 +22,8 @@ import {ActivityRatingComponent} from "../activity-rating/activity-rating.compon
 import {ELocalNotificationTriggerUnit, LocalNotifications} from '@ionic-native/local-notifications/ngx';
 // import {File} from "@ionic-native/file/ngx"; ak budeme chciet k sharovanie prilozit aj obrazok
 import {SocialSharing} from "@ionic-native/social-sharing/ngx";
+import {UserService} from "../../../services/user.service";
+import {ActivityUpdateComponent} from "../activity-update/activity-update.component";
 
 
 @Component({
@@ -35,12 +37,15 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     validations_form: FormGroup;
     sport2: any;
     user: any = {};
+    time: any;
+    timeMinutes: any;
     @Input() selectedActivity: Activity;
     @Input() bookable: boolean;
     @Input() reserved: boolean;
     @Input() overdue: boolean;
     @Input() unSigned: boolean;
 
+    userFromTable:any={}
 
     sportOptions: Sport[] = [];
     private objekt: any;
@@ -53,6 +58,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         private nativeGeocoder: NativeGeocoder,
         private modalController: ModalController,
         private fb: FormBuilder,
+        private userService: UserService,
         private activityService: ActivityService,
         private dataService: DataService,
         private authService: AuthService,
@@ -61,6 +67,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         private plt: Platform,
         private localNotification: LocalNotifications,
         private socialSharing: SocialSharing,
+        public alertController: AlertController
     ) {
         if (this.dataService)
         // @ts-ignore
@@ -129,6 +136,13 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             }
         }
         else this.activityForm.disable();
+        this.time = new Date(this.selectedActivity.date).toLocaleString();
+        this.timeMinutes =  new Date(this.selectedActivity.date).getMinutes();
+
+        this.userService.getOneUser(this.selectedActivity.createdBy).subscribe(res=>{ //pokial by sme chceli fotku tvorcu
+            this.userFromTable = res;
+        });
+
     }
     // getData(){
     //     this.route.data.subscribe(routeData => {
@@ -166,9 +180,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     onFormSubmit() {
         if (!this.bookable && !this.reserved) {
-            this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
-                this.dataService.refreshAfterLogin = true;
-            });
+            this.updateActivity();
+            // this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
+            //     this.dataService.refreshAfterLogin = true;
+            // });
 
         } else if (this.bookable && !this.reserved) {
             this.activityService.addBookerToActivity(this.selectedActivity).then(()=>{
@@ -351,6 +366,26 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         }, 500);
         console.log('mapa idze ci nejdze');
     }
+
+    updateActivity(){
+        this.modalController
+            .create({component: ActivityUpdateComponent,
+                componentProps:{
+                    selectedActivity: this.selectedActivity
+                }
+
+            })
+            .then(modalEl => {
+                console.log("som v tabe 1111  hore");
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+
+            });
+    }
+
+
     rateUsers(){
         this.modalController
             .create({component: ActivityRatingComponent,
@@ -385,6 +420,36 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         });
     }
 
+    async presentAlertConfirm(header:string, message:string, ano:string, vymazat:boolean) {
+    const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: header,
+        message: message,
+        buttons: [
+            {
+                text: 'Zrušiť',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: (blah) => {
+
+                }
+            }, {
+                text: ano,
+                handler: () => {
+                    if (!vymazat){
+                        this.onFormSubmit();
+                    }
+                    else{
+                        this.onFormSubmitDelete()
+                    }
+                }
+            }
+        ]
+    });
+
+    await alert.present();
+}
+
       facebookShare(){
         //tu bude url nasej appky v obchode playyy
         var url = 'https://i.guim.co.uk/img/media/0e5ba031e776c312d744077a9aa1467815849e42/923_166_2287_1372/master/2287.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=b723b8f70c073e45b0c5cddbc6e5cade';
@@ -415,12 +480,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                 })
                 .catch((e)=>{
                 });
-        }).catch(()=>{
-            this.openToast("Nepodarilo sa nacitat aplikaciu instagram");
-
+        }).catch((error: any)=>{
+            this.openToast("Nepodarilo sa nacitat aplikaciu instagram" + error);
+            console.log(error)
         })
-
-
     }
 
 }

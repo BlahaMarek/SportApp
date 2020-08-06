@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Aktivita</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<form style="background: transparent" [formGroup]="activityForm">
+  <div>
+    <ion-item>
+      <ion-label position="stacked">Výber športu *</ion-label>
+      <ion-select [compareWith]="compareWithFn" formControlName="sport" placeholder="Vyberte šport">
+        <ion-select-option [value]="val.value" *ngFor="let val of sportOptions">
+          {{ val.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <!--        <div class="center">-->
+  <!--            <p class="shade">proprorpo</p>-->
+  <!--        </div>-->
+
+  <!--        <div class="center" *ngIf="bookable || reserved">-->
+  <!--            <p class="label first shade">Šport</p>-->
+
+  <!--        </div>-->
+
+
+
+  <ion-item>
+    <ion-label position="stacked">Počet ľudí? * </ion-label>
+    <ion-input type="number" text-left placeholder="Zadajte počet osôb" formControlName="peopleCount"></ion-input>
+  </ion-item>
+
+
+  <!--        <ion-item *ngIf="bookable">-->
+  <!--            <ion-label position="stacked">Kde? *</ion-label>-->
+
+  <!--            &lt;!&ndash;            KVOLI TOMUTO NEJDE DOPLNANIE MIESTA -> PREROBIT NG-MODEL INAK NEPJDU REAKTIVNE FORMULARE&ndash;&gt;-->
+  <!--            <ion-input-->
+  <!--                       type="miesto"-->
+  <!--                       formControlName="place"-->
+  <!--                       text-left-->
+  <!--                       placeholder="Zadajte miesto">-->
+  <!--            </ion-input>-->
+
+  <!--        </ion-item>-->
+
+  <ion-item>
+    <ion-label position="stacked">Kde? *</ion-label>
+    <!--                        <ion-input-->
+    <!--                                type="miesto"-->
+    <!--                                formControlName="place"-->
+    <!--                                text-left-->
+    <!--                                placeholder="Zadajte miesto"-->
+    <!--                        ></ion-input>-->
+
+    <!--            KVOLI TOMUTO NEJDE DOPLNANIE MIESTA -> PREROBIT NG-MODEL INAK NEPJDU REAKTIVNE FORMULARE-->
+    <ion-input type="miesto"
+               formControlName="place"
+               text-left
+               placeholder="Zadajte miesto"
+               [(ngModel)]="autocomplete.input"
+               (ionInput)="updateSearchResults()"
+    >
+
+    </ion-input>
+    <ion-list [hidden]="autocompleteItems.length == 0">
+      <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+        {{ item.description}}
+      </ion-item>
+    </ion-list>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Kedy? *</ion-label>
+    <ion-datetime placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Čas *</ion-label>
+    <ion-datetime displayFormat="HH:mm" placeholder="Zadajte čas" formControlName="time"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Topovať aktivitu?</ion-label>
+    <ion-toggle
+            formControlName="topActivity"
+            text-left
+    ></ion-toggle>
+  </ion-item>
+  <ion-item >
+    <ion-label position="stacked" >Komentár</ion-label>
+    <ion-input
+            type="comment"
+            text-left
+            formControlName="comment"
+            placeholder="Zadajte komentár..."
+    ></ion-input>
+  </ion-item>
+</form>
+  <ion-button (click)="updateAktivity()" color="success" fill="solid">
+
+    <!--        disabled="{{!activityForm.valid}}"-->
+    Upravit aktivitu
+
+
+  </ion-button>
+
+</ion-content>
