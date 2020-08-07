@@ -65,8 +65,16 @@
 <!--            <p class="label shade">Čas</p>-->
 
 <!--        </div>-->
+
         <div class="center" >
-            <p class="place shade">{{this.time}}</p>
+<!--            <p class="place shade">{{this.time}}</p>-->
+            <time class="date-as-calendar position-em size1_25x">
+                <span class="weekday">{{this.day}}</span>
+                <span class="day">{{this.date}}</span>
+                <span class="month">{{this.month}}</span>
+                <span class="year">{{this.year}}</span>
+            </time>
+            <p class="hours">{{this.hours}} : {{this.minutes}}</p>
 
         </div>
 <!--        <div class="center" *ngIf="bookable || reserved">-->

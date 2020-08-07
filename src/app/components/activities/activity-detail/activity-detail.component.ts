@@ -45,6 +45,14 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     @Input() overdue: boolean;
     @Input() unSigned: boolean;
 
+    //total kalendar
+    year:any;
+    date:any;
+    day:any;
+    month:any;
+    hours:any
+    minutes:any;
+
     userFromTable:any={}
 
     sportOptions: Sport[] = [];
@@ -142,6 +150,16 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.userService.getOneUser(this.selectedActivity.createdBy).subscribe(res=>{ //pokial by sme chceli fotku tvorcu
             this.userFromTable = res;
         });
+
+        var mesiace = ["Jan","Feb", "Mar", "Apr","Maj","Jun","Jul","Aug","Sep","Okt","Nov","Dec"];
+        var dni = ["Nedeľa","Pondelok","Utorok","Streda","Štvrtok","Piatok","Sobota"];
+        this.year = new Date(this.selectedActivity.date).getFullYear();
+        this.date = new Date(this.selectedActivity.date).getDate();
+        this.day = dni[new Date(this.selectedActivity.date).getDay()];
+        this.month = mesiace[new Date(this.selectedActivity.date).getMonth()];
+        this.hours = new Date(this.selectedActivity.date).getHours();
+        this.minutes = new Date(this.selectedActivity.date).getMinutes();
+        console.log('this is datumik:' + this.day,this.month, this.hours, this.minutes);
 
     }
     // getData(){
