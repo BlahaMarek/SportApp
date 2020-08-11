@@ -1,3 +1,8 @@
+ion-item, ion-list{
+  --ion-background-color: tranparent;
+}
+
+
 .button-login {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -25,7 +30,7 @@
 
 .creator{
   margin: auto;
-  margin-top: 10px;
+  padding-top: 10px;
   margin-bottom: 9px;
 
 }
@@ -47,7 +52,17 @@
 .rated{
   font-size: 18px;
   font-weight: 600;
-  color: #303940;
+  color: white;
   text-align: center;
   margin-bottom: 0px;
+}
+.wrapper{
+  background: linear-gradient(to bottom, transparent, blue),
+  url("src/assets/login/top1.svg");
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
 }

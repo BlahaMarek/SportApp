@@ -12,10 +12,12 @@
 </ion-header>
 
 <ion-content class="facebook-bg">
+    <div class="background">
+
 <!--  *ngIf="this.dataService.logged && this.dataService.user"-->
   <div *ngIf="this.dataService.logged && this.dataService.user">
 
-      <ion-button class="friends" (click)="friends()" expand="block" fill="outline">
+      <ion-button class="friends" (click)="friends()" color="success" expand="block" fill="solid">
           {{ "Priatelia: " + this.dataService.getUserFromDatabase().friends.length}}
       </ion-button>
 
@@ -41,7 +43,7 @@
           {{this.ratings.length}}
       </p>
 
-    <ion-item *ngIf="ratingSport1 != 0">
+    <ion-item class="pro" *ngIf="ratingSport1 != 0">
       <p>Tenis</p>
     <ionic4-star-rating  #rating
                         activeIcon = "ios-star"
@@ -187,6 +189,7 @@
       Login
     </ion-buttons>
   </div>
+    </div>
 </ion-content>
 <ion-footer *ngIf="this.dataService.logged != false" (click)="logout()">
   <ion-toolbar color="danger">

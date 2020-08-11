@@ -11,6 +11,7 @@
 
 
 <ion-content>
+  <div class="wrapper">
   <div class="right">
     <ion-button *ngIf="!checkFriends()" (click)="addFriend()" shape="round" color="success">+ Pridaj</ion-button>
     <ion-button *ngIf="checkFriends()" (click)="deleteFriend()" shape="round" color="danger">- Odober</ion-button>
@@ -184,4 +185,5 @@
     </ionic4-star-rating>
     <p slot="end">{{ ratingSport10.length}}</p>
   </ion-item>
+  </div>
 </ion-content>

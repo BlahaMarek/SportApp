@@ -10,8 +10,10 @@
 </ion-header>
 
 <ion-content>
-
     <div class="background">
+    <div id="map2" class="map2"></div>
+
+
 
 
 
@@ -26,28 +28,34 @@
 
 
 <div style="position: absolute; left: 50%">
-            <ion-chip class="ion-margin-start creatorPhoto">
+            <ion-chip *ngIf="selectedActivity.createdBy != this.dataService.getSignInUser().id" (click)="visitCreatorProfile()" class="ion-margin-start creatorPhoto">
                 <ion-avatar> <img [src]="this.userFromTable.photoUrl" >
                 </ion-avatar>
                 <ion-label>{{this.userFromTable.name}}</ion-label>
             </ion-chip>
+
+    <ion-chip *ngIf="selectedActivity.createdBy == this.dataService.getSignInUser().id" class="ion-margin-start creatorPhoto">
+        <ion-avatar> <img [src]="this.userFromTable.photoUrl" >
+        </ion-avatar>
+        <ion-label>{{this.userFromTable.name}}</ion-label>
+    </ion-chip>
 </div>
 
 
         <ul class="share">
             <li>
-                <ion-img class="ins" src='assets/icon/instagram.png' (click)="instagramShare()"></ion-img>
+                <ion-img class="ins" src='assets/icon/instagram-128.png' (click)="instagramShare()"></ion-img>
 
             </li>
 
             <li>
-                <ion-img class="ins" src='assets/icon/facebook.png' (click)="facebookShare()"></ion-img>
+                <ion-img class="ins" src='assets/icon/facebook-128.png' (click)="facebookShare()"></ion-img>
 
             </li>
         </ul>
 
 
-        <div class="center">
+        <div class="center first">
             <h1 class="place shade sport">{{this.dataService.getSportNameByValue(this.selectedActivity.sport)}}
             </h1>
 
@@ -66,7 +74,7 @@
 
 <!--        </div>-->
 
-        <div class="center" >
+        <div class="center time" >
 <!--            <p class="place shade">{{this.time}}</p>-->
             <time class="date-as-calendar position-em size1_25x">
                 <span class="weekday">{{this.day}}</span>
@@ -110,7 +118,7 @@
         <h4 >Pre prihlásenie sa do aktivity sa najprv musíte prihlásiť!</h4>
     </ion-text>
 
-    <ion-button *ngIf="overdue"  (click)="rateUsers()" expand="block" fill="outline">
+    <ion-button color="success" *ngIf="overdue"  (click)="rateUsers()" expand="block" fill="solid">
 <!--        *ngIf="overdue && !unSigned"-->
         {{ "Ohodnot spoluhracov"}}
 
@@ -134,11 +142,10 @@
 
 
 
-    <div id="map2" class="map2"></div>
-
-
-
     </div>
+
+
+
 
 
 </ion-content>

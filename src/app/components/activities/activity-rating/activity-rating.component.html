@@ -13,9 +13,10 @@
 
 
 <ion-content>
+  <div class="wrapper">
 <!--  creator-->
   <ion-avatar class="creator" *ngIf="creator != undefined"><img src="{{this.creator.photoUrl}}"></ion-avatar>
-  <ion-button class="creator-button" *ngIf="creator != undefined" (click)="visitProfile(this.creator)">{{this.creator.name}}</ion-button>
+  <ion-button color="secondary" class="creator-button" *ngIf="creator != undefined" (click)="visitProfile(this.creator)">{{this.creator.name}}</ion-button>
   <p *ngIf="overdue && usersId.length == 0" class="noone">Nikto nebol prihlasený.</p>
   <p *ngIf="usersId.length == 0 && !this.overdue" class="noone">Nikto nie je prihlasený.</p>
 
@@ -78,7 +79,7 @@
     </ion-item>
 
   </ion-list>
-
+  </div>
 </ion-content>
 
 <ion-content *ngIf="profile">
@@ -89,4 +90,5 @@
       <ion-button (click)="deleteFriendFomFriendList(user.id)" color="danger">Odobrať priateľa</ion-button>
     </ion-item>
   </ion-list>
+
 </ion-content>

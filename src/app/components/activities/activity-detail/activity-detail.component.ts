@@ -20,10 +20,12 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {ActivatedRoute} from "@angular/router";
 import {ActivityRatingComponent} from "../activity-rating/activity-rating.component";
 import {ELocalNotificationTriggerUnit, LocalNotifications} from '@ionic-native/local-notifications/ngx';
-// import {File} from "@ionic-native/file/ngx"; ak budeme chciet k sharovanie prilozit aj obrazok
+import Control from 'ol/control/Control';
 import {SocialSharing} from "@ionic-native/social-sharing/ngx";
 import {UserService} from "../../../services/user.service";
 import {ActivityUpdateComponent} from "../activity-update/activity-update.component";
+import {User} from "../../../models/user";
+import {VisitUserProfileComponent} from "../../../pages/visit-user-profile/visit-user-profile.component";
 
 
 @Component({
@@ -301,6 +303,23 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             });
     }
 
+    visitCreatorProfile(){
+        this.modalController
+            .create({component: VisitUserProfileComponent,
+                componentProps:{
+                    user: this.userFromTable
+                }
+
+            })
+            .then(modalEl => {
+                modalEl.present();
+                return modalEl.onDidDismiss();
+            })
+            .then(result => {
+
+            });
+    }
+
     selectSearchResult(item) {
         // let place: google.maps.places.PlaceResult = this.GoogleAutocomplete.getPlacePredictions();
         console.log(item);
@@ -365,6 +384,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                     new TileLayer({
                         source: new OSM()
                     })],
+
                 target: document.getElementById('map2'),
                 view: new View({
                     center: fromLonLat([this.selectedActivity.longtitude, this.selectedActivity.lattitude]),

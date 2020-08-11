@@ -1,11 +1,21 @@
 .map2 {
 
   height: 35%;
-  max-height: 150%;
-  margin: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
   border-radius: 20px;
   //border: 1px solid blue;
-  overflow: auto;
+  overflow: hidden;
+}
+
+.map2 .ol-attribution,
+.map2 .ol-attribution.ol-uncollapsible{
+  bottom: 0;
+  right: 0;
+}
+.ol-attribution{
+  float: right;
+  margin-top: 100%;
 }
 //.ol-viewport, ol-touch{
 //  border: 1px solid blue;
@@ -14,13 +24,15 @@
 //}
 
 .ins{
-  width: 3em;
+  width: 2.4em;
 }
 
 .place{
   font-size: 20px;
   text-align: center;
 }
+
+
 
 .label{
   font-size: 16px;
@@ -50,13 +62,22 @@
 .center{
   display: table;
   padding: 8px;
-  color: black;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  color: white;
+
+  .first{
+    margin-top: 20px;
+  }
+
+
+
   ion-button{
     display: block;
   }
 
+}
+.time{
+  margin-left: auto;
+  margin-right: auto;
 }
 .center p {
   text-align: center;
@@ -80,7 +101,7 @@ font-weight: 600;
 
 .background {
   //#3080ff
-  background: linear-gradient(to bottom, transparent, white),
+  background: linear-gradient(to bottom, transparent, blue),
   url("src/assets/login/top1.svg");
   position: relative;
   background-size: cover;
@@ -198,3 +219,5 @@ ion-list{
 .date-as-calendar.size1_25x {
   font-size: 20px;
 }
+
+

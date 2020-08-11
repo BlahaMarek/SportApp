@@ -11,14 +11,17 @@
 </ion-header>
 
 <ion-content>
+    <div class="wrapper-header">
     <app-filter (onSearchClicked)="onSearchClicked($event)"></app-filter>
     <ion-segment [(ngModel)]="segmentValue" >
         <ion-segment-button #others value="others" checked>Všetky</ion-segment-button>
         <ion-segment-button value="mine">Moje</ion-segment-button>
         <ion-segment-button value="registered">Prihlásený</ion-segment-button>
     </ion-segment>
-    <img class="loadingImage" *ngIf="filteredList.length==0" src='assets/loading/loadingBallGif.gif' height="90">
-    <div class="wrapper">
+    </div>
+    <div class="wrapper back">
+        <img class="loadingImage" *ngIf="filteredList.length==0" src='assets/loading/loadingBallGif.gif' height="90">
+
         <ion-virtual-scroll id="myVirtual"  [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="120px">
                 <ion-item  *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">
                     <div [class]="getCssClass(activity)">

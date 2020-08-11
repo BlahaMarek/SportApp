@@ -1,5 +1,10 @@
 ion-item {
   margin: 3px 0;
+  --ion-background-color: tranparent;
+
+  .item-native{
+    --ion-background-color: tranparent;
+  }
 }
 
 .item .item-content {
@@ -11,8 +16,23 @@ ion-item {
   height: 120px;
   border-radius: 7%;
 }
+
+.wrapper-header{
+//daku hustu farbu tu trebadat
+}
+
 .wrapper {
   padding: 8px;
+}
+.back{
+  background: linear-gradient(to bottom, transparent, blue),
+  url("src/assets/login/top1.svg");
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+  width: 100%;
+  height: 100%;
 }
 
 .shade {
