@@ -19,11 +19,24 @@ ion-item {
 
 .wrapper-header{
 //daku hustu farbu tu trebadat
+  background: rgba(255,255,255,0.06);
 }
+
 
 .wrapper {
   padding: 8px;
 }
+//ion-content{
+//    --background: linear-gradient(to bottom, transparent, blue),
+//    url("src/assets/login/top1.svg");
+//    position: relative;
+//    background-size: cover;
+//    background-position: center;
+//    background-repeat: repeat;
+//    width: 100%;
+//    height: 100%;
+//}
+
 .back{
   background: linear-gradient(to bottom, transparent, blue),
   url("src/assets/login/top1.svg");
@@ -81,6 +94,15 @@ ion-virtual-scroll {
   max-height: 70vh;
   overflow: auto;
 }
+ion-segment-button{
+  color: white;
+
+}
+.segment-button-checked{
+  border-bottom: 2px solid white;
+  border-radius: 15px;
+}
+
 
 
 //OBRAZKY
