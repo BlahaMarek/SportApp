@@ -511,8 +511,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         this.geolocation.getCurrentPosition().then((resp) => {
             a1 = resp.coords.latitude;
             b1 = resp.coords.longitude;
-            console.log('toto jea1' + a1);
-            this.presentToast('Toto je a1: ' + a1 + 'b1: ' + b1);
             this.map.getView().setCenter(fromLonLat([b1, a1]));
         }).catch((error) => {
             console.log('Error getting location', error);

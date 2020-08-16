@@ -17,7 +17,7 @@
 <!--  *ngIf="this.dataService.logged && this.dataService.user"-->
   <div *ngIf="this.dataService.logged && this.dataService.user">
 
-      <ion-button class="friends" (click)="friends()" color="success" expand="block" fill="solid">
+      <ion-button style="--background:#00008b" class="friends" (click)="friends()" expand="block" fill="solid">
           {{ "Priatelia: " + this.dataService.getUserFromDatabase().friends.length}}
       </ion-button>
 
