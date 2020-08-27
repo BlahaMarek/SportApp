@@ -44,27 +44,34 @@ export class ActivityRatingComponent implements OnInit {
               private activityService: ActivityService,
               public alertController: AlertController) { }
   ngOnInit() {
-    console.log("this is sdada")
+    console.log("this is s dada")
     console.log(this.overdue);
     console.log(this.usersId);
     console.log(this.usersId.length);
 
-    //stahujem creatora aktivity
-    this.userService.getOneUser(this.createdBy).pipe(take(1)).subscribe(res => {
-      this.creator = res
-      console.log(res);
-    });
+    if(!this.profile) {
+      //stahujem creatora aktivity
+      this.userService.getOneUser(this.createdBy).pipe(take(1)).subscribe(res => {
+        this.creator = res
+        console.log(res);
+      });
+    }
 
     this.loggedUser = this.dataService.getSignInUser();
     if (this.profile) { // ak pridem z profilu
+      console.log("toto je vonco");
+      console.log(this.usersId[i]);
+
       for (var i = 0; i < this.usersId.length; i++) {
         this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res => {
           this.friendsFromProfile.push(res);
+          console.log(res)
+          console.log("zrubalo se mi to asi tu");
         });
 
 
       }
-
+    this.finishDwonloading = false;
     }
     // this.loggedUser.user.uid
     // 1MUxrZRhP0Wsdad54w83Icw0y3k2

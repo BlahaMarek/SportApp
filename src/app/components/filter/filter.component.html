@@ -10,15 +10,19 @@
     <div class="icon-wrapper">
       <ion-icon name="close"  color="medium" (click)="activityForm.reset()"></ion-icon>
       <ion-icon [name]=" animationState == 'out' ? 'options' : 'arrow-dropup'" color="primary" (click)="toggleShowDiv()"></ion-icon>
+<!--      <ion-button (click)="findFriends()" color="danger">F</ion-button>-->
+      <ion-toggle formControlName="friends" color="success">Friends</ion-toggle>
     </div>
   </div>
 
   <div [@slideInOut]="animationState" >
+
+
     <div class="item-wrapper">
       <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="Vyberte dátum"></ion-input>
     </div>
     <div class="item-wrapper">
-      <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="Vyberte dátum"></ion-input>
+      <ion-input class="opacity" formControlName="toDate" (click)="openDatePicker2()" placeholder="Vyberte dátum"></ion-input>
     </div>
   </div>
 </form>

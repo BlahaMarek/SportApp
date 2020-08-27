@@ -44,16 +44,45 @@ export class FilterPipe implements PipeTransform {
 
     // FILTRUJEM PODLA POLI FILTRACNEHO FORMULARA
     let filteredActivities = [];
+    var i = 0;
     list.filter(activity => {
-
       props.forEach(prop => {
-        if (activity[prop.field] != prop.value) return false;
+        console.log(prop) // to co som dostal
+        // console.log(prop.field) // to co som dostal --date
+        // console.log(activity[prop.field]);// tu mam uz timestamp aktivity
+        // console.log(prop.value);
 
-        filteredActivities.push(activity);
-        return true;
+
+        if (prop.field.toString() != 'date'){ // aby mi datum neporovnavalo
+          if (activity[prop.field] != prop.value) return false;
+        }
+
+        if (prop.field.toString() == 'date'){
+          // @ts-ignore
+          if (prop.value2 != 0){ // ked nevlozim druhy datum, preskakujem
+            // @ts-ignore
+            if (activity[prop.field] > prop.value && activity[prop.field] < prop.value2){
+              filteredActivities.push(activity);
+              console.log("pushujem");
+              return true;
+            }
+          }else{ // len podla 1. datumu
+            console.log("mnel by som byt tu")
+            if (activity[prop.field] > prop.value){
+              filteredActivities.push(activity);
+              console.log("pushujem");
+              return true;
+            }
+          }
+        }
+
+        if (activity[prop.field] == prop.value){
+          filteredActivities.push(activity);
+        }
       })
-
     });
+    //aby neboli duplikovane vysledky
+    filteredActivities = Array.from(new Set(filteredActivities));
     return filteredActivities;
   }
 
