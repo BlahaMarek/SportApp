@@ -158,7 +158,7 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                     color: '#fff'
                                 }),
                                 fill: new Fill({
-                                    color: '#FF0000'
+                                    color: '#0000FF'
                                 })
                             }),
                             text: new Text({

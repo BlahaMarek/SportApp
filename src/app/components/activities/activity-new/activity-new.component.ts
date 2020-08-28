@@ -13,6 +13,7 @@ import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx';
 import { ToastController} from '@ionic/angular';
 import {FirestoreService} from '../../../services/firestore.service';
 import * as firebase from "firebase";
+import {EventService} from "../../../services/event.service";
 
 
 @Component({
@@ -22,6 +23,7 @@ import * as firebase from "firebase";
 })
 export class ActivityNewComponent implements OnInit {
     sportOptions: Sport[] = [];
+    aktivitaOrEvent = ['Aktivita','Udalost'];
     private objekt: any;
     lat: number;
     longt: number;
@@ -43,8 +45,10 @@ export class ActivityNewComponent implements OnInit {
         private authService: AuthService,
         public zone: NgZone,
         private plt: Platform,
-        private localNotification: LocalNotifications
+        private localNotification: LocalNotifications,
+        private eventService: EventService
     ) {
+        this.aktivitaOrEvent;
         this.sportOptions = this.dataService.getSportsSk();
         // @ts-ignore
         this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -60,6 +64,7 @@ export class ActivityNewComponent implements OnInit {
     location: any;
     placeid: any;
     activityForm = this.fb.group({
+        what: ['', Validators.required],
         peopleCount: ['', Validators.required],
         place: ['', Validators.required],
         topActivity: [false],
@@ -84,11 +89,18 @@ export class ActivityNewComponent implements OnInit {
     }
 
     onFormSubmit() {
+        if (this.activityForm.get('what').value == "Aktivita"){
+            this.activityService.addActivity(this.assignValueToActivity());
+            this.fireService.createSport(this.assignValueToActivity());
+            this.scheduleNotification(); //notifikaciaaa
+            this.modalController.dismiss({message: 'Add new activity!'}, 'add');
+        }else {
+            this.eventService.addEvent(this.assignValueToActivity());
+            this.fireService.createEvent(this.assignValueToActivity());
+            this.scheduleNotification(); //notifikaciaaa
+            this.modalController.dismiss({message: 'Add new event!'}, 'add');
+        }
 
-        this.activityService.addActivity(this.assignValueToActivity());
-        this.fireService.createSport(this.assignValueToActivity());
-        this.scheduleNotification(); //notifikaciaaa
-        this.modalController.dismiss({message: 'Add new activity!'}, 'add');
     }
 
     assignValueToActivity(): Activity {
@@ -154,9 +166,8 @@ export class ActivityNewComponent implements OnInit {
         };
         this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
             .then((result: NativeGeocoderResult[]) =>
-                this.openToast('The coordinates are latitude=' +
-                result[0].latitude + ' and longitude=' +  result[0].longitude)) // tu je sirka a vyska
-            .catch((error: any) => this.openToast('Toto sa dosralo'));
+                this.openToast("Miesto najdene na mape")) // tu je sirka a vyska
+            .catch((error: any) => this.openToast('Nepodarilo sa vybrat miesto'));
 
         this.nativeGeocoder.forwardGeocode(this.autocomplete.input, options)
             .then((result: NativeGeocoderResult[]) =>

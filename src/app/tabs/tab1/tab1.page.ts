@@ -15,6 +15,8 @@ import {Geolocation} from "@ionic-native/geolocation/ngx";
 })
 export class Tab1Page implements OnInit {
     activityList: Activity[];
+    fromEvent: false;
+
     latitude = null;
     longitude = null;
 
@@ -33,7 +35,7 @@ export class Tab1Page implements OnInit {
     async ngOnInit() {
         this.loadLocalUser();
         this.locate();
-
+        this.fromEvent = false;
          this.activityService.activities$.subscribe(list => {
             this.activityList = list;
 
@@ -47,7 +49,6 @@ export class Tab1Page implements OnInit {
             this.activityList.sort(function(a,b){
                 return a.distanceFromUser - b.distanceFromUser
             });
-            this.dataService.setAktivity(this.activityList);
          });
 
     }

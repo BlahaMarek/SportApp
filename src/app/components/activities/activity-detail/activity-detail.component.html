@@ -1,6 +1,7 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Aktivita</ion-title>
+        <ion-title *ngIf="!fromEvent">Aktivita</ion-title>
+        <ion-title *ngIf="fromEvent">Udalosť</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="onCancel()">
                 <ion-icon name="close"></ion-icon>
@@ -10,7 +11,7 @@
 </ion-header>
 
 <ion-content>
-    <div class="background">
+    <div [ngClass]="fromEvent ? 'backEvent' : 'background'">
     <div id="map2" class="map2"></div>
 
 

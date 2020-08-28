@@ -41,8 +41,11 @@ export class ActivityService {
         this.fireService.readAllQueries().subscribe(res => {
             console.log(res)
             this.sports2 = res;
+
             console.log("this is res")
             this.activities = this.sports2[0].concat(this.sports2[1], this.sports2[2]); // 3 queriny into 1 array..lebo firebase
+            this.dataService.setAktivity(this.activities);
+
         })
 
 
@@ -75,7 +78,6 @@ export class ActivityService {
     addBookerToActivity(sport: Activity) {
         let activity: Activity = this.getActivityById(sport.id);
         activity.bookedBy.push(this.user.id);
-        console.log(activity);
         return this.sportsCollection.doc(sport.id).update(activity);
 
     }

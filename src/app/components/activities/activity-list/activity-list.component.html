@@ -11,8 +11,10 @@
 </ion-header>
 
 <ion-content>
-    <div class="back">
-    <div class="wrapper-header">
+    <div [ngClass]="fromEvent ? 'backEvent' : 'back'">
+<!--        <div class="backEvent" *ngIf="fromEvent">-->
+
+        <div class="wrapper-header">
 
     <app-filter (onSearchClicked)="onSearchClicked($event)"></app-filter>
     <ion-segment [(ngModel)]="segmentValue" >
@@ -41,5 +43,7 @@
                 </ion-item>
         </ion-virtual-scroll>
     </div>
-    </div>
+        </div>
+<!--    </div>-->
+
 </ion-content>

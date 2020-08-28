@@ -30,6 +30,7 @@ export class FirestoreService {
         return this.firestore.collection('users').doc(user.id).set(user);
     }
 
+    //stahujem aktivitieeez
     readAllSports() { //len novsie
         var timestamp = new Date().getTime()
         return this.firestore.collection('sports', ref => {
@@ -89,8 +90,33 @@ export class FirestoreService {
         return combineLatest(this.readAllSports(), this.readAllSports2(), this.readAllSports3());
     }
 
-    readAllEvents() {
-        return this.firestore.collection('events').snapshotChanges().pipe(
+    //stahujem eventy
+    readAllEvents() { //len novsie
+        var timestamp = new Date().getTime()
+        return this.firestore.collection('events', ref => {
+            let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+            query = query.where('date', '>', timestamp); // na upravu stahujem len novsie sporty
+            return query;
+        }).snapshotChanges().pipe(
+            map(actions => {
+                return actions.map(a => {
+                    const data = a.payload.doc.data();
+                    const id = a.payload.doc.id;
+                    return {id, ...data};
+                });
+            })
+        )
+
+    }
+    readAllEvents2() { //starsie kde som bol booknuty
+        var timestamp = new Date().getTime()
+        return this.firestore.collection('events', ref => {
+            let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+
+            query = query.where("date", "<", timestamp)
+                .where('bookedBy','array-contains',this.dataService.getSignInUser().id);
+            return query;
+        }).snapshotChanges().pipe(
             map(actions => {
                 return actions.map(a => {
                     const data = a.payload.doc.data();
@@ -100,6 +126,41 @@ export class FirestoreService {
             })
         )
     }
+
+    readAllEvents3() { //starsie mnou vytvorene
+        var timestamp = new Date().getTime()
+        return this.firestore.collection('events', ref => {
+            let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+
+            query = query.where("date", "<", timestamp)
+                .where('createdBy','==', this.dataService.getSignInUser().id);
+            return query;
+        }).snapshotChanges().pipe(
+            map(actions => {
+                return actions.map(a => {
+                    const data = a.payload.doc.data();
+                    const id = a.payload.doc.id;
+                    return {id, ...data};
+                });
+            })
+        )
+    }
+
+    readAllQueriesEvents():Observable<any>{ //kombinujem vseetky dokopy
+        return combineLatest(this.readAllEvents(), this.readAllEvents2(), this.readAllEvents3());
+    }
+
+    // readAllEvents() {
+    //     return this.firestore.collection('events').snapshotChanges().pipe(
+    //         map(actions => {
+    //             return actions.map(a => {
+    //                 const data = a.payload.doc.data();
+    //                 const id = a.payload.doc.id;
+    //                 return {id, ...data};
+    //             });
+    //         })
+    //     )
+    // }
 
     updateSport(sportId, sport) {
         this.firestore.doc('students/' + sportId).update(sport);

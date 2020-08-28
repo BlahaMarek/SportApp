@@ -6,6 +6,7 @@ import {ActivityDetailComponent} from '../activity-detail/activity-detail.compon
 import {Sport} from '../../../models/sport';
 import {DataService} from '../../../data/data.service';
 import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
+import {EventService} from "../../../services/event.service";
 
 @Component({
     selector: 'app-activity-list',
@@ -17,6 +18,8 @@ export class ActivityListComponent implements OnInit {
     @Input() filteredList: Activity[];
     @Input() idSportsFromMap: string[];
     @Input() fromMap: boolean;
+    @Input() fromEvent: boolean;
+
     @Input() aktivita: boolean; //ci prisiel event z mapy alebo aktivita
 
     sportOptions: Sport[] = [];
@@ -29,6 +32,7 @@ export class ActivityListComponent implements OnInit {
         private modalController: ModalController,
         private toastController: ToastController,
         private dataService: DataService,
+        private eventService: EventService
     ) {
     }
 
@@ -41,25 +45,57 @@ export class ActivityListComponent implements OnInit {
 
     onActivityClicked(id: string) {
         this.user= this.dataService.getSignInUser();
+        console.log("idceko" + id)
+        console.log(this.activityService.getActivityById(id))
+
+        // console.log("idceko" + id)
+        // console.log("idceko" + id)
+
         var logged= this.dataService.getSignInUser();
-        if (this.dataService.logged != false) {
+        if (this.fromEvent){
+            var eventik = this.eventService.getEventById(id);
             this.modalController
                 .create({
                     component: ActivityDetailComponent,
                     componentProps: {
-                        selectedActivity: this.activityService.getActivityById(id),
-                        bookable: !(this.activityService.getActivityById(id).createdBy === this.user.id),
-                        reserved: (this.activityService.getActivityById(id).bookedBy.find(function (prihlaseny) {
+                        selectedActivity: eventik,
+                        bookable: !(eventik.createdBy === this.user.id),
+                        reserved: (eventik.bookedBy.find(function (prihlaseny) {
                             return prihlaseny.includes(logged.id)
                         })),
-                        overdue: (new Date(this.activityService.getActivityById(id).date).getTime() < new Date().getTime()),
-                        unSigned: (this.user.id == 0)
+                        overdue: (new Date(eventik.date).getTime() < new Date().getTime()),
+                        unSigned: (this.user.id == 0),
+                        fromEvent: true
                     }
                 })
                 .then(modalEl => {
                     modalEl.present();
                     return modalEl.onDidDismiss();
                 });
+        }else {
+
+
+            if (this.dataService.logged != false) {
+                var aktivita = this.activityService.getActivityById(id)
+                this.modalController
+                    .create({
+                        component: ActivityDetailComponent,
+                        componentProps: {
+                            selectedActivity: aktivita,
+                            bookable: !(aktivita.createdBy === this.user.id),
+                            reserved: (aktivita.bookedBy.find(function (prihlaseny) {
+                                return prihlaseny.includes(logged.id)
+                            })),
+                            overdue: (new Date(aktivita.date).getTime() < new Date().getTime()),
+                            unSigned: (this.user.id == 0),
+                            fromEvent: false
+                        }
+                    })
+                    .then(modalEl => {
+                        modalEl.present();
+                        return modalEl.onDidDismiss();
+                    });
+            }
         }
     }
 

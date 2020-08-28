@@ -26,6 +26,7 @@ import {UserService} from "../../../services/user.service";
 import {ActivityUpdateComponent} from "../activity-update/activity-update.component";
 import {User} from "../../../models/user";
 import {VisitUserProfileComponent} from "../../../pages/visit-user-profile/visit-user-profile.component";
+import {EventService} from "../../../services/event.service";
 
 
 @Component({
@@ -46,6 +47,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     @Input() reserved: boolean;
     @Input() overdue: boolean;
     @Input() unSigned: boolean;
+    @Input() fromEvent: boolean;
 
     //total kalendar
     year:any;
@@ -70,6 +72,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         private fb: FormBuilder,
         private userService: UserService,
         private activityService: ActivityService,
+        private eventService: EventService,
         private dataService: DataService,
         private authService: AuthService,
         public zone: NgZone,
@@ -128,7 +131,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.activityService.getActivity().subscribe(res => {
             this.sport2 =res;
         });
-
 
 
         console.log(this.selectedActivity);
@@ -199,42 +201,75 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     }
 
     onFormSubmit() {
-        if (!this.bookable && !this.reserved) {
-            this.updateActivity();
-            // this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
-            //     this.dataService.refreshAfterLogin = true;
-            // });
-
-        } else if (this.bookable && !this.reserved) {
-            this.activityService.addBookerToActivity(this.selectedActivity).then(()=>{
-                this.dataService.refreshAfterLogin = true;
-            });
-            this.scheduleNotification();
-        }
-        else if (this.reserved) {
-            this.activityService.removeBookerFromActivity(this.selectedActivity).then(()=>{
-                this.dataService.refreshAfterLogin = true;
-            });
-            console.log("som pri prvom resrvede");
-        }
-        else if (!this.reserved) {  //toto asi netreba
-            this.activityService.deleteActivity(this.selectedActivity).then(()=>{
-                this.dataService.refreshAfterLogin = true;
-            });
-            console.log("som pri druhom resrvede");
-
-        }
-        const data = {message: 'Add new activity!'};
-        if (this.bookable) {
-            console.log(this.selectedActivity.id);
-            console.log(this.authService.userIdAuth);
-            data.message = 'Booked activity';
+        if (!this.fromEvent) {
 
 
+            if (!this.bookable && !this.reserved) {
+                this.updateActivity();
+                // this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
+                //     this.dataService.refreshAfterLogin = true;
+                // });
+
+            } else if (this.bookable && !this.reserved) {
+                this.activityService.addBookerToActivity(this.selectedActivity).then(() => {
+                    this.dataService.refreshAfterLogin = true;
+                });
+                this.scheduleNotification();
+            } else if (this.reserved) {
+                this.activityService.removeBookerFromActivity(this.selectedActivity).then(() => {
+                    this.dataService.refreshAfterLogin = true;
+                });
+                console.log("som pri prvom resrvede");
+            } else if (!this.reserved) {  //toto asi netreba
+                this.activityService.deleteActivity(this.selectedActivity).then(() => {
+                    this.dataService.refreshAfterLogin = true;
+                });
+                console.log("som pri druhom resrvede");
+
+            }
+            const data = {message: 'Add new activity!'};
+            if (this.bookable) {
+                console.log(this.selectedActivity.id);
+                console.log(this.authService.userIdAuth);
+                data.message = 'Booked activity';
+
+            }
+            this.modalController.dismiss(data, 'add');
+
+        }else{
+            if (!this.bookable && !this.reserved) {
+                this.updateActivity();
+                // this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
+                //     this.dataService.refreshAfterLogin = true;
+                // });
+
+            } else if (this.bookable && !this.reserved) {
+                this.eventService.addBookerToActivity(this.selectedActivity).then(() => {
+                    this.dataService.refreshAfterLogin = true;
+                });
+                this.scheduleNotification();
+            } else if (this.reserved) {
+                this.eventService.removeBookerFromActivity(this.selectedActivity).then(() => {
+                    this.dataService.refreshAfterLogin = true;
+                });
+                console.log("som pri prvom resrvede");
+            } else if (!this.reserved) {  //toto asi netreba
+                this.eventService.deleteEvent(this.selectedActivity).then(() => {
+                    this.dataService.refreshAfterLogin = true;
+                });
+                console.log("som pri druhom resrvede");
+
+            }
+            const data = {message: 'Add new activity!'};
+            if (this.bookable) {
+                console.log(this.selectedActivity.id);
+                console.log(this.authService.userIdAuth);
+                data.message = 'Booked activity';
+
+            }
+            this.modalController.dismiss(data, 'add');
+
         }
-        console.log(this.selectedActivity.id);
-        console.log(this.authService.userIdAuth);
-        this.modalController.dismiss(data, 'add');
     }
     onFormSubmitDelete() {
 

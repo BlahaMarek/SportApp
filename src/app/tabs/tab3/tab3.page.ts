@@ -15,6 +15,7 @@ import {EventService} from "../../services/event.service";
 })
 export class Tab3Page {
     activityList: Activity[];
+    fromEvent: true;
     latitude = null;
     longitude = null;
     idEventZMapy: any = [];
@@ -34,9 +35,11 @@ export class Tab3Page {
 
     ngOnInit() {
         this.locate();
-
+        this.fromEvent = true;
         this.eventService.activities$.subscribe(list => {
             this.activityList = list;
+                console.log(list)
+            console.log("pro")
 
             // SORTOVANIE AKTIVIT PODLA VZDIALENOSTI
             this.activityList.forEach(value => {

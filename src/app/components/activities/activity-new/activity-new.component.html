@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Nová aktivita</ion-title>
+        <ion-title>Nová aktivita/udalosť</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="onCancel()">
                 <ion-icon name="close"></ion-icon>
@@ -9,9 +9,21 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+    <div class="background">
+
     <form [formGroup]="activityForm">
         <div >
+            <ion-item>
+                <ion-label position="stacked" >Aktivita alebo sport?</ion-label>
+                <ion-select formControlName="what" placeholder="Vyberte aktivitu/sport">
+                    <ion-select-option value="{{val}}" *ngFor="let val of aktivitaOrEvent">
+                        {{ val }}
+                    </ion-select-option>
+                </ion-select>
+
+            </ion-item>
+
             <ion-item>
                 <ion-label position="stacked" >Výber športu *</ion-label>
                 <ion-select formControlName="sport" placeholder="Vyberte šport">
@@ -88,7 +100,8 @@
             ></ion-input>
         </ion-item>
     </form>
-    <ion-button class="ion-margin-top" (click)="onFormSubmit()" expand="block" fill="outline" disabled="{{!activityForm.valid}}">
+    <ion-button color="success" class="ion-margin-top" (click)="onFormSubmit()" expand="block"  disabled="{{!activityForm.valid}}">
         Pridaj aktivitu
     </ion-button>
+    </div>
 </ion-content>
