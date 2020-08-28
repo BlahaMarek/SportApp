@@ -69,11 +69,7 @@ export class FilterComponent implements OnInit {
 
   prepareData() {
     let filterData = [];
-    if (this.activityForm.get('friends').value){
-      this.dataService.getUserFromDatabase().friends.forEach(friend => {
-            filterData.push({field: "createdBy", value: friend});
-      });
-    }
+
     if (this.activityForm.get('sport').value) {
       filterData.push({field: "sport", value: this.activityForm.get('sport').value})
     }
@@ -92,9 +88,13 @@ export class FilterComponent implements OnInit {
           filterData.push({field: "date", value: new Date(this.activityForm.get('date').value).getTime(),
             value2: new Date(this.activityForm.get('toDate').value).getTime()})
         }
-        console.log(this.activityForm.get('toDate').value);
 
       }
+    if (this.activityForm.get('friends').value){
+      this.dataService.getUserFromDatabase().friends.forEach(friend => {
+        filterData.push({field: "createdBy", value: friend});
+      });
+    }
     this.onSearchClicked.emit(filterData);
   }
 

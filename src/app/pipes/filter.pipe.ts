@@ -46,39 +46,95 @@ export class FilterPipe implements PipeTransform {
     let filteredActivities = [];
     var i = 0;
     list.filter(activity => {
-      props.forEach(prop => {
-        console.log(prop) // to co som dostal
-        // console.log(prop.field) // to co som dostal --date
-        // console.log(activity[prop.field]);// tu mam uz timestamp aktivity
-        // console.log(prop.value);
+      var presiel = [];
+      var findFriend = false;
+      props.forEach((prop,key,arr) => {
+        // console.log(findFriend)
+        // console.log("This is prop length" + props.length + "a toto key" + key)
+        console.log(props) // to co som dostal
+//         console.log(prop.field) // to co som dostal --date
+//         console.log(activity[prop.field]);// tu mam uz timestamp aktivity
+//         console.log(prop.value);
+//         console.log(activity[prop.value]);// nayov_
+// console.log("toto je kry" + key)
+//         console.log(arr)
 
-
-        if (prop.field.toString() != 'date'){ // aby mi datum neporovnavalo
-          if (activity[prop.field] != prop.value) return false;
-        }
+        // if (prop.field.toString() != 'date'){ // aby mi datum neporovnavalo
+        //   if (activity[prop.field] != prop.value) return false;
+        // }
 
         if (prop.field.toString() == 'date'){
           // @ts-ignore
           if (prop.value2 != 0){ // ked nevlozim druhy datum, preskakujem
             // @ts-ignore
             if (activity[prop.field] > prop.value && activity[prop.field] < prop.value2){
-              filteredActivities.push(activity);
+              // filteredActivities.push(activity);
+              presiel.push(true);
               console.log("pushujem");
-              return true;
+            }else {
+              presiel.push(false)
+              console.log("falsik");
             }
           }else{ // len podla 1. datumu
             console.log("mnel by som byt tu")
             if (activity[prop.field] > prop.value){
-              filteredActivities.push(activity);
+              // filteredActivities.push(activity);
+              presiel.push(true)
               console.log("pushujem");
-              return true;
+
+            }else{
+              presiel.push(false);
+              console.log("falsik");
             }
           }
         }
 
-        if (activity[prop.field] == prop.value){
-          filteredActivities.push(activity);
+        if (prop.field.toString() != 'date') { // aby mi datum neporovnavalo
+          if (activity[prop.field] == prop.value) {
+            // filteredActivities.push(activity);
+            console.log(prop.field.toString())
+           if (prop.field.toString()  === 'createdBy') {
+             findFriend = true;
+             console.log("sem tu")
+
+             if (findFriend == true) {
+               presiel.push(true);
+               console.log("pushujem true")
+             }
+          // @ts-ignore
+             if(findFriend == false && props.length - 1 == key) {
+               presiel.push(false);
+             }
+           }
+            else {
+              presiel.push(true)
+            }
+
+
+
+            } else {
+            if (prop.field  == "createdBy" && props.length - 1 == key) {
+              presiel.push(false);
+              console.log("falsik");
+            }
+            if (prop.field  != "createdBy"){
+              presiel.push(false)
+            }
+          }
         }
+
+        if (Object.is(arr.length - 1, key)) { // ked som pri poslednom elemente
+          console.log(presiel)
+          console.log("ukoncil som dekadu jednej aktivity")
+
+          var ano = presiel.every( (val, i, arr) => val === arr[0] ); //kontrojem ci su vsetky true
+           if (ano && presiel[0] != false && presiel.length!=0) {
+             filteredActivities.push(activity); //ak ano pushujem aktivitu
+             console.log(presiel)
+           }
+
+        }
+
       })
     });
     //aby neboli duplikovane vysledky

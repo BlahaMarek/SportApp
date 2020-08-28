@@ -8,10 +8,13 @@
         </ion-select>
     </div>
     <div class="icon-wrapper">
-      <ion-icon name="close"  color="medium" (click)="activityForm.reset()"></ion-icon>
+      <ion-toggle formControlName="friends" color="success"></ion-toggle>
       <ion-icon [name]=" animationState == 'out' ? 'options' : 'arrow-dropup'" color="primary" (click)="toggleShowDiv()"></ion-icon>
+
+      <ion-icon name="close"  color="medium" (click)="activityForm.reset()"></ion-icon>
+
+
 <!--      <ion-button (click)="findFriends()" color="danger">F</ion-button>-->
-      <ion-toggle formControlName="friends" color="success">Friends</ion-toggle>
     </div>
   </div>
 
@@ -19,10 +22,10 @@
 
 
     <div class="item-wrapper">
-      <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="Vyberte dátum"></ion-input>
+      <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="Vyberte dátum - od"></ion-input>
     </div>
     <div class="item-wrapper">
-      <ion-input class="opacity" formControlName="toDate" (click)="openDatePicker2()" placeholder="Vyberte dátum"></ion-input>
+      <ion-input class="opacity" formControlName="toDate" (click)="openDatePicker2()" placeholder="Vyberte dátum - po"></ion-input>
     </div>
   </div>
 </form>
