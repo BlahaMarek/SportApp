@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Aktivita</ion-title>
+    <ion-title *ngIf="fromEvent">Udalost</ion-title>
+    <ion-title *ngIf="!fromEvent">Aktivita</ion-title>
+
     <ion-buttons slot="end">
       <ion-button (click)="onCancel()">
         <ion-icon name="close"></ion-icon>
@@ -10,6 +12,7 @@
 </ion-header>
 
 <ion-content>
+  <div [ngClass]="this.fromEvent ? 'backEvent' : 'background'">
 
 <form style="background: transparent" [formGroup]="activityForm">
   <div>
@@ -106,12 +109,14 @@
     ></ion-input>
   </ion-item>
 </form>
-  <ion-button (click)="updateAktivity()" color="success" fill="solid">
 
-    <!--        disabled="{{!activityForm.valid}}"-->
-    Upravit aktivitu
-
-
+  <ion-button *ngIf="!fromEvent" (click)="updateAktivity()" color="success" fill="solid">
+    Upravit
   </ion-button>
+    <ion-button *ngIf="fromEvent" (click)="updateEvent()" color="success" fill="solid">
+      Upravit
+    </ion-button>
+
+  </div>
 
 </ion-content>

@@ -67,7 +67,7 @@ const popup2 = new Overlay({
     styleUrls: ['tab2.page.scss']
 
 })
-export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
+export class Tab2Page implements OnInit, AfterViewInit {
 
     map: Map;
     user: any = {};
@@ -105,21 +105,13 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         this.pridanieMarkerov();
         if (a1 == null) {
             this.locate();
-            console.log('toto je a1' + a1);
-            console.log('toto je b1' + b1);
         } else {
-            console.log('kures fakt preskakuje null');
         }
-        a1 = 10;
-        b1 = 10;
 
 
 
         var source = new VectorSource({
             features: markres
-        });
-        var source2 = new VectorSource({
-            features: markresEvent
         });
 
         var clusterSource = new Cluster({
@@ -135,9 +127,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 var size = feature.get('features').length;
                 var style = styleCache[size];
                 var coordinates = feature.getGeometry().getCoordinates();
-                console.log("tento zdrojik si prosim");
-                console.log(feature.values_.features[0].values_.zdroj);
-                console.log(feature.get('features'));
                 var vsetkyRovnake = true;
                 if (feature.get('features').length > 1) {
                     var prvy = feature.values_.features[0].values_.zdroj;
@@ -168,7 +157,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                 })
                             })
                         });
-                        // styleCache[size] = style;
                     }
                     if (!style && feature.values_.features[0].values_.zdroj == 'event') {
                         style = new Style({
@@ -188,7 +176,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                 })
                             })
                         });
-                        // styleCache[size] = style;
                     }
                     return style;
                 } else { // ked je v klastri aj aktivita aj event
@@ -208,18 +195,11 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                                 })
                             })
                         });
-                        // styleCache[size] = style;
                     }
                     return style;
-
-
                 }
             }
         });
-
-        console.log('toto su markre');
-        console.log(markre);
-
 
         this.map = new Map({
             layers: [
@@ -232,10 +212,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 zoom: 3
             })
         });
-        // setTimeout(() => {
-        //     this.map.updateSize();
-        // }, 500);
-
 
         const popup = new Overlay({
             element: document.getElementById('popup'),
@@ -250,7 +226,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
         // tslint:disable-next-line:only-arrow-functions
         var totaMapa = this.map;
         this.map.on('click', function (evt) {
-            console.log("som klikol")
             $(document.getElementById('popup')).popover('destroy');
             document.getElementById('testButton').style.display = "none";
             document.getElementById('testButton3').style.display = "none";
@@ -258,11 +233,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
             const feature = totaMapa.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                 var features = feature.get('features');
                 if (features.length == 1) { // jedna aktivita
-                    console.log(features.length);
                     return features[0];
                 }
                 if (features.length > 1) { // viacej aktivit pod klastrom
-                    console.log(features.length);
                     return features;
                 }
                 return feature;
@@ -271,8 +244,9 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
 
             if (feature) {
-                console.log("som tuu kde chcem byt");
-                console.log(feature.length);
+                idDoButtonu = [];
+                idDoButtonuEvent = [];
+
                 if (feature.length >= 2) {
                     var coordinates = feature[0].getGeometry().getCoordinates();
                     popup.setPosition(coordinates);
@@ -308,7 +282,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                             animation: false,
                         });
                         var rect = document.getElementById('popup').getBoundingClientRect();
-                        console.log("toto je voncooo");
 
                         document.getElementById('testButton').style.display = "block";
                         document.getElementById('testButton').style.position = "absolute";
@@ -323,15 +296,12 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                             animation: false,
                         });
                         var rect = document.getElementById('popup').getBoundingClientRect();
-                        console.log("toto je voncooo");
-
                         document.getElementById('testButton3').style.display = "block";
                         document.getElementById('testButton3').style.position = "absolute";
                         document.getElementById('testButton3').style.top = rect.top - 55 + "px";
                         document.getElementById('testButton3').style.left = rect.left - 40 + "px";
                     }
                     if (!vsetkyRovnake) {
-                        // TODO: opravit chybny popup pri kliku z otvoreneho popupu na inu aktivitu/ event
                         $(document.getElementById('popup')).popover({
                             placement: 'top',
                             html: true,
@@ -433,8 +403,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     }
 
     prejdiDoTab1() {
-        console.log("Toto otototototottotototo je id do aktivity z maaap");
-        console.log(idDoButtonu);
         this.dataService.idZMapy = idDoButtonu;
         $(document.getElementById('popup')).popover('destroy');
         document.getElementById('testButton').style.display = "none";
@@ -445,8 +413,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     }
 
     prejdiDoTab3() {
-        console.log("Toto otototototottotototo je id do aktivity z maaap");
-        console.log(idDoButtonu);
         this.dataService.idEventZMapy = idDoButtonuEvent;
         $(document.getElementById('popup')).popover('destroy');
         document.getElementById('testButton').style.display = "none";
@@ -501,10 +467,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
 
 
         }
-
-        console.log("toto je sringik");
-
-
     }
 
     locate() {
@@ -518,8 +480,6 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
     }
 
 
-    ngAfterContentInit(): void {
-    }
 
     ngOnInit() {
         this.user = this.dataService.getSignInUser();
@@ -530,12 +490,12 @@ export class Tab2Page implements OnInit, AfterContentInit, AfterViewInit {
                 componentProps:{
                     idSportsFromMap: activitiesId,
                     fromMap: true,
-                    aktivita: aktivityChcem
+                    aktivita: aktivityChcem,
+                    fromEvent: !aktivityChcem
                 }
 
             })
             .then(modalEl => {
-                console.log("Fus ro dah");
                 modalEl.present();
                 return modalEl.onDidDismiss();
             })

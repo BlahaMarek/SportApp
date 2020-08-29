@@ -444,7 +444,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.modalController
             .create({component: ActivityUpdateComponent,
                 componentProps:{
-                    selectedActivity: this.selectedActivity
+                    selectedActivity: this.selectedActivity,
+                    fromEvent: this.fromEvent
                 }
 
             })

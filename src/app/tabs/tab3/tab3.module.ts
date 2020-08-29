@@ -7,6 +7,7 @@ import {Tab3Page} from './tab3.page';
 import {SharedModule} from '../../modules/shared/shared.module';
 import {TranslateModule} from "@ngx-translate/core";
 import {EventDetailComponent} from "../../components/events/event-detail/event-detail.component";
+import {ActivityNewComponent} from "../../components/activities/activity-new/activity-new.component";
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import {EventDetailComponent} from "../../components/events/event-detail/event-d
         Tab3Page,
     ],
     entryComponents: [
-        EventDetailComponent
+        EventDetailComponent,
+        ActivityNewComponent
     ]
 })
 export class Tab3PageModule {

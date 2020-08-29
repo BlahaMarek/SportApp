@@ -1,0 +1,34 @@
+.background {
+  //#3080ff
+  background: linear-gradient(to bottom, transparent, blue),
+  url("src/assets/login/top1.svg");
+  position: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+
+}
+
+.backEvent{
+  background: linear-gradient(to bottom, transparent, purple),
+  url("src/assets/login/top1.svg");
+  position: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+  width: 100%;
+  height: 100%;
+}
+ion-item, form, ion-list{
+  --background: transparent;
+  background: transparent;
+  ion-item{
+    color: white;
+  }
+}
+ion-label, ion-select{
+  color: white;
+}
+

@@ -1,6 +1,7 @@
 <ion-header *ngIf="fromMap">
     <ion-toolbar>
-        <ion-title>Aktivity z mapy</ion-title>
+        <ion-title *ngIf="!fromEvent">Aktivity z mapy</ion-title>
+        <ion-title *ngIf="fromEvent">Udalosti z mapy</ion-title>
 
         <ion-buttons slot="end">
             <ion-button (click)="onCancel()">

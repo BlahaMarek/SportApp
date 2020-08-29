@@ -100,7 +100,7 @@
             <ion-button color="success" *ngIf="!reserved && !overdue && !unSigned" (click)="onFormSubmit()" fill="solid">
 
                 <!--        disabled="{{!activityForm.valid}}"-->
-                {{bookable ? "Prihlásiť" : "Uprav aktivitu"}}
+                {{bookable ? "Prihlásiť" : "Upravit"}}
 
 
             </ion-button>
@@ -110,7 +110,7 @@
                 (click)="presentAlertConfirm('Vymazať','Naozaj chcete vymazať aktivitu?','Vymazať', true)" fill="solid">
 
         <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlasiť" : "Vymaz Aktivitu"}}
+        {{reserved ? "Odhlasiť" : "Vymazat"}}
 
     </ion-button>
 

@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-    <div class="background">
+    <div [ngClass]="this.activityForm.get('what').value == 'Udalost' ? 'backEvent' : 'background'">
 
     <form [formGroup]="activityForm">
         <div >

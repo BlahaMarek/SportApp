@@ -7,6 +7,7 @@ import {NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-
 import {NativeGeocoder} from "@ionic-native/native-geocoder/ngx";
 import {Activity} from "../../../models/activity";
 import {ActivityService} from "../../../services/activity.service";
+import {EventService} from "../../../services/event.service";
 
 @Component({
   selector: 'app-activity-update',
@@ -15,6 +16,8 @@ import {ActivityService} from "../../../services/activity.service";
 })
 export class ActivityUpdateComponent implements OnInit {
 @Input() selectedActivity;
+  @Input() fromEvent;
+
 
   private lattitudeFirebase: string;
   private longtitudeFirebase: string;
@@ -26,6 +29,7 @@ export class ActivityUpdateComponent implements OnInit {
       private nativeGeocoder: NativeGeocoder,
       private dataService: DataService,
       public zone: NgZone,
+      private eventService: EventService,
       private activityService: ActivityService,
       public toastController: ToastController) {
     // @ts-ignore
@@ -173,6 +177,11 @@ export class ActivityUpdateComponent implements OnInit {
   updateAktivity(){
     this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
 
+    });
+    this.modalController.dismiss({message: 'ActivityUpdate closed'}, 'cancel');
+  }
+  updateEvent(){
+    this.eventService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
     });
     this.modalController.dismiss({message: 'ActivityUpdate closed'}, 'cancel');
   }
