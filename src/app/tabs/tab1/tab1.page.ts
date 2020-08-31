@@ -16,7 +16,7 @@ import {Geolocation} from "@ionic-native/geolocation/ngx";
 export class Tab1Page implements OnInit {
     activityList: Activity[];
     fromEvent: false;
-
+    finishDownloading = false;
     latitude = null;
     longitude = null;
 
@@ -38,7 +38,7 @@ export class Tab1Page implements OnInit {
         this.fromEvent = false;
          this.activityService.activities$.subscribe(list => {
             this.activityList = list;
-
+console.log(list)
             // SORTOVANIE AKTIVIT PODLA VZDIALENOSTI
             this.activityList.forEach(value => {
                 let v1 = Math.abs(parseFloat(value.lattitude) - this.latitude);
@@ -49,6 +49,7 @@ export class Tab1Page implements OnInit {
             this.activityList.sort(function(a,b){
                 return a.distanceFromUser - b.distanceFromUser
             });
+            this.finishDownloading = true;
          });
 
     }

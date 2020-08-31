@@ -25,7 +25,7 @@
     </ion-segment>
     </div>
     <div class="wrapper">
-        <img class="loadingImage" *ngIf="filteredList.length==0" src='assets/loading/loadingBallGif.gif' height="90">
+        <img *ngIf="!fromMap && !finishDownloading" id="load" class="loadingImage"  src='assets/logoSportShare/logo%20SportShare/logo/biele/2-01.png' height="150">
 
         <ion-virtual-scroll id="myVirtual"  [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="120px">
                 <ion-item  *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">

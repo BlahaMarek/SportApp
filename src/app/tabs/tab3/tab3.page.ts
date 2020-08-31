@@ -19,6 +19,7 @@ export class Tab3Page {
     latitude = null;
     longitude = null;
     idEventZMapy: any = [];
+    finishDownloading = false;
 
 
     constructor(
@@ -52,6 +53,8 @@ export class Tab3Page {
                 return a.distanceFromUser - b.distanceFromUser
             });
             this.dataService.setEvent(this.activityList);
+            this.finishDownloading = true;
+
         });
     }
 

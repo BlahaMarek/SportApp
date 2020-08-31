@@ -71,7 +71,10 @@ export class FilterComponent implements OnInit {
     let filterData = [];
 
     if (this.activityForm.get('sport').value) {
-      filterData.push({field: "sport", value: this.activityForm.get('sport').value})
+      console.log(this.activityForm.get('sport').value);
+      this.activityForm.get('sport').value.forEach(sport => {
+      filterData.push({field: "sport", value: sport})
+      })
     }
 
       if (this.activityForm.get('date').value || this.activityForm.get('toDate').value) {
@@ -95,6 +98,7 @@ export class FilterComponent implements OnInit {
         filterData.push({field: "createdBy", value: friend});
       });
     }
+    console.log(filterData)
     this.onSearchClicked.emit(filterData);
   }
 

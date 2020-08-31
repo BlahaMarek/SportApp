@@ -1,7 +1,7 @@
 <form [formGroup]="activityForm">
   <div class="search">
     <div class="item-wrapper">
-        <ion-select formControlName="sport" placeholder="Vyberte šport" class="opacity">
+        <ion-select multiple="true" formControlName="sport" placeholder="Vyberte šport" class="opacity">
           <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
             {{ val.label }}
           </ion-select-option>

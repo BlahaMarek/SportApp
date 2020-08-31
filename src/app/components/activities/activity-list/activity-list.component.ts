@@ -19,6 +19,7 @@ export class ActivityListComponent implements OnInit {
     @Input() idSportsFromMap: string[];
     @Input() fromMap: boolean;
     @Input() fromEvent: boolean;
+    @Input() finishDownloading: boolean;
 
     @Input() aktivita: boolean; //ci prisiel event z mapy alebo aktivita
 
@@ -45,11 +46,6 @@ export class ActivityListComponent implements OnInit {
 
     onActivityClicked(id: string) {
         this.user= this.dataService.getSignInUser();
-        console.log("idceko" + id)
-        console.log(this.activityService.getActivityById(id))
-
-        // console.log("idceko" + id)
-        // console.log("idceko" + id)
 
         var logged= this.dataService.getSignInUser();
         if (this.fromEvent){
@@ -105,7 +101,6 @@ export class ActivityListComponent implements OnInit {
             this.filteredList = this.dataService.getAktivitz().filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
         }else
             this.filteredList = this.dataService.getEvent().filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
-
     }
 
     getCssClass(activity: Activity) {

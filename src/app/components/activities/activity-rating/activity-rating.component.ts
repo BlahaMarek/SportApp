@@ -44,10 +44,6 @@ export class ActivityRatingComponent implements OnInit {
               private activityService: ActivityService,
               public alertController: AlertController) { }
   ngOnInit() {
-    console.log("this is s dada")
-    console.log(this.overdue);
-    console.log(this.usersId);
-    console.log(this.usersId.length);
 
     if(!this.profile) {
       //stahujem creatora aktivity
@@ -59,14 +55,9 @@ export class ActivityRatingComponent implements OnInit {
 
     this.loggedUser = this.dataService.getSignInUser();
     if (this.profile) { // ak pridem z profilu
-      console.log("toto je vonco");
-      console.log(this.usersId[i]);
-
       for (var i = 0; i < this.usersId.length; i++) {
         this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res => {
           this.friendsFromProfile.push(res);
-          console.log(res)
-          console.log("zrubalo se mi to asi tu");
         });
 
 
@@ -79,8 +70,6 @@ export class ActivityRatingComponent implements OnInit {
       this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.id).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
         this.ratingsFromAktivity = res;
       });
-
-
 
       for (var i = 0; i < this.usersId.length; i++) {
         this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res => {
@@ -106,11 +95,6 @@ export class ActivityRatingComponent implements OnInit {
 
           var nehodnoteny = this.usersFromDatabase.filter(user => user.id == this.usersId[i]);
           var hodnoteny = this.usersRated.filter(user => user.id == this.usersId[i]);
-          console.log("tak je to v usersfrom database")
-          console.log(this.usersFromDatabase);
-
-          console.log("tak je to v usersfrom rated")
-          console.log(this.usersRated);
 
           if (nehodnoteny.length > 0){
             this.usersFromDatabase[this.usersFromDatabase.length-1].behavior = hodnotenie;
@@ -119,7 +103,6 @@ export class ActivityRatingComponent implements OnInit {
           if (hodnoteny.length > 0) {
             this.usersRated[this.usersRated.length-1].behavior = hodnotenie;
           }
-
 
           this.finishDwonloading = false;
         });
