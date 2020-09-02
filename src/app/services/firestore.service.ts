@@ -4,6 +4,8 @@ import {Activity} from '../models/activity';
 import {map} from 'rxjs/operators';
 import {User} from "../models/user";
 import {Rating} from "../models/rating";
+import {Comment} from "../models/comment";
+
 import {combineLatest, merge, Observable } from "rxjs";
 import {DataService} from "../data/data.service";
 
@@ -24,6 +26,10 @@ export class FirestoreService {
     }
     createRating(rating: Rating) {
         return this.firestore.collection('ratings').add(rating);
+    }
+
+    createComment(comment: Comment) {
+        return this.firestore.collection('comments').add(comment);
     }
 
     createUser(user: User) {
@@ -149,6 +155,26 @@ export class FirestoreService {
     readAllQueriesEvents():Observable<any>{ //kombinujem vseetky dokopy
         return combineLatest(this.readAllEvents(), this.readAllEvents2(), this.readAllEvents3());
     }
+
+
+
+    // readAllComments(aktivitiid) { //starsie mnou vytvorene
+    //     var timestamp = new Date().getTime()
+    //     return this.firestore.collection('comments', ref => {
+    //         let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+    //
+    //         query = query.where("activitiId", "==", aktivitiid);
+    //         return query;
+    //     }).snapshotChanges().pipe(
+    //         map(actions => {
+    //             return actions.map(a => {
+    //                 const data = a.payload.doc.data();
+    //                 const id = a.payload.doc.id;
+    //                 return {id, ...data};
+    //             });
+    //         })
+    //     )
+    // }
 
     // readAllEvents() {
     //     return this.firestore.collection('events').snapshotChanges().pipe(

@@ -1,5 +1,6 @@
 .card {
   margin: 0 auto;
+  margin-bottom: 10px;
 }
 
 .header {
@@ -64,6 +65,15 @@ ion-item p{
   text-align: center;
   margin-right: 20px;
 
+}
+.addPlayer{
+  position: absolute;
+  right: -10px;
+
+}
+.minus{
+  right: 7%;
+  top: 11%;
 }
 
 .wrapper{

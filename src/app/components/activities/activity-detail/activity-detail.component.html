@@ -10,10 +10,13 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <div [ngClass]="fromEvent ? 'backEvent' : 'background'">
-    <div id="map2" class="map2"></div>
+<ion-content [scrollEvents]="true">
 
+    <div [ngClass]="fromEvent ? 'backEvent' : 'background'"></div>
+
+
+
+    <div id="map2" class="map2"></div>
 
 
 
@@ -90,7 +93,7 @@
 <!--            <p *ngIf="this.selectedActivity.comment.length > 0" class="label shade">Komentáre</p>-->
 
 <!--        </div>-->
-        <div class="center">
+        <div *ngIf="this.selectedActivity.comment.length > 0" class="center">
             <p *ngIf="this.selectedActivity.comment.length > 0" class="place shade">{{this.selectedActivity.comment}}</p>
 
         </div>
@@ -107,7 +110,7 @@
 
 
     <ion-button color="danger" *ngIf="!bookable && !overdue && !unSigned"
-                (click)="presentAlertConfirm('Vymazať','Naozaj chcete vymazať aktivitu?','Vymazať', true)" fill="solid">
+                (click)="presentAlertConfirm('Vymazať','Naozaj chcete vymazať aktivitu?','Vymazať', 1,null)" fill="solid">
 
         <!--        disabled="{{!activityForm.valid}}"-->
         {{reserved ? "Odhlasiť" : "Vymazat"}}
@@ -132,7 +135,7 @@
 
             </ion-button>
             <ion-button color="danger" *ngIf="bookable && reserved && !overdue && !unSigned"
-                        (click)="presentAlertConfirm('Odhlásenie!','Naozaj sa chcete odhlásiť z aktivity?', 'Odhlásiť',false)"
+                        (click)="presentAlertConfirm('Odhlásenie!','Naozaj sa chcete odhlásiť z aktivity?', 'Odhlásiť',2,null)"
                         fill="solid">
                 <!--        disabled="{{!activityForm.valid}}"-->
                 {{reserved ? "Odhlásiť" : "Vymaz Aktivitu"}}
@@ -142,11 +145,22 @@
         </ion-list>
 
 
+        <ion-list>
+            <ion-item *ngFor="let item of this.comments">
+                <ion-chip>
+                    <ion-avatar>
+                        <img [src]="item.photoUrl" >
+                    </ion-avatar>
+                    <ion-label color="light">{{item.userName}}</ion-label>
+                </ion-chip>
+                <p>{{item.comment}}</p>
 
-    </div>
+                <ion-icon class="delete" name="close"  color="medium" *ngIf="item.userId == this.dataService.getSignInUser().id" (click)="deleteComment(item.id)"></ion-icon>
+            </ion-item>
+        </ion-list>
 
 
 
-
+    <ion-icon (click)="addComment()" class="addComment" size="large" name="chatboxes"></ion-icon>
 
 </ion-content>

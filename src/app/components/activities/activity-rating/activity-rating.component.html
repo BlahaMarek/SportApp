@@ -26,9 +26,22 @@
 
   <ion-list padding >
     <ion-item *ngFor="let user of this.usersFromDatabase">
-      <ion-avatar (click)="visitProfile(user)" ><img src="{{user.photoUrl}}"></ion-avatar>
-      <ion-button *ngIf="this.dataService.getSignInUser().id == user.id" color="success">{{user.name}}</ion-button>
-      <ion-button *ngIf="this.dataService.getSignInUser().id != user.id" (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>
+<!--      <ion-avatar (click)="visitProfile(user)" ><img src="{{user.photoUrl}}"></ion-avatar>-->
+<!--      <ion-button *ngIf="this.dataService.getSignInUser().id == user.id" color="success">{{user.name}}</ion-button>-->
+<!--      <ion-button *ngIf="this.dataService.getSignInUser().id != user.id" (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>-->
+      <ion-chip *ngIf="this.dataService.getSignInUser().id != user.id" (click)="visitProfile(user)">
+        <ion-avatar>
+          <img [src]="user.photoUrl" >
+        </ion-avatar>
+        <ion-label color="light">{{user.name}}</ion-label>
+      </ion-chip>
+
+      <ion-chip *ngIf="this.dataService.getSignInUser().id == user.id">
+        <ion-avatar>
+          <img [src]="user.photoUrl" >
+        </ion-avatar>
+        <ion-label color="success">{{user.name}}</ion-label>
+      </ion-chip>
 
       <ionic4-star-rating *ngIf="!this.overdue" #rating
                                                  activeIcon = "ios-star"
@@ -62,8 +75,14 @@
   <ion-list  padding >
 <!--    toto bude treba klepnut hore, lebo este pri nehranej aktivite to tu je na 2 veci-->
     <ion-item *ngFor="let user of this.usersRated">
-    <ion-avatar (click)="visitProfile(user)" ><img [src]="user.photoUrl" ></ion-avatar>
-      <ion-button (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>
+      <ion-chip>
+        <ion-avatar>
+          <img [src]="user.photoUrl" >
+        </ion-avatar>
+        <ion-label color="light">{{user.name}}</ion-label>
+      </ion-chip>
+<!--    <ion-avatar (click)="visitProfile(user)" ><img [src]="user.photoUrl" ></ion-avatar>-->
+<!--      <ion-button (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>-->
       <ionic4-star-rating
                           activeIcon = "ios-star"
                           defaultIcon = "ios-star-outline"
@@ -87,8 +106,13 @@
   <ion-list>
 
     <ion-item padding *ngFor="let user of this.friendsFromProfile">
+      <ion-chip (click)="visitProfile(user)">
+        <ion-avatar>
+          <img [src]="user.photoUrl" >
+        </ion-avatar>
+        <ion-label color="success">{{user.name}}</ion-label>
+      </ion-chip>
       <ion-avatar><img [src]="user.photoUrl"></ion-avatar>
-      <ion-button (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>
       <ion-button (click)="deleteFriendFomFriendList(user.id)" color="danger">Odobrať priateľa</ion-button>
     </ion-item>
   </ion-list>

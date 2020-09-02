@@ -123,7 +123,6 @@ export class ActivityRatingComponent implements OnInit {
     }else{
       return false;
     }
-
   }
 
   logRatingChange(id:string ,rating){

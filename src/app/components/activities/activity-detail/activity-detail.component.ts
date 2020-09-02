@@ -20,13 +20,16 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import {ActivatedRoute} from "@angular/router";
 import {ActivityRatingComponent} from "../activity-rating/activity-rating.component";
 import {ELocalNotificationTriggerUnit, LocalNotifications} from '@ionic-native/local-notifications/ngx';
-import Control from 'ol/control/Control';
+import {Comment} from "../../../models/comment";
 import {SocialSharing} from "@ionic-native/social-sharing/ngx";
 import {UserService} from "../../../services/user.service";
 import {ActivityUpdateComponent} from "../activity-update/activity-update.component";
 import {User} from "../../../models/user";
 import {VisitUserProfileComponent} from "../../../pages/visit-user-profile/visit-user-profile.component";
 import {EventService} from "../../../services/event.service";
+import {FirestoreService} from "../../../services/firestore.service";
+import {CommentService} from "../../../services/comment.service";
+import {take} from "rxjs/operators";
 
 
 @Component({
@@ -49,6 +52,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     @Input() unSigned: boolean;
     @Input() fromEvent: boolean;
 
+    userToComment:User;
     //total kalendar
     year:any;
     date:any;
@@ -56,6 +60,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     month:any;
     hours:any
     minutes:any;
+
+    comments: any;
 
     userFromTable:any={}
 
@@ -75,11 +81,13 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         private eventService: EventService,
         private dataService: DataService,
         private authService: AuthService,
+        private firebaseService:FirestoreService,
         public zone: NgZone,
         private route: ActivatedRoute,
         private plt: Platform,
         private localNotification: LocalNotifications,
         private socialSharing: SocialSharing,
+        private commentService: CommentService,
         public alertController: AlertController
     ) {
         if (this.dataService)
@@ -165,15 +173,15 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.minutes = new Date(this.selectedActivity.date).getMinutes();
         console.log('this is datumik:' + this.day,this.month, this.hours, this.minutes);
 
+        console.log(this.commentService.readAllComments(this.selectedActivity.id)
+        )
+        this.commentService.readAllComments(this.selectedActivity.id).subscribe(res => {
+            console.log(res);
+            this.comments = res;
+        })
+
+
     }
-    // getData(){
-    //     this.route.data.subscribe(routeData => {
-    //         let data = routeData['data'];
-    //         if (data) {
-    //             this.sport2 = data;
-    //         }
-    //     });
-    // }
 
     onCancel() {
         this.modalController.dismiss({message: 'ActivityDetail closed'}, 'cancel');
@@ -181,6 +189,22 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     compareWithFn = (o1, o2) => {
         return o1 == o2;
+    }
+
+
+    getUser(userId) {
+        this.userService.getOneUser(userId).pipe(take(1)).subscribe(res => {
+            this.userToComment = res;
+            return res;
+        },
+            err=>{
+            console.log('se porantalo'+err)
+                return false;
+            });
+    }
+
+    deleteComment(id){
+        this.presentAlertConfirm('Vymazať', 'Naozaj chcete vymazať komentár?','Vymazať',3,id)
     }
 
     assignValueToForm() {
@@ -483,6 +507,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
             });
     }
+
+    addComment(){
+        this.presentAlertCommentInput()
+    }
     scheduleNotification(){
         var minusOneHour = this.selectedActivity.date - (3600*1000); // lebo timestamp mame in da miliseconds, preto * 1000
         this.localNotification.schedule({
@@ -494,7 +522,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         });
     }
 
-    async presentAlertConfirm(header:string, message:string, ano:string, vymazat:boolean) {
+    async presentAlertConfirm(header:string, message:string, ano:string, vymazat:number, id) {
     const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: header,
@@ -510,11 +538,14 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             }, {
                 text: ano,
                 handler: () => {
-                    if (!vymazat){
+                    if (vymazat == 2){
                         this.onFormSubmit();
                     }
-                    else{
+                    else if(vymazat == 1){
                         this.onFormSubmitDelete()
+                    }
+                    else if(vymazat == 3){
+                        this.commentService.deleteComment(id);
                     }
                 }
             }
@@ -523,6 +554,48 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     await alert.present();
 }
+    async presentAlertCommentInput() {
+        const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: "Pridat komentar",
+            inputs: [{
+              name:'message',
+              label: 'comment',
+              value:'',
+              checked:true
+            }],
+            buttons: [
+                {
+                    text: 'Zrušiť',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: (blah) => {
+
+                    }
+                }, {
+                    text: "Pridat",
+                    handler: (alertData) => {
+                        var comment:Comment = {
+                            userId: this.dataService.getSignInUser().id,
+                            activitiId: this.selectedActivity.id,
+                            comment: alertData.message,
+                            time: new Date().getTime(),
+                            userName: this.dataService.getSignInUser().name,
+                            photoUrl: this.dataService.getSignInUser().photoUrl
+                        }
+                        this.firebaseService.createComment(comment);
+
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
+
+
+
+
 
       facebookShare(){
         //tu bude url nasej appky v obchode playyy

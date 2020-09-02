@@ -63,7 +63,7 @@
   display: table;
   padding: 8px;
   color: white;
-
+  position: relative;
   .first{
     margin-top: 20px;
   }
@@ -82,7 +82,9 @@
 .center p {
   text-align: center;
 }
-ion-content{}
+ion-content{
+  overflow: auto;
+}
 
 .sport{
 font-weight: 600;
@@ -122,6 +124,7 @@ font-weight: 600;
   height: 100%;
 }
 
+
 .share{
   position: relative;
   float: right;
@@ -133,12 +136,27 @@ font-weight: 600;
     margin-top: 5px;
   }
 }
+.addComment{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+.delete{
+  position: absolute;
+  right: 10px;
+}
 
 
 ion-list{
   padding-top: 0px;
   padding-bottom: 0px;
   background: transparent;
+}
+ion-item{
+  --background: transparent;
+  text-align: center;
+  color: white;
 }
 .hours{
   font-size: 2.2em;
