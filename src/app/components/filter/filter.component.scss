@@ -30,6 +30,9 @@
 .primary{
   color: var(--ion-color-primary) !important;
 }
+.togle2, .togle22{
+  display: none;
+}
 
 .search {
   .item-wrapper {
@@ -55,4 +58,13 @@
     font-size: 30px;
     padding-left: 5px;
   }
+}
+@media (max-width: 350px) {
+.togle1, .togle11{
+  display: none;
+}
+  .togle2, .togle22{
+    display: block;
+  }
+
 }

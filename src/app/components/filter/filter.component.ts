@@ -3,7 +3,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {Sport} from "../../models/sport";
 import {DataService} from "../../data/data.service";
 import { DatePicker } from '@ionic-native/date-picker/ngx';
-import {Platform} from '@ionic/angular';
+import {Platform, ToastController} from '@ionic/angular';
 import {SlideInOutAnimation} from '../../animations/filterAnimation';
 
 @Component({
@@ -19,15 +19,22 @@ export class FilterComponent implements OnInit {
   minDate: any;
   friends: boolean = false;
   constructor(
-      private fb: FormBuilder,
+      public toastController: ToastController,
+  private fb: FormBuilder,
       private dataService: DataService,
       private datePicker: DatePicker,
       private platform: Platform
   ) {
     this.sportOptions = this.dataService.getSportsSk();
     this.minDate = new Date().toISOString();
+    this.dataService.user$.subscribe(res=>{
+      this.user = res
+      console.log('thitt')
+      console.log(res)
+      console.log(this.user.friends)
+    });
   }
-
+user:any
   activityForm = this.fb.group({
     place: [''],
     date: [''],
@@ -40,8 +47,14 @@ export class FilterComponent implements OnInit {
     this.activityForm.valueChanges.subscribe(() => {
       this.prepareData();
 
-    })
+    });
+    console.log(this.user)
+
+    console.log(this.user.friends)
+
+
   }
+
 
   openDatePicker() {
     this.datePicker.show({
@@ -67,7 +80,11 @@ export class FilterComponent implements OnInit {
     );
   }
 
+
   prepareData() {
+    var userik = this.dataService.getUserFromDatabase();
+    console.log(userik)
+    console.log("toto je on")
     let filterData = [];
 
     if (this.activityForm.get('sport').value) {
@@ -104,5 +121,30 @@ export class FilterComponent implements OnInit {
 
   toggleShowDiv() {
       this.animationState = this.animationState === 'out' ? 'in' : 'out';
+  }
+
+  async presentToast(message:any) {
+    let zapnute;
+    var toast;
+    if (this.user.friends.length > 0) {
+      if (this.activityForm.get('friends').value) {
+        zapnute = 'zapnuté'
+      } else {
+        zapnute = 'vypnuté'
+      }
+       toast = await this.toastController.create({
+        message: message+" "+ zapnute+'!',
+        duration: 2000,
+        color: 'medium'
+      });
+    }else{
+      toast = await this.toastController.create({
+        message: message+'!',
+        duration: 2000,
+        color: 'medium'
+      });
+    }
+
+    toast.present();
   }
 }

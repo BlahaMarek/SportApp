@@ -8,13 +8,19 @@
         </ion-select>
     </div>
     <div class="icon-wrapper">
-      <ion-toggle formControlName="friends" color="success"></ion-toggle>
+      <p *ngIf="this.user.friends !=undefined && this.user.friends.length > 0 "  style="display: inline"  (click)="presentToast('Filtrovanie podla priateľov je')">
+        <ion-toggle   class="togle1" formControlName="friends" color="success"></ion-toggle>
+
+      </p>
+
+      <p *ngIf="this.user.friends == undefined || this.user.friends.length == 0" style="display: inline" (click)="presentToast('Nemate ziadnych priatelov')">
+      <ion-toggle disabled="true"  (click)="presentToast('Filtrovanie podla priateľov je')" class="togle11" formControlName="friends" color="success"></ion-toggle>
+      </p>
+
       <ion-icon [name]=" animationState == 'out' ? 'options' : 'arrow-dropup'" color="primary" (click)="toggleShowDiv()"></ion-icon>
 
       <ion-icon name="close"  color="medium" (click)="activityForm.reset()"></ion-icon>
 
-
-<!--      <ion-button (click)="findFriends()" color="danger">F</ion-button>-->
     </div>
   </div>
 
@@ -22,6 +28,15 @@
 
 
     <div class="item-wrapper">
+      <p *ngIf="this.user.friends !=undefined && this.user.friends.length > 0 "  style="display: inline"  (click)="presentToast('Filtrovanie podla priateľov je')">
+        <ion-toggle   class="togle2" formControlName="friends" color="success"></ion-toggle>
+
+      </p>
+
+      <p *ngIf="this.user.friends == undefined || this.user.friends.length == 0" style="display: inline" (click)="presentToast('Nemate ziadnych priatelov')">
+        <ion-toggle disabled="true"  (click)="presentToast('Filtrovanie podla priateľov je')" class="togle22" formControlName="friends" color="success"></ion-toggle>
+      </p>
+
       <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="Vyberte dátum - od"></ion-input>
     </div>
     <div class="item-wrapper">

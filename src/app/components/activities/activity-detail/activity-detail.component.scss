@@ -8,11 +8,8 @@
   overflow: hidden;
 }
 
-.map2 .ol-attribution,
-.map2 .ol-attribution.ol-uncollapsible{
-  bottom: 0;
-  right: 0;
-}
+
+
 .ol-attribution{
   float: right;
   margin-top: 100%;
@@ -29,7 +26,7 @@
 
 .place{
   font-size: 20px;
-  text-align: center;
+  //text-align: center;
 }
 
 
@@ -79,9 +76,7 @@
   margin-left: auto;
   margin-right: auto;
 }
-.center p {
-  text-align: center;
-}
+
 ion-content{
   overflow: auto;
 }
@@ -247,5 +242,3 @@ ion-item{
 .date-as-calendar.size1_25x {
   font-size: 20px;
 }
-
-

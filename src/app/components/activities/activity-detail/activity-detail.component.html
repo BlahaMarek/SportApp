@@ -33,13 +33,17 @@
 
 <div style="position: absolute; left: 50%">
             <ion-chip *ngIf="selectedActivity.createdBy != this.dataService.getSignInUser().id" (click)="visitCreatorProfile()" class="ion-margin-start creatorPhoto">
-                <ion-avatar> <img [src]="this.userFromTable.photoUrl" >
+                <ion-avatar>
+                    <img *ngIf="this.userFromTable.photoUrl != null" [src]="this.userFromTable.photoUrl" >
+                    <img *ngIf="this.userFromTable.photoUrl == null"  src="assets/icon/avatar.svg" >
                 </ion-avatar>
                 <ion-label>{{this.userFromTable.name}}</ion-label>
             </ion-chip>
 
     <ion-chip *ngIf="selectedActivity.createdBy == this.dataService.getSignInUser().id" class="ion-margin-start creatorPhoto">
-        <ion-avatar> <img [src]="this.userFromTable.photoUrl" >
+        <ion-avatar>
+            <img *ngIf="this.userFromTable.photoUrl != null" [src]="this.userFromTable.photoUrl" >
+            <img *ngIf="this.userFromTable.photoUrl == null"  src="assets/icon/avatar.svg" >
         </ion-avatar>
         <ion-label>{{this.userFromTable.name}}</ion-label>
     </ion-chip>
@@ -149,7 +153,9 @@
             <ion-item *ngFor="let item of this.comments">
                 <ion-chip>
                     <ion-avatar>
-                        <img [src]="item.photoUrl" >
+                        <img *ngIf="item.photoUrl != null" [src]="item.photoUrl" >
+                        <img *ngIf="item.photoUrl == null"  src="assets/icon/avatar.svg" >
+
                     </ion-avatar>
                     <ion-label color="light">{{item.userName}}</ion-label>
                 </ion-chip>

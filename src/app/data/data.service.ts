@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Sport} from '../models/sport';
 import {Activity} from "../models/activity";
 import {AngularFireAuth} from "@angular/fire/auth";
+import {BehaviorSubject} from "rxjs";
+import {User} from "../models/user";
 
 
 @Injectable({
@@ -17,6 +19,18 @@ export class DataService {
     aktivity: Activity[];
     event: Activity[];
     constructor(private fireAuth: AngularFireAuth) {
+    }
+    private _user = new BehaviorSubject<any>([]);
+    readonly user$ = this._user.asObservable();
+
+    // get activity list
+    get userO(): any {
+        return this._user.getValue();
+    }
+
+    // set activity list
+    set userO(user: any) {
+        this._user.next(user);
     }
 
     getSportsSk(): Sport[] {

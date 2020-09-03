@@ -19,7 +19,7 @@
         <ion-icon *ngIf="!checkFriends()" (click)="addFriend()" color="success" size="large" class="addPlayer" name="person-add"></ion-icon>
         <ion-icon *ngIf="checkFriends()" (click)="deleteFriend()" color="danger" size="large" class="addPlayer" name="person">
         </ion-icon>
-        <ion-icon class="addPlayer minus" color="danger" name="remove"></ion-icon>
+        <ion-icon *ngIf="checkFriends()" (click)="deleteFriend()" class="addPlayer minus" color="danger" name="remove"></ion-icon>
         <ion-avatar class="avatar2">
           <ion-img  [src]="userPhoto"> </ion-img>
         </ion-avatar>

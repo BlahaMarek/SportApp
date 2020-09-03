@@ -101,7 +101,12 @@ export class FilterPipe implements PipeTransform {
 
             } else {
             if (prop.field  == "createdBy" && props.length - 1 == key) {
-              presiel.push(false);
+              if (!findFriend){
+
+                presiel.push(false);
+              }else{
+                presiel.push(true);
+              }
             }
             else if (prop.field == 'sport' && key+1 == props.length && findSport==false) {
               // if (key +1 == props.length && props[key + 1].field.toString() != 'sport' && findSport == false) {

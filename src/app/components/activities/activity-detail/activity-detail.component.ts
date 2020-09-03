@@ -581,7 +581,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                             comment: alertData.message,
                             time: new Date().getTime(),
                             userName: this.dataService.getSignInUser().name,
-                            photoUrl: this.dataService.getSignInUser().photoUrl
+                            photoUrl: this.dataService.getUserFromDatabase().photoUrl
                         }
                         this.firebaseService.createComment(comment);
 
