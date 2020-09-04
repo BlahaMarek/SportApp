@@ -46,13 +46,7 @@
         </ion-item>
 
         <ion-item>
-<!--            <ion-label position="stacked" >Kde? *</ion-label>-->
-<!--            <ion-input-->
-<!--                    type="miesto"-->
-<!--                    formControlName="place"-->
-<!--                    text-left-->
-<!--                    placeholder="Zadajte miesto"-->
-<!--            ></ion-input>-->
+
                 <ion-label position="stacked" >Kde *</ion-label>
 
                 <ion-input [(ngModel)]="autocomplete.input"
@@ -66,10 +60,6 @@
             <ion-list [hidden]="autocompleteItems.length == 0">
                 <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
                     {{ item.description}}
-
-                    <!--      tu treba priradit item.description do autocomplete.input-->
-
-
                 </ion-item>
             </ion-list>
         </ion-item>

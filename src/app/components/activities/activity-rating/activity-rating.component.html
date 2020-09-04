@@ -15,16 +15,30 @@
 <ion-content *ngIf="!profile">
   <div class="wrapper">
 <!--  creator-->
-  <ion-avatar (click)="visitProfile(this.creator)" class="creator" *ngIf="creator != undefined">
-    <img *ngIf="this.creator.photoUrl != null" src="{{this.creator.photoUrl}}">
-    <img *ngIf="this.creator.photoUrl == null" src="assets/icon/avatar.svg" >
-  </ion-avatar>
+    <ion-avatar (click)="visitProfile(this.creator)" class="creator" *ngIf="creator != undefined">
+      <img *ngIf="this.creator.photoUrl != null" src="{{this.creator.photoUrl}}">
+      <img *ngIf="this.creator.photoUrl == null" src="assets/icon/avatar.svg" >
+    </ion-avatar>
     <ion-chip class="creator-button" (click)="visitProfile(this.creator)">
       <ion-label *ngIf="creator != undefined">{{this.creator.name}}</ion-label>
     </ion-chip>
-<!--  <ion-button color="secondary" class="creator-button" *ngIf="creator != undefined" (click)="visitProfile(this.creator)">{{this.creator.name}}</ion-button>-->
-  <p *ngIf="overdue && usersId.length == 0" class="noone">Nikto nebol prihlasený.</p>
-  <p *ngIf="usersId.length == 0 && !this.overdue" class="noone">Nikto nie je prihlasený.</p>
+
+<!--    <p class="centerRat">-->
+<!--    <ionic4-star-rating class="ratingCenter" *ngIf="!this.overdue" #rating-->
+<!--                        activeIcon = "ios-star"-->
+<!--                        defaultIcon = "ios-star-outline"-->
+<!--                        activeColor = "#FFD700"-->
+<!--                        defaultColor = "#ccccff"-->
+<!--                        readonly="true"-->
+<!--                        rating="{{findUserBehavior(this.creator.id)}}"-->
+<!--                        fontSize = "30px" >-->
+
+<!--    </ionic4-star-rating>-->
+<!--    </p>-->
+
+
+    <p *ngIf="overdue && usersId.length == 0" class="noone">Nikto nebol prihlasený.</p>
+    <p *ngIf="usersId.length == 0 && !this.overdue" class="noone">Nikto nie je prihlasený.</p>
 
   <!--loading gif-->
   <img class="loadingImage" *ngIf="this.finishDwonloading" src='assets/logoSportShare/logo%20SportShare/logo/biele/2-01.png' height="150">
@@ -102,8 +116,6 @@
                           fontSize = "30px" >
 
       </ionic4-star-rating>
-<!--      <ion-button *ngIf="!checkFriends(user.id)" (click)="addFriend(user.id)" color="success">+</ion-button>-->
-<!--      <ion-button *ngIf="checkFriends(user.id)" (click)="deleteFriend(user.id)" color="danger">-</ion-button>-->
     </ion-item>
 
   </ion-list>

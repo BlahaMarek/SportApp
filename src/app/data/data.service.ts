@@ -12,10 +12,8 @@ import {User} from "../models/user";
 export class DataService {
     user: any = {};
     userFromDatabase: any = {};
-    logged: boolean = false;
     idZMapy: any = [];
     idEventZMapy: any = [];
-    refreshAfterLogin: boolean = false;
     aktivity: Activity[];
     event: Activity[];
     constructor(private fireAuth: AngularFireAuth) {
@@ -108,9 +106,6 @@ export class DataService {
 
     getSignInUser(){
         return this.user;
-    }
-    getLogged(){
-        return this.logged;
     }
     getIdZMapy(){
         return this.idZMapy;

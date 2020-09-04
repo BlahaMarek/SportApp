@@ -36,7 +36,7 @@ ion-item{
       padding-top: 10px;
     }
 
-      ion-img {
+        ion-img {
         display: block;
         border-radius: 50%;
         position: absolute;
@@ -52,6 +52,7 @@ ion-item{
       }
 
       .avatar2{
+        position: absolute;
         display: block;
         margin-left: auto;
         margin-right: auto;

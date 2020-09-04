@@ -11,27 +11,14 @@
 </ion-header>
 
 <ion-content [scrollEvents]="true">
-
+    <!--background podla aktivity/eventu    -->
     <div [ngClass]="fromEvent ? 'backEvent' : 'background'"></div>
-
-
 
     <div id="map2" class="map2"></div>
 
 
-
-
-<!--        <div class="center">-->
-<!--            <p class="shade">proprorpo</p>-->
-<!--        </div>-->
-
-<!--        <div class="center" *ngIf="bookable || reserved">-->
-<!--            <p class="label first shade">Šport</p>-->
-
-<!--        </div>-->
-
-
-<div style="position: absolute; left: 50%">
+    <div style="position: absolute; left: 50%">
+<!-- aby si mohol kliknut na tvorcu a na seba nie,ked tak mozeme upravit ze zo seba ta to hodi na profil svoj       -->
             <ion-chip *ngIf="selectedActivity.createdBy != this.dataService.getSignInUser().id" (click)="visitCreatorProfile()" class="ion-margin-start creatorPhoto">
                 <ion-avatar>
                     <img *ngIf="this.userFromTable.photoUrl != null" [src]="this.userFromTable.photoUrl" >
@@ -40,50 +27,35 @@
                 <ion-label>{{this.userFromTable.name}}</ion-label>
             </ion-chip>
 
-    <ion-chip *ngIf="selectedActivity.createdBy == this.dataService.getSignInUser().id" class="ion-margin-start creatorPhoto">
-        <ion-avatar>
-            <img *ngIf="this.userFromTable.photoUrl != null" [src]="this.userFromTable.photoUrl" >
-            <img *ngIf="this.userFromTable.photoUrl == null"  src="assets/icon/avatar.svg" >
-        </ion-avatar>
-        <ion-label>{{this.userFromTable.name}}</ion-label>
-    </ion-chip>
-</div>
+            <ion-chip *ngIf="selectedActivity.createdBy == this.dataService.getSignInUser().id" class="ion-margin-start creatorPhoto">
+                <ion-avatar>
+                    <img *ngIf="this.userFromTable.photoUrl != null" [src]="this.userFromTable.photoUrl" >
+                    <img *ngIf="this.userFromTable.photoUrl == null"  src="assets/icon/avatar.svg" >
+                </ion-avatar>
+                <ion-label>{{this.userFromTable.name}}</ion-label>
+            </ion-chip>
+    </div>
 
-
+<!--share buttony-->
         <ul class="share">
             <li>
                 <ion-img class="ins" src='assets/icon/instagram-128.png' (click)="instagramShare()"></ion-img>
-
             </li>
 
             <li>
                 <ion-img class="ins" src='assets/icon/facebook-128.png' (click)="facebookShare()"></ion-img>
-
             </li>
         </ul>
 
-
         <div class="center first">
-            <h1 class="place shade sport">{{this.dataService.getSportNameByValue(this.selectedActivity.sport)}}
-            </h1>
-
-
+        <h1 class="place shade sport">{{this.dataService.getSportNameByValue(this.selectedActivity.sport)}}</h1>
         </div>
-<!--        <div class="center" *ngIf="bookable || reserved">-->
-<!--            <p class="label shade">Miesto</p>-->
 
-
-<!--        </div>-->
         <div class="center">
             <p class="place shade">{{this.selectedActivity.place}}</p>
         </div>
-<!--        <div class="center" *ngIf="bookable || reserved">-->
-<!--            <p class="label shade">Čas</p>-->
-
-<!--        </div>-->
 
         <div class="center time" >
-<!--            <p class="place shade">{{this.time}}</p>-->
             <time class="date-as-calendar position-em size1_25x">
                 <span class="weekday">{{this.day}}</span>
                 <span class="day">{{this.date}}</span>
@@ -91,67 +63,45 @@
                 <span class="year">{{this.year}}</span>
             </time>
             <p class="hours">{{this.hours}} : {{this.minutes}}</p>
-
         </div>
-<!--        <div class="center" *ngIf="bookable || reserved">-->
-<!--            <p *ngIf="this.selectedActivity.comment.length > 0" class="label shade">Komentáre</p>-->
 
-<!--        </div>-->
         <div *ngIf="this.selectedActivity.comment.length > 0" class="center">
             <p *ngIf="this.selectedActivity.comment.length > 0" class="place shade">{{this.selectedActivity.comment}}</p>
-
         </div>
 
 
         <ion-list style="text-align: center">
-            <ion-button color="success" *ngIf="!reserved && !overdue && !unSigned" (click)="onFormSubmit()" fill="solid">
-
-                <!--        disabled="{{!activityForm.valid}}"-->
+            <ion-button color="success" *ngIf="!reserved && !overdue" (click)="onFormSubmit()" fill="solid">
                 {{bookable ? "Prihlásiť" : "Upravit"}}
-
-
             </ion-button>
 
 
-    <ion-button color="danger" *ngIf="!bookable && !overdue && !unSigned"
-                (click)="presentAlertConfirm('Vymazať','Naozaj chcete vymazať aktivitu?','Vymazať', 1,null)" fill="solid">
+            <ion-button color="danger" *ngIf="!bookable && !overdue"
+                        (click)="presentAlertConfirm('Vymazať','Naozaj chcete vymazať aktivitu?','Vymazať', 1,null)" fill="solid">
+                        {{reserved ? "Odhlasiť" : "Vymazat"}}
+            </ion-button>
 
-        <!--        disabled="{{!activityForm.valid}}"-->
-        {{reserved ? "Odhlasiť" : "Vymazat"}}
-
-    </ion-button>
-
-
-    <ion-text *ngIf="unSigned" color="danger">
-        <h4 >Pre prihlásenie sa do aktivity sa najprv musíte prihlásiť!</h4>
-    </ion-text>
-
-    <ion-button color="success" *ngIf="overdue"  (click)="rateUsers()" expand="block" fill="solid">
-<!--        *ngIf="overdue && !unSigned"-->
-        {{ "Ohodnot spoluhracov"}}
-
-    </ion-button>
+            <ion-button color="success" *ngIf="overdue"  (click)="rateUsers()" expand="block" fill="solid">
+                {{ "Ohodnot spoluhracov"}}
+            </ion-button>
 
             <ion-button *ngIf="!overdue"  (click)="rateUsers()"  fill="solid">
-                <!--        *ngIf="overdue && !unSigned"-->
                 {{ "Používatelia: " + this.selectedActivity.bookedBy.length + " z " + this.selectedActivity.peopleCount}}
-
             </ion-button>
-            <ion-button color="danger" *ngIf="bookable && reserved && !overdue && !unSigned"
+
+            <ion-button color="danger" *ngIf="bookable && reserved && !overdue"
                         (click)="presentAlertConfirm('Odhlásenie!','Naozaj sa chcete odhlásiť z aktivity?', 'Odhlásiť',2,null)"
                         fill="solid">
-                <!--        disabled="{{!activityForm.valid}}"-->
                 {{reserved ? "Odhlásiť" : "Vymaz Aktivitu"}}
-
             </ion-button>
 
         </ion-list>
-
 
         <ion-list>
             <ion-item *ngFor="let item of this.comments">
                 <ion-chip>
                     <ion-avatar>
+<!--                        pocla toho ci ma typek fotku abo ne-->
                         <img *ngIf="item.photoUrl != null" [src]="item.photoUrl" >
                         <img *ngIf="item.photoUrl == null"  src="assets/icon/avatar.svg" >
 
@@ -159,13 +109,9 @@
                     <ion-label color="light">{{item.userName}}</ion-label>
                 </ion-chip>
                 <p>{{item.comment}}</p>
-
                 <ion-icon class="delete" name="close"  color="medium" *ngIf="item.userId == this.dataService.getSignInUser().id" (click)="deleteComment(item.id)"></ion-icon>
             </ion-item>
         </ion-list>
-
-
-
     <ion-icon (click)="addComment()" class="addComment" size="large" name="chatboxes"></ion-icon>
 
 </ion-content>

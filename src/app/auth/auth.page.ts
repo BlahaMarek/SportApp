@@ -88,9 +88,7 @@ export class AuthPage implements OnInit {
       }
       if (localStorage.getItem('user') && this.isConnected){
           this.dataService.user = JSON.parse(localStorage.getItem('user'));
-          this.dataService.logged = true;
-          this.dataService.userFromDatabase
-          this.dataService.refreshAfterLogin = true;
+          this.dataService.userFromDatabase = this.dataService.user;
           this.router.navigateByUrl('/tabs/tabs/tab1');
       }
 
@@ -99,8 +97,6 @@ export class AuthPage implements OnInit {
         this.facebook.login(['public_profile', 'user_friends', 'email'])
             .then(res => {
                 if (res.status === 'connected') {
-                    console.log('pr1')
-
                     this.getUserDetail(res.authResponse.userID);
                 } else {
                     console.log('pro')
@@ -115,13 +111,6 @@ export class AuthPage implements OnInit {
                 console.log(res);
                 this.setDataserviceUserFb2(res);
                 this.createUserToDataabse();
-
-                // this.createUserToDataabse().then((value => {
-                //     console.log(value)
-                // })).catch((err)=>{
-                //     console.log(err)
-                // });
-
             })
             .catch(e => {
                 console.log(e);
@@ -152,16 +141,7 @@ export class AuthPage implements OnInit {
 
           firebase.auth().signInWithCredential(facebookCredential)
               .then((user) => {
-
-
-                // this.dataService.user = user;
-                console.log(user);
-
                 this.setDataserviceUserFb(user);
-
-
-                this.dataService.logged = true;
-                this.dataService.refreshAfterLogin = true;
                 this.router.navigateByUrl('/tabs/tabs/tab1');
               })
               .catch((error) => {
@@ -177,8 +157,6 @@ export class AuthPage implements OnInit {
             .then((res) => {
                 this.setDataserviceUserGoogle(res);
                 this.createUserToDataabse();
-                this.dataService.logged = true;
-                this.dataService.refreshAfterLogin = true;
                 this.router.navigateByUrl('/tabs/tabs/tab1');
             })
             .catch(err => this.presentToast("Prihlásenie neúspešné"));
@@ -202,7 +180,6 @@ export class AuthPage implements OnInit {
     }
 
     setDataserviceUserGoogle(user){
-        console.log(user.user);
         this.user.id = user.userId;
         this.user.name = user.givenName;
         this.user.photoUrl = user.imageUrl;
@@ -229,7 +206,6 @@ export class AuthPage implements OnInit {
 
     //skontroluje ci je user uz v databaze vytvoreny, ak nie vytvori, ak hej natiahne o nom udaje
     createUserToDataabse(){
-
         this.userService.getOneUser(this.dataService.getSignInUser().id).pipe(take(1)).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
             if (res==undefined){
                 this.user = {
@@ -246,17 +222,11 @@ export class AuthPage implements OnInit {
                 {
                     this.dataService.user.photoUrl = null
                 }
-                                this.userService.updateUser(res.id, this.dataService.getSignInUser());
-                                // this.dataService.user.photoUrl =
-                                    this.dataService.userFromDatabase = res;
-
+                this.userService.updateUser(res.id, this.dataService.getSignInUser());
                 this.dataService.userFromDatabase = res;
                 this.dataService.userO=res;
+                localStorage.setItem("user", JSON.stringify(res));
             }
-
-            localStorage.setItem("user", JSON.stringify(this.dataService.getUserFromDatabase()));
         });
-        console.log(this.dataService.userFromDatabase)
-
     }
 }

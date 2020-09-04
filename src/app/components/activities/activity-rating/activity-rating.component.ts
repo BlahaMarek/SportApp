@@ -44,12 +44,12 @@ export class ActivityRatingComponent implements OnInit {
               private activityService: ActivityService,
               public alertController: AlertController) { }
   ngOnInit() {
-
+console.log(this.usersId)
     if(!this.profile) {
       //stahujem creatora aktivity
       this.userService.getOneUser(this.createdBy).pipe(take(1)).subscribe(res => {
         this.creator = res
-        console.log(res);
+        // this.usersId.push(this.creator.id);
       });
     }
 
@@ -59,8 +59,6 @@ export class ActivityRatingComponent implements OnInit {
         this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res => {
           this.friendsFromProfile.push(res);
         });
-
-
       }
     this.finishDwonloading = false;
     }
@@ -115,6 +113,14 @@ export class ActivityRatingComponent implements OnInit {
     }
 
   }
+  findUserBehavior(id):number{
+    var user = this.usersFromDatabase.find(user => user.id == id);
+    if (user == undefined){
+      user = this.usersRated.find(user => user.id == id);
+    }
+    console.log(user)
+    return  user.behavior;
+  }
 
   checkFriends(friendsId:string){
     var pro = this.dataService.getUserFromDatabase().friends.filter(fr => fr == friendsId);
@@ -127,8 +133,6 @@ export class ActivityRatingComponent implements OnInit {
 
   logRatingChange(id:string ,rating){
     let userr: User = this.usersFromDatabase.find(user => user.id == id);
-    userr.behavior = userr.behavior+rating;
-    userr.behaviorCount++;
     for (var i= 0 ; i<this.usersFromDatabase.length;i++){
       if (this.usersFromDatabase[i].id == id){
         this.usersFromDatabase.splice(i,1);

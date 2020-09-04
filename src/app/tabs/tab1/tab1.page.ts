@@ -54,9 +54,6 @@ console.log(list)
 
     }
 
-
-
-
     // NASTAVENIE JAZYKA APLIKACIE
     initApp() {
         this.languageService.setInitialAppLanguage();
@@ -65,9 +62,7 @@ console.log(list)
     // NACITANIE USERA Z LOCALSTORAGE, ABY SA NEMUSEL PRIHLASOVAT
     loadLocalUser() {
         if (localStorage.getItem('user')){
-            this.dataService.user = JSON.parse(localStorage.getItem('user'));
-            this.dataService.logged = true;
-            this.dataService.refreshAfterLogin = true;
+            this.dataService.userFromDatabase = JSON.parse(localStorage.getItem('user'));
         }
     }
 

@@ -60,7 +60,6 @@ export class ActivityListComponent implements OnInit {
                             return prihlaseny.includes(logged.id)
                         })),
                         overdue: (new Date(eventik.date).getTime() < new Date().getTime()),
-                        unSigned: (this.user.id == 0),
                         fromEvent: true
                     }
                 })
@@ -71,7 +70,6 @@ export class ActivityListComponent implements OnInit {
         }else {
 
 
-            if (this.dataService.logged != false) {
                 var aktivita = this.activityService.getActivityById(id)
                 this.modalController
                     .create({
@@ -91,7 +89,6 @@ export class ActivityListComponent implements OnInit {
                         modalEl.present();
                         return modalEl.onDidDismiss();
                     });
-            }
         }
     }
 

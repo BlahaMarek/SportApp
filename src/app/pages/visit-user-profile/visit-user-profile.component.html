@@ -13,33 +13,35 @@
 <ion-content>
   <div class="wrapper">
 
-  <div class="card">
-    <div class="header">
-      <div class="avatar">
-        <ion-icon *ngIf="!checkFriends()" (click)="addFriend()" color="success" size="large" class="addPlayer" name="person-add"></ion-icon>
-        <ion-icon *ngIf="checkFriends()" (click)="deleteFriend()" color="danger" size="large" class="addPlayer" name="person">
-        </ion-icon>
-        <ion-icon *ngIf="checkFriends()" (click)="deleteFriend()" class="addPlayer minus" color="danger" name="remove"></ion-icon>
-        <ion-avatar class="avatar2">
-          <ion-img  [src]="userPhoto"> </ion-img>
-        </ion-avatar>
+      <div class="card">
+        <div class="header">
+          <div class="avatar">
+            <ion-icon *ngIf="!checkFriends()" (click)="addFriend()" color="success" size="large" class="addPlayer" name="person-add"></ion-icon>
+            <ion-icon *ngIf="checkFriends()" (click)="deleteFriend()" color="danger" size="large" class="addPlayer" name="person">
+            </ion-icon>
+            <ion-icon *ngIf="checkFriends()" (click)="deleteFriend()" class="addPlayer minus" color="danger" name="remove"></ion-icon>
+
+            <ion-avatar>
+              <ion-img *ngIf="this.user.photoUrl != null"  [src]="userPhoto"> </ion-img>
+              <img class="avatar2" *ngIf="this.user.photoUrl == null" src="assets/icon/avatar.svg">
+            </ion-avatar>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
 
+      <p class="playerName">
+        {{this.user.name}}
+      </p>
+      <p *ngIf="allRatings!= undefined" class="rat">
+        Pocet hodnoteni
+      </p>
 
-  <p class="playerName">
-    {{this.user.name}}
-  </p>
-  <p *ngIf="allRatings!= undefined" class="rat">
-    Pocet hodnoteni
-  </p>
+      <p *ngIf="allRatings!= undefined" class="playerName">
+        {{this.allRatings.length}}
+      </p>
 
-  <p *ngIf="allRatings!= undefined" class="playerName">
-    {{this.allRatings.length}}
-  </p>
-
+<!--jednotlive ratingy-->
   <ion-item *ngIf="ratingSport1 != 0">
     <p>Tenis</p>
     <ionic4-star-rating  #rating

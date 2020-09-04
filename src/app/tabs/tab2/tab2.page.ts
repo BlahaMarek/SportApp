@@ -226,7 +226,6 @@ export class Tab2Page implements OnInit, AfterViewInit {
         // tslint:disable-next-line:only-arrow-functions
         var totaMapa = this.map;
         this.map.on('click', function (evt) {
-this.map.setCss
             $(document.getElementById('popup')).popover('destroy');
             document.getElementById('testButton').style.display = "none";
             document.getElementById('testButton3').style.display = "none";

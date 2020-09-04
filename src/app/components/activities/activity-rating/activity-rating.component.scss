@@ -39,14 +39,25 @@ ion-item, ion-list{
 
 }
 
+.ratingCenter{
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+}
 
 .creator-button{
+  display: block;
   margin: 0;
   position: absolute;
   left: 50%;
   top: 11%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+.centerRat{
+  margin-top: 36px;
+  margin-bottom: 0px;
 }
 
 .noone{

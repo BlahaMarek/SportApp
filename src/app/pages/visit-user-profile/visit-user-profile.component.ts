@@ -25,9 +25,6 @@ export class VisitUserProfileComponent implements OnInit {
 
   allRatings:any;
 
-
-
-
   constructor(private ratingService: RatingService, private userService: UserService,private dataService: DataService, private modalController: ModalController) { }
 
   ngOnInit() {
@@ -53,7 +50,6 @@ export class VisitUserProfileComponent implements OnInit {
       sum += sportRating[i];
     }
     return sum/sportRating.length;
-
   }
 
   getRatings(){

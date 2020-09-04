@@ -15,7 +15,7 @@
     <div class="background">
 
 <!--  *ngIf="this.dataService.logged && this.dataService.user"-->
-  <div *ngIf="this.dataService.logged && this.dataService.user">
+  <div>
 
       <ion-button *ngIf="this.dataService.getUserFromDatabase().friends!= undefined" style="--background:#00008b" class="friends" (click)="friends()" expand="block" fill="solid">
           {{ "Priatelia: " + this.dataService.getUserFromDatabase().friends.length}}
@@ -24,11 +24,9 @@
       <div class="card">
           <div class="header">
               <div class="avatar">
-                  <ion-avatar class="avatar2">
-<!--                      <ion-img *ngIf="this.user.photoUrl != null"  src="assets/icon/avatar.svg"> </ion-img>-->
-                          <img class="avatar2" *ngIf="this.userFromTable.photoUrl == null" src="assets/icon/avatar.svg">
-
-
+                  <ion-avatar>
+                      <ion-img *ngIf="this.user.photoUrl != null"  [src]="userPhoto"> </ion-img>
+                      <img class="avatar2" *ngIf="this.userFromTable.photoUrl == null" src="assets/icon/avatar.svg">
                   </ion-avatar>
               </div>
           </div>
@@ -37,7 +35,6 @@
 <p class="playerName">
   {{this.user.name}}
 </p>
-
 
 
       <p class="rating" *ngIf="this.ratings!= undefined">Počet hodnotení</p>
@@ -186,15 +183,9 @@
 
   </div>
 
-  <div class="allLogin" *ngIf="this.dataService.logged == false">
-    <p>Na zobrazenie profilu sa musíte prihlásiť</p>
-    <ion-buttons class="button-login" (click)="login()" slot="end">
-      Login
-    </ion-buttons>
-  </div>
     </div>
 </ion-content>
-<ion-footer *ngIf="this.dataService.logged != false" (click)="logout()">
+<ion-footer (click)="logout()">
   <ion-toolbar color="danger">
     <ion-title>
       Logout

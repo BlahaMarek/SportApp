@@ -50,20 +50,11 @@ export class ProfilePage implements OnInit {
     this.getRatings();
   }
 
-
-
   logout() {
-    // this.fireAuth.auth.signOut().then(() => {
-    //   this.dataService.user = {};
-    //   this.dataService.logged = false;
-    //   this.dataService.refreshAfterLogin = false;
-    //   this.router.navigateByUrl('/login');
-    // });
     localStorage.clear();
     this.router.navigate(['login']);
     this.dataService.user = {};
-    this.dataService.logged = false;
-    this.dataService.refreshAfterLogin = false;
+    this.dataService.userFromDatabase = {};
   }
 
   login() {
@@ -93,7 +84,6 @@ export class ProfilePage implements OnInit {
       sum += sportRating[i];
     }
     return sum/sportRating.length;
-
   }
 
 

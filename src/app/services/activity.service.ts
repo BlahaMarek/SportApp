@@ -117,11 +117,6 @@ export class ActivityService {
         return this.sportsCollection.doc<Activity>(id).valueChanges();
     }
 
-
-    // getActivities(): Observable<Activity>{
-    //     return this.activities;
-    // }
-
     getActivityCollection(id: string) {
 
     }

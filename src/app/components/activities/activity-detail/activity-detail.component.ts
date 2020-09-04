@@ -49,7 +49,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     @Input() bookable: boolean;
     @Input() reserved: boolean;
     @Input() overdue: boolean;
-    @Input() unSigned: boolean;
     @Input() fromEvent: boolean;
 
     userToComment:User;
@@ -130,21 +129,9 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
     // @ts-ignore
     compareWith = this.compareWithFn;
 
-
-
-
-
     ngOnInit() {
-
-        this.activityService.getActivity().subscribe(res => {
-            this.sport2 =res;
-        });
-
-
-        console.log(this.selectedActivity);
         this.sportOptions = this.dataService.getSportsSk();
         this.assignValueToForm();
-
 
         if (!this.overdue) {
             if (this.bookable) {
@@ -171,16 +158,12 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.month = mesiace[new Date(this.selectedActivity.date).getMonth()];
         this.hours = new Date(this.selectedActivity.date).getHours();
         this.minutes = new Date(this.selectedActivity.date).getMinutes();
-        console.log('this is datumik:' + this.day,this.month, this.hours, this.minutes);
 
-        console.log(this.commentService.readAllComments(this.selectedActivity.id)
-        )
+        //komentare k aktivite
         this.commentService.readAllComments(this.selectedActivity.id).subscribe(res => {
             console.log(res);
             this.comments = res;
-        })
-
-
+        });
     }
 
     onCancel() {
@@ -191,18 +174,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         return o1 == o2;
     }
 
-
-    getUser(userId) {
-        this.userService.getOneUser(userId).pipe(take(1)).subscribe(res => {
-            this.userToComment = res;
-            return res;
-        },
-            err=>{
-            console.log('se porantalo'+err)
-                return false;
-            });
-    }
-
     deleteComment(id){
         this.presentAlertConfirm('Vymazať', 'Naozaj chcete vymazať komentár?','Vymazať',3,id)
     }
@@ -211,110 +182,70 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.activityForm.get('peopleCount').patchValue(this.selectedActivity.peopleCount);
         this.activityForm.get('place').patchValue(this.selectedActivity.place);
         this.activityForm.get('topActivity').patchValue(this.selectedActivity.topActivity);
-        // this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toISOString());
         this.activityForm.get('date').patchValue(new Date(this.selectedActivity.date).toDateString());
         this.activityForm.get('sport').setValue(this.selectedActivity.sport);
         this.activityForm.get('comment').patchValue(this.selectedActivity.comment);
-        // this.activityForm.get('time').patchValue(this.selectedActivity.time);
         this.activityForm.get('time').patchValue(new Date(this.selectedActivity.date).toString());
 
         this.autocomplete.input = this.selectedActivity.place;
 
         this.activityForm.updateValueAndValidity();
-        console.log(this.activityForm.value);
     }
 
     onFormSubmit() {
+        //aktivity
         if (!this.fromEvent) {
-
-
             if (!this.bookable && !this.reserved) {
                 this.updateActivity();
-                // this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
-                //     this.dataService.refreshAfterLogin = true;
-                // });
-
             } else if (this.bookable && !this.reserved) {
                 this.activityService.addBookerToActivity(this.selectedActivity).then(() => {
-                    this.dataService.refreshAfterLogin = true;
                 });
                 this.scheduleNotification();
             } else if (this.reserved) {
                 this.activityService.removeBookerFromActivity(this.selectedActivity).then(() => {
-                    this.dataService.refreshAfterLogin = true;
                 });
-                console.log("som pri prvom resrvede");
-            } else if (!this.reserved) {  //toto asi netreba
+            } else if (!this.reserved) {
                 this.activityService.deleteActivity(this.selectedActivity).then(() => {
-                    this.dataService.refreshAfterLogin = true;
                 });
-                console.log("som pri druhom resrvede");
-
             }
             const data = {message: 'Add new activity!'};
             if (this.bookable) {
-                console.log(this.selectedActivity.id);
-                console.log(this.authService.userIdAuth);
                 data.message = 'Booked activity';
-
             }
             this.modalController.dismiss(data, 'add');
 
+        //    eventy
         }else{
             if (!this.bookable && !this.reserved) {
                 this.updateActivity();
-                // this.activityService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
-                //     this.dataService.refreshAfterLogin = true;
-                // });
 
             } else if (this.bookable && !this.reserved) {
                 this.eventService.addBookerToActivity(this.selectedActivity).then(() => {
-                    this.dataService.refreshAfterLogin = true;
                 });
                 this.scheduleNotification();
             } else if (this.reserved) {
                 this.eventService.removeBookerFromActivity(this.selectedActivity).then(() => {
-                    this.dataService.refreshAfterLogin = true;
                 });
-                console.log("som pri prvom resrvede");
-            } else if (!this.reserved) {  //toto asi netreba
+            } else if (!this.reserved) {
                 this.eventService.deleteEvent(this.selectedActivity).then(() => {
-                    this.dataService.refreshAfterLogin = true;
                 });
-                console.log("som pri druhom resrvede");
-
             }
             const data = {message: 'Add new activity!'};
             if (this.bookable) {
-                console.log(this.selectedActivity.id);
-                console.log(this.authService.userIdAuth);
                 data.message = 'Booked activity';
-
             }
             this.modalController.dismiss(data, 'add');
-
         }
     }
     onFormSubmitDelete() {
-
         if (!this.reserved) {
             this.activityService.deleteActivity(this.selectedActivity).then(()=>{
-                this.dataService.refreshAfterLogin = true;
             });
-            console.log("deletujem");
         }
-
         const data = {message: 'Add new activity!'};
         if (this.bookable) {
-            this.dataService.refreshAfterLogin = true;
-            console.log(this.selectedActivity.id);
-            console.log(this.authService.userIdAuth);
             data.message = 'Booked activity';
-
-
         }
-        console.log(this.selectedActivity.id);
-        console.log(this.authService.userIdAuth);
         this.modalController.dismiss(data, 'add');
     }
 
@@ -331,7 +262,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         datum.setHours(cas.getHours());                            // a potom ho rovno pri zobrazeni menil na timestamp
         datum.setMinutes(cas.getMinutes());
         return {
-            // id: this.activityService.allActivitiesCount + 1,
             sport: this.activityForm.get('sport').value,
             createdBy: this.dataService.getSignInUser().id,
             topActivity: this.activityForm.get('topActivity').value,
@@ -339,7 +269,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             peopleCount: this.activityForm.get('peopleCount').value,
             date: datum.getTime(),
             comment: this.activityForm.get('comment').value,
-            // time: this.activityForm.get('time').value,
             bookedBy: this.selectedActivity.bookedBy,
             lattitude: lattitude,
             longtitude: longitude,
@@ -375,21 +304,16 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                 return modalEl.onDidDismiss();
             })
             .then(result => {
-
             });
     }
 
     selectSearchResult(item) {
-        // let place: google.maps.places.PlaceResult = this.GoogleAutocomplete.getPlacePredictions();
-        console.log(item);
         this.location = item;
         this.placeid = this.location.place_id;
-        console.log(this.placeid);
         JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
         this.autocomplete.input = JSON.stringify(item, ['description']);
         this.objekt = JSON.parse(this.autocomplete.input);
         this.autocomplete.input = this.objekt.description;
-        console.log('toto je mesto omg' + this.autocomplete.input);
         for (let i = 0; i < 6; i++) {
             this.autocompleteItems.pop();
         }
@@ -412,7 +336,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                 this.longtitudeFirebase = result[0].longitude) // tu je sirka a vyska
             .catch((error: any) => this.openToast('Toto sa dosralo'));
 
-        console.log('kurwa co to nejde');
     }
     async openToast(msg) {
         const toast = await  this.toastController.create({
@@ -421,10 +344,7 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         toast.present();
     }
 
-
-
-
-
+    //mapa
     ngAfterViewInit(): void {
         var iconStyle = new Style({
             image: new CircleStyle({
@@ -461,7 +381,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.map.updateSize();
         }, 500);
-        console.log('mapa idze ci nejdze');
     }
 
     updateActivity(){
@@ -474,17 +393,18 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
             })
             .then(modalEl => {
-                console.log("som v tabe 1111  hore");
                 modalEl.present();
                 return modalEl.onDidDismiss();
             })
             .then(result => {
-
             });
     }
 
-
     rateUsers(){
+        //+tvorca
+        // var ludiaVAktivite = this.selectedActivity.bookedBy;
+        // ludiaVAktivite.push(this.selectedActivity.createdBy);
+
         this.modalController
             .create({component: ActivityRatingComponent,
                 componentProps:{
@@ -499,7 +419,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
             })
             .then(modalEl => {
-                console.log("som v tabe 1111  hore");
                 modalEl.present();
                 return modalEl.onDidDismiss();
             })
@@ -593,16 +512,10 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         await alert.present();
     }
 
-
-
-
-
       facebookShare(){
         //tu bude url nasej appky v obchode playyy
         var url = 'https://i.guim.co.uk/img/media/0e5ba031e776c312d744077a9aa1467815849e42/923_166_2287_1372/master/2287.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=b723b8f70c073e45b0c5cddbc6e5cade';
-
           this.socialSharing.canShareVia('facebook').then(() => {
-
               this.socialSharing.shareVia('facebook','SportFriend: ' + this.selectedActivity.peopleCount + ' ludi, ' +
                   this.selectedActivity.place,null,null, 'https://www.google.sk')
                   .then((success) =>{
@@ -620,7 +533,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     instagramShare(){
         this.socialSharing.canShareVia('instagram').then(() => {
-
             this.socialSharing.shareVia('instagram','SportFriend: ' + this.selectedActivity.peopleCount + ' ludi, ' +
                 this.selectedActivity.place,null,null, 'https://www.google.sk')
                 .then((success) =>{
@@ -629,8 +541,6 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                 });
         }).catch((error: any)=>{
             this.openToast("Nepodarilo sa nacitat aplikaciu instagram" + error);
-            console.log(error)
         })
     }
-
 }
