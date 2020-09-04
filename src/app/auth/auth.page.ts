@@ -89,6 +89,7 @@ export class AuthPage implements OnInit {
       if (localStorage.getItem('user') && this.isConnected){
           this.dataService.user = JSON.parse(localStorage.getItem('user'));
           this.dataService.logged = true;
+          this.dataService.userFromDatabase
           this.dataService.refreshAfterLogin = true;
           this.router.navigateByUrl('/tabs/tabs/tab1');
       }
@@ -175,7 +176,7 @@ export class AuthPage implements OnInit {
         })
             .then((res) => {
                 this.setDataserviceUserGoogle(res);
-                this.createUserToDataabseGoogle();
+                this.createUserToDataabse();
                 this.dataService.logged = true;
                 this.dataService.refreshAfterLogin = true;
                 this.router.navigateByUrl('/tabs/tabs/tab1');
@@ -222,7 +223,6 @@ export class AuthPage implements OnInit {
         toast.present();
     }
 
-
     ionViewWillLeave(){
             this.createUserToDataabse();
     }
@@ -242,40 +242,21 @@ export class AuthPage implements OnInit {
                 this.dataService.userFromDatabase = this.user;
             }
             else {
+                if (this.dataService.getSignInUser().photoUrl == undefined)
+                {
+                    this.dataService.user.photoUrl = null
+                }
+                                this.userService.updateUser(res.id, this.dataService.getSignInUser());
+                                // this.dataService.user.photoUrl =
+                                    this.dataService.userFromDatabase = res;
 
                 this.dataService.userFromDatabase = res;
                 this.dataService.userO=res;
             }
 
-            localStorage.setItem("user", JSON.stringify(this.user));
+            localStorage.setItem("user", JSON.stringify(this.dataService.getUserFromDatabase()));
         });
         console.log(this.dataService.userFromDatabase)
 
-    }
-    createUserToDataabseGoogle(){
-        console.log(this.dataService.getSignInUser());
-        this.userService.getOneUser(this.dataService.getSignInUser().id).pipe(take(1)).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
-            if (res==undefined){
-                this.user = {
-                    id: this.dataService.getSignInUser().id,
-                    name: this.dataService.getSignInUser().name,
-                    photoUrl: this.dataService.getSignInUser().photoUrl,
-                    friends: [],
-                };
-                this.firestore.createUser(this.user);
-                console.log()
-                this.dataService.userFromDatabase = this.user;
-            }
-            else {
-                console.log(res);
-                if (this.dataService.getSignInUser().photoUrl == undefined){
-                    this.dataService.user.photoUrl = null
-                }
-                this.userService.updateUser(res.id, this.dataService.getSignInUser());
-                this.dataService.user.photoUrl =
-                this.dataService.userFromDatabase = res;
-            }
-            localStorage.setItem("user", JSON.stringify(this.user));
-        });
     }
 }

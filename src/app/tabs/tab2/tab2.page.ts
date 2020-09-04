@@ -207,12 +207,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
                     source: new OSM()
                 }), clusters],
             target: document.getElementById('map'),
+
             view: new View({
                 center: [0, 0],
-                zoom: 3
+                zoom: 8
             })
         });
-
         const popup = new Overlay({
             element: document.getElementById('popup'),
             positioning: 'bottom-center',
@@ -226,6 +226,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         // tslint:disable-next-line:only-arrow-functions
         var totaMapa = this.map;
         this.map.on('click', function (evt) {
+this.map.setCss
             $(document.getElementById('popup')).popover('destroy');
             document.getElementById('testButton').style.display = "none";
             document.getElementById('testButton3').style.display = "none";
@@ -379,7 +380,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
         });
 
         this.map.on('pointermove', function (e) {
-            if (e.dragging) {
+            if (e.dragging && e.cancelable) {
+                e.preventDefault();
+
+                // swiping = true;
+                console.log("eeeeee")
                 idDoButtonu = [];
                 idDoButtonuEvent = [];
                 $(document.getElementById('popup')).popover('destroy');
