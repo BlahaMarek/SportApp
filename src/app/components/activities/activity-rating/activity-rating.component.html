@@ -23,18 +23,40 @@
       <ion-label *ngIf="creator != undefined">{{this.creator.name}}</ion-label>
     </ion-chip>
 
-<!--    <p class="centerRat">-->
-<!--    <ionic4-star-rating class="ratingCenter" *ngIf="!this.overdue" #rating-->
-<!--                        activeIcon = "ios-star"-->
-<!--                        defaultIcon = "ios-star-outline"-->
-<!--                        activeColor = "#FFD700"-->
-<!--                        defaultColor = "#ccccff"-->
-<!--                        readonly="true"-->
-<!--                        rating="{{findUserBehavior(this.creator.id)}}"-->
-<!--                        fontSize = "30px" >-->
+    <p class="centerRat">
+    <ionic4-star-rating class="ratingCenter" *ngIf="this.creator !=undefined && !this.overdue" #rating
+                        activeIcon = "ios-star"
+                        defaultIcon = "ios-star-outline"
+                        activeColor = "#FFD700"
+                        defaultColor = "#ccccff"
+                        readonly="true"
+                        rating="{{this.creator.behavior}}"
+                        fontSize = "30px" >
 
-<!--    </ionic4-star-rating>-->
-<!--    </p>-->
+    </ionic4-star-rating>
+
+        <ionic4-star-rating class="ratingCenter" *ngIf="this.overdue && this.loggedUser.id != this.createdBy && this.hodnotenyCreator == false" #rating
+                            activeIcon = "ios-star"
+                            defaultIcon = "ios-star-outline"
+                            activeColor = "#FFD700"
+                            defaultColor = "#ccccff"
+                            readonly="false"
+                            rating="0"
+                            fontSize = "30px"
+                            (ratingChanged)="logRatingChange(this.creator.id, $event)">
+        </ionic4-star-rating>
+
+        <ionic4-star-rating class="ratingCenter" *ngIf="this.overdue && this.loggedUser.id != this.createdBy && this.hodnotenyCreator == true" #rating
+                            activeIcon = "ios-star"
+                            defaultIcon = "ios-star-outline"
+                            activeColor = "#FFD700"
+                            defaultColor = "#ccccff"
+                            readonly="true"
+                            rating="{{this.creator.behavior}}"
+                            fontSize = "30px"
+                            >
+        </ionic4-star-rating>
+    </p>
 
 
     <p *ngIf="overdue && usersId.length == 0" class="noone">Nikto nebol prihlasený.</p>
@@ -64,7 +86,7 @@
         </ion-avatar>
         <ion-label color="success">{{user.name}}</ion-label>
       </ion-chip>
-
+<div>
       <ionic4-star-rating *ngIf="!this.overdue" #rating
                                                  activeIcon = "ios-star"
                                                  defaultIcon = "ios-star-outline"
@@ -75,6 +97,7 @@
                                                  fontSize = "30px" >
 
     </ionic4-star-rating>
+</div>
       <ionic4-star-rating *ngIf="this.overdue && this.loggedUser.id != user.id" #rating
                           activeIcon = "ios-star"
                           defaultIcon = "ios-star-outline"
@@ -97,15 +120,14 @@
   <ion-list  padding >
 <!--    toto bude treba klepnut hore, lebo este pri nehranej aktivite to tu je na 2 veci-->
     <ion-item *ngFor="let user of this.usersRated">
-      <ion-chip>
+      <ion-chip (click)="visitProfile(user)">
         <ion-avatar>
           <img *ngIf="user.photoUrl != null" [src]="user.photoUrl" >
           <img *ngIf="user.photoUrl == null" src="assets/icon/avatar.svg" >
         </ion-avatar>
         <ion-label color="light">{{user.name}}</ion-label>
       </ion-chip>
-<!--    <ion-avatar (click)="visitProfile(user)" ><img [src]="user.photoUrl" ></ion-avatar>-->
-<!--      <ion-button (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>-->
+
       <ionic4-star-rating
                           activeIcon = "ios-star"
                           defaultIcon = "ios-star-outline"

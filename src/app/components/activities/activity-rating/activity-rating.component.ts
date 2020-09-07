@@ -36,6 +36,8 @@ export class ActivityRatingComponent implements OnInit {
   finishDwonloading: boolean = true;
   creator: User;
 
+  hodnotenyCreator:boolean = false;
+
   constructor(private ratingService: RatingService,
               private firestoreService: FirestoreService,
               private dataService: DataService,
@@ -44,18 +46,20 @@ export class ActivityRatingComponent implements OnInit {
               private activityService: ActivityService,
               public alertController: AlertController) { }
   ngOnInit() {
-console.log(this.usersId)
+    var mojeUsersId = this.usersId
+console.log(mojeUsersId)
     if(!this.profile) {
       //stahujem creatora aktivity
       this.userService.getOneUser(this.createdBy).pipe(take(1)).subscribe(res => {
-        this.creator = res
+        this.creator = res;
+        this.findUserBehavior();
         // this.usersId.push(this.creator.id);
       });
     }
 
     this.loggedUser = this.dataService.getSignInUser();
     if (this.profile) { // ak pridem z profilu
-      for (var i = 0; i < this.usersId.length; i++) {
+      for (var i = 0; i < mojeUsersId.length; i++) {
         this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res => {
           this.friendsFromProfile.push(res);
         });
@@ -68,21 +72,21 @@ console.log(this.usersId)
       this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.id).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
         this.ratingsFromAktivity = res;
       });
-
-      for (var i = 0; i < this.usersId.length; i++) {
-        this.userService.getOneUser(this.usersId[i]).pipe(take(1)).subscribe(res => {
+      for (var i = 0; i < mojeUsersId.length; i++) {
+        this.userService.getOneUser(mojeUsersId[i]).pipe(take(1)).subscribe(res => {
           if (this.ratingsFromAktivity.length > 0) {
             var bolHodnoteny = this.ratingsFromAktivity.filter(rat => rat.idHraca.includes(res.id))
             if (bolHodnoteny.length == 0) { //zistim ci ho uz pred tym hodnotil
               this.usersFromDatabase.push(res); // sem si pushnem pouzivatelov z aktivity,
             } else {
+              res.behavior = bolHodnoteny[0].rating;
               this.usersRated.push(res); //ak ho hodnotil pushnem ho sem
             }
           } else {
             this.usersFromDatabase.push(res);
           }
         });
-        this.ratingService.getRatingsByUser(this.usersId[i], this.idSportu).pipe(take(1)).subscribe(res => {
+        this.ratingService.getRatingsByUser(mojeUsersId[i], this.idSportu).pipe(take(1)).subscribe(res => {
           this.ratingsUserBySportId.push(res);
           var hodnotenie = 0;
           for (var i =0; i< res.length; i++){
@@ -90,36 +94,67 @@ console.log(this.usersId)
           }
           hodnotenie = hodnotenie / res.length;
 
+          if (!this.overdue) {
+          var nehodnoteny = this.usersFromDatabase.filter(user => user.id == mojeUsersId[i]);
+          var hodnoteny = this.usersRated.filter(user => user.id == mojeUsersId[i]);
 
-          var nehodnoteny = this.usersFromDatabase.filter(user => user.id == this.usersId[i]);
-          var hodnoteny = this.usersRated.filter(user => user.id == this.usersId[i]);
 
-          if (nehodnoteny.length > 0){
-            this.usersFromDatabase[this.usersFromDatabase.length-1].behavior = hodnotenie;
+            if (nehodnoteny.length > 0) {
+              this.usersFromDatabase[this.usersFromDatabase.length - 1].behavior = hodnotenie;
+
+            }
+            if (hodnoteny.length > 0) {
+              this.usersRated[this.usersRated.length - 1].behavior = hodnotenie;
+            }
 
           }
-          if (hodnoteny.length > 0) {
-            this.usersRated[this.usersRated.length-1].behavior = hodnotenie;
-          }
-
           this.finishDwonloading = false;
         });
 
       }
-      if (this.usersId.length == 0){
+      if (mojeUsersId.length == 0){
         this.finishDwonloading = false;
       }
-
     }
+
 
   }
-  findUserBehavior(id):number{
-    var user = this.usersFromDatabase.find(user => user.id == id);
-    if (user == undefined){
-      user = this.usersRated.find(user => user.id == id);
-    }
-    console.log(user)
-    return  user.behavior;
+  findUserBehavior(){
+    this.ratingService.getRatingsByUser(this.createdBy,this.idSportu).pipe(take(1)).subscribe(res => {
+      var hodnotenie = 0;
+      for (var i =0; i< res.length; i++){
+        hodnotenie += res[i].rating;
+      }
+      hodnotenie = hodnotenie / res.length;
+      console.log(hodnotenie)
+      console.log(res.length)
+      if (res.length == 0){
+        hodnotenie = 0;
+      }
+      if (!this.overdue){
+
+        this.creator.behavior = hodnotenie;
+      }
+      console.log(this.overdue)
+
+      console.log(this.loggedUser)
+      console.log(this.ratingsFromAktivity)
+      var bolHodnoteny = this.ratingsFromAktivity.filter(rat => rat.isKritika.includes(this.loggedUser.id));
+      console.log(bolHodnoteny)
+      bolHodnoteny.filter(creator => creator.idHraca.includes(this.createdBy));
+      console.log(bolHodnoteny)
+      if (bolHodnoteny.length == 0) { //zistim ci ho uz pred tym hodnotil
+        this.hodnotenyCreator = false;
+        console.log(bolHodnoteny)
+      } else {
+        this.hodnotenyCreator = true; //ak ho hodnotil pushnem ho sem
+        this.creator.behavior = bolHodnoteny[0].rating
+        console.log(bolHodnoteny)
+      }
+
+    });
+
+
   }
 
   checkFriends(friendsId:string){
@@ -131,24 +166,43 @@ console.log(this.usersId)
     }
   }
 
-  logRatingChange(id:string ,rating){
+  logRatingChange(id:string ,rating) {
     let userr: User = this.usersFromDatabase.find(user => user.id == id);
-    for (var i= 0 ; i<this.usersFromDatabase.length;i++){
-      if (this.usersFromDatabase[i].id == id){
-        this.usersFromDatabase.splice(i,1);
+    for (var i = 0; i < this.usersFromDatabase.length; i++) {
+      if (this.usersFromDatabase[i].id == id) {
+        this.usersFromDatabase.splice(i, 1);
         break;
       }
     }
-    var ratingUkladam:Rating = {
+    console.log(userr)
+    if (userr == undefined) {
+      userr = this.creator
+    }
+    var ratingUkladam: Rating = {
       idAktivity: this.idAktivity,
       idHraca: userr.id,
       isKritika: this.dataService.getSignInUser().id,
       rating: rating,
       idSportu: this.idSportu
-  }
+    }
 
-  this.usersRated.push(userr);
-    this.firestoreService.createRating(ratingUkladam);
+    if (userr.id != this.createdBy) {
+      this.usersRated.push(userr);
+      this.firestoreService.createRating(ratingUkladam);
+      var nahodimRating = this.usersFromDatabase.find(user => user.id == id);
+
+      if (nahodimRating==undefined){
+        nahodimRating = this.usersRated.find(user => user.id == id);
+      }
+      console.log(nahodimRating)
+      nahodimRating.behavior = rating;
+    }
+    else if (userr.id == this.createdBy){
+      this.firestoreService.createRating(ratingUkladam);
+      this.hodnotenyCreator = true;
+      this.creator.behavior = rating;
+    }
+
   }
 
   async presentAlertConfirm(name,userId) {
