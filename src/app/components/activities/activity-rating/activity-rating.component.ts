@@ -107,7 +107,10 @@ console.log(mojeUsersId)
               this.usersRated[this.usersRated.length - 1].behavior = hodnotenie;
             }
 
+          }else{
+            this.usersRated[this.usersRated.length - 1].behavior = 0;
           }
+
           this.finishDwonloading = false;
         });
 

@@ -38,7 +38,6 @@ export class Tab1Page implements OnInit {
         this.fromEvent = false;
          this.activityService.activities$.subscribe(list => {
             this.activityList = list;
-console.log(list)
             // SORTOVANIE AKTIVIT PODLA VZDIALENOSTI
             this.activityList.forEach(value => {
                 let v1 = Math.abs(parseFloat(value.lattitude) - this.latitude);

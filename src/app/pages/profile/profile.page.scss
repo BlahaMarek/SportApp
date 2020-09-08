@@ -21,7 +21,7 @@ ion-item{
 }
 
 .card {
-  margin: 0 auto;
+  //margin: 0 auto;
 }
 
   .header {
@@ -49,6 +49,8 @@ ion-item{
         font-weight: 600;
         color: white;
         text-align: center;
+        margin-top: 0px;
+        padding-top: 4%;
       }
 
       .avatar2{
@@ -97,7 +99,11 @@ ion-item p{
   font-size: 18px;
   font-weight: 500;
   color: white;
+  display: contents;
+
 }
 ionic4-star-rating{
   margin-left: auto;
+  margin-right: auto;
+
 }

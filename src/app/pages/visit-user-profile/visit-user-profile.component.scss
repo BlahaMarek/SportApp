@@ -35,6 +35,8 @@ ion-img {
   font-weight: 600;
   color: white;
   text-align: center;
+  margin-top: 0px;
+  padding-top: 4%;
 }
 ion-item{
   --ion-item-background: transparent;
@@ -47,6 +49,8 @@ ion-item p{
 
 ionic4-star-rating{
   margin-left: auto;
+  margin-right: auto;
+
 }
 .ratingscount{
   text-align: end;
@@ -71,6 +75,7 @@ ion-item p{
   color: white;
   text-align: center;
   margin-right: 20px;
+  display: contents;
 
 }
 .addPlayer{

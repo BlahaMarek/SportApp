@@ -378,7 +378,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
             }
         });
 
-        this.map.on('pointermove', function (e) {
+        this.map.on('pointermove',  (e) => {
             if (e.dragging && e.cancelable) {
                 e.preventDefault();
 
