@@ -21,6 +21,19 @@ export class DataService {
     private _user = new BehaviorSubject<any>([]);
     readonly user$ = this._user.asObservable();
 
+    private _internet = new BehaviorSubject<boolean>(false);
+    readonly internet$ = this._internet.asObservable();
+
+    // get activity list
+    get internet(): any {
+        return this._internet;
+    }
+
+    // set activity list
+    set internet(user: any) {
+        this._internet.next(user);
+    }
+
     // get activity list
     get userO(): any {
         return this._user.getValue();
@@ -76,17 +89,86 @@ export class DataService {
                 icon: 'tennisball',
             },
             {
+                label: 'Turistika',
+                value: 23,
+                tag: 1,
+                icon: 'tennisball',
+            },
+            {
                 label: 'Basketball',
                 value: 8,
                 tag: 1,
                 icon: 'tennisball',
             },
             {
-                label: 'Nohejbal',
-                value: 9,
+                label: 'Fitness',
+                value: 16,
                 tag: 1,
                 icon: 'tennisball',
-            }
+            },
+            {
+                label: 'Americký fotbal',
+                value: 10,
+                tag: 1,
+                icon: 'tennisball',
+            },
+
+            {
+                label: 'Baseball',
+                value: 12,
+                tag: 1,
+                icon: 'tennisball',
+            },
+            {
+                label: 'Frisbee',
+                value: 13,
+                tag: 1,
+                icon: 'tennisball',
+            },
+            {
+                label: 'Hádzaná',
+                value: 14,
+                tag: 1,
+                icon: 'tennisball',
+            },
+
+            {
+                label: 'Bojové športy',
+                value: 17,
+                tag: 1,
+                icon: 'tennisball',
+            },
+            {
+                label: 'Zimné športy',
+                value: 18,
+                tag: 1,
+                icon: 'tennisball',
+            },
+            {
+                label: 'Vodné športy',
+                value: 22,
+                tag: 1,
+                icon: 'tennisball',
+            },
+            {
+                label: 'Cyklistika',
+                value: 20,
+                tag: 1,
+                icon: 'tennisball',
+            },
+            {
+                label: 'Stolný futbal',
+                value: 21,
+                tag: 1,
+                icon: 'tennisball',
+            },
+
+            {
+                label: 'Motoristika',
+                value: 24,
+                tag: 1,
+                icon: 'tennisball',
+            },
         ];
     }
 

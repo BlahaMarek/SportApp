@@ -10,6 +10,7 @@ import {FilterComponent} from "../../components/filter/filter.component";
 import {AppModule} from "../../app.module";
 import {FilterPipe} from "../../pipes/filter.pipe";
 import {VisitUserProfileComponent} from "../../pages/visit-user-profile/visit-user-profile.component";
+import {IonicSelectableModule} from "ionic-selectable";
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import {VisitUserProfileComponent} from "../../pages/visit-user-profile/visit-us
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        IonicSelectableModule,
     ],
     exports: [
         ActivityDetailComponent,

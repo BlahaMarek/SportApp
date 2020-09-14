@@ -9,7 +9,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import { FilePath } from '@ionic-native/file-path/ngx';
-
+import { IonicSelectableModule } from 'ionic-selectable';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MenuComponent} from './components/menu/menu.component';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
@@ -54,6 +54,7 @@ firebase.initializeApp(environment.firebaseConfig);
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
+        IonicSelectableModule,
         HttpClientModule,
         IonicStorageModule.forRoot(),
         TranslateModule.forRoot({

@@ -28,6 +28,9 @@ export class ActivityListComponent implements OnInit {
     segmentValue = 'others';
     filterCriteria = [];
     virtualIndex = 1;
+
+    internet:boolean;
+
     constructor(
         private activityService: ActivityService,
         private modalController: ModalController,
@@ -42,6 +45,9 @@ export class ActivityListComponent implements OnInit {
         if (this.fromMap) {
             this.filterActivitiesByIdFromMap();
         }
+        this.dataService.internet$.subscribe(int=>{
+            this.internet = int;
+        })
     }
 
     onActivityClicked(id: string) {

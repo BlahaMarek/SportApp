@@ -71,25 +71,25 @@
 
 
         <ion-list style="text-align: center">
-            <ion-button color="success" *ngIf="!reserved && !overdue" (click)="onFormSubmit()" fill="solid">
+            <ion-button disabled="{{!this.internet}}" color="success" *ngIf="!reserved && !overdue" (click)="onFormSubmit()" fill="solid">
                 {{bookable ? "Prihlásiť" : "Upravit"}}
             </ion-button>
 
 
-            <ion-button color="danger" *ngIf="!bookable && !overdue"
+            <ion-button disabled="{{!this.internet}}" color="danger" *ngIf="!bookable && !overdue"
                         (click)="presentAlertConfirm('Vymazať','Naozaj chcete vymazať aktivitu?','Vymazať', 1,null)" fill="solid">
                         {{reserved ? "Odhlasiť" : "Vymazat"}}
             </ion-button>
 
-            <ion-button color="success" *ngIf="overdue"  (click)="rateUsers()" expand="block" fill="solid">
+            <ion-button disabled="{{!this.internet}}" color="success" *ngIf="overdue"  (click)="rateUsers()" expand="block" fill="solid">
                 {{ "Ohodnot spoluhracov"}}
             </ion-button>
 
-            <ion-button *ngIf="!overdue"  (click)="rateUsers()"  fill="solid">
+            <ion-button disabled="{{!this.internet}}" *ngIf="!overdue"  (click)="rateUsers()"  fill="solid">
                 {{ "Používatelia: " + this.selectedActivity.bookedBy.length + " z " + this.selectedActivity.peopleCount}}
             </ion-button>
 
-            <ion-button color="danger" *ngIf="bookable && reserved && !overdue"
+            <ion-button disabled="{{!this.internet}}" color="danger" *ngIf="bookable && reserved && !overdue"
                         (click)="presentAlertConfirm('Odhlásenie!','Naozaj sa chcete odhlásiť z aktivity?', 'Odhlásiť',2,null)"
                         fill="solid">
                 {{reserved ? "Odhlásiť" : "Vymaz Aktivitu"}}
@@ -98,20 +98,26 @@
         </ion-list>
 
         <ion-list>
-            <ion-item *ngFor="let item of this.comments">
-                <ion-chip>
-                    <ion-avatar>
-<!--                        pocla toho ci ma typek fotku abo ne-->
-                        <img *ngIf="item.photoUrl != null" [src]="item.photoUrl" >
-                        <img *ngIf="item.photoUrl == null"  src="assets/icon/avatar.svg" >
+            <ion-item disabled="{{!this.internet}}" *ngFor="let item of this.comments">
+                    <ion-chip>
+                        <ion-avatar>
+                            <!--                        pocla toho ci ma typek fotku abo ne-->
+                            <img *ngIf="item.photoUrl != null" [src]="item.photoUrl" >
+                            <img *ngIf="item.photoUrl == null"  src="assets/icon/avatar.svg" >
+                        </ion-avatar>
+                        <ion-label color="light">{{item.userName}}</ion-label>
+                    </ion-chip>
 
-                    </ion-avatar>
-                    <ion-label color="light">{{item.userName}}</ion-label>
-                </ion-chip>
+
                 <p>{{item.comment}}</p>
-                <ion-icon class="delete" name="close"  color="medium" *ngIf="item.userId == this.dataService.getSignInUser().id" (click)="deleteComment(item.id)"></ion-icon>
+
+                    <ion-icon class="delete"  name="close"  color="medium" *ngIf="item.userId == this.dataService.getSignInUser().id" (click)="deleteComment(item.id)"></ion-icon>
+
             </ion-item>
         </ion-list>
-    <ion-icon (click)="addComment()" class="addComment" size="large" name="chatboxes"></ion-icon>
+    <ion-button fill="clear" class="addComment" disabled="{{!this.internet}}" (click)="addComment()">
+
+        <ion-icon size="large" name="chatboxes"></ion-icon>
+    </ion-button>
 
 </ion-content>

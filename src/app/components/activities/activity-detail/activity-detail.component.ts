@@ -62,6 +62,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     comments: any;
 
+    internet: boolean;
+
     userFromTable:any={}
 
     sportOptions: Sport[] = [];
@@ -164,6 +166,11 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
             console.log(res);
             this.comments = res;
         });
+
+        this.dataService.internet$.subscribe(int => {
+            this.internet = int;
+            console.log(int)
+        })
     }
 
     onCancel() {
@@ -443,18 +450,12 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
     async presentAlertConfirm(header:string, message:string, ano:string, vymazat:number, id) {
     const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
+        cssClass: 'alertCss',
         header: header,
         message: message,
         buttons: [
-            {
-                text: 'Zrušiť',
-                role: 'cancel',
+             {
                 cssClass: 'secondary',
-                handler: (blah) => {
-
-                }
-            }, {
                 text: ano,
                 handler: () => {
                     if (vymazat == 2){
@@ -467,12 +468,21 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                         this.commentService.deleteComment(id);
                     }
                 }
+            },
+            {
+                text: 'Zrušiť',
+                role: 'cancel',
+
+                handler: (blah) => {
+
+                }
             }
         ]
     });
 
     await alert.present();
 }
+
     async presentAlertCommentInput() {
         const alert = await this.alertController.create({
             cssClass: 'my-custom-class',
@@ -487,11 +497,12 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
                 {
                     text: 'Zrušiť',
                     role: 'cancel',
-                    cssClass: 'secondary',
+
                     handler: (blah) => {
 
                     }
                 }, {
+                    cssClass: 'add',
                     text: "Pridat",
                     handler: (alertData) => {
                         var comment:Comment = {

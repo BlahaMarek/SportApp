@@ -19,6 +19,7 @@ export class Tab1Page implements OnInit {
     finishDownloading = false;
     latitude = null;
     longitude = null;
+    internet:boolean;
 
     constructor(
         private modalController: ModalController,
@@ -50,7 +51,9 @@ export class Tab1Page implements OnInit {
             });
             this.finishDownloading = true;
          });
-
+    this.dataService.internet$.subscribe(int=>{
+        this.internet = int;
+    })
     }
 
     // NASTAVENIE JAZYKA APLIKACIE

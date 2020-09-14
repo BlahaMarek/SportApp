@@ -136,10 +136,16 @@ font-weight: 600;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+  --background: none;
+  --border: none;
+  --box-shadow: none;
 }
 .delete{
   position: absolute;
   right: 10px;
+  --background: none;
+  --border: none;
+  --box-shadow: none;
 }
 
 

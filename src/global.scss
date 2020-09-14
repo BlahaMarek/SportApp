@@ -30,6 +30,10 @@ ion-select {
   opacity: 1 !important;
 }
 
+ion-searchbar{
+  --background: white;
+}
+
 .opacity {
   opacity: 1 !important;
   font-family: 'Montserrat', sans-serif;
@@ -38,3 +42,14 @@ ion-select {
 *,*:before, *:after, ion-menu-toggle, ion-label {
   font-family: 'Montserrat', sans-serif !important;
 }
+
+.secondary{
+  color: red !important;
+}
+
+.add{
+  color: green !important;
+}
+
+//searchbar v aktivity new
+.ionic-selectable-documentation-configuration { .modal-wrapper { ionic-selectable-modal { ion-header { ion-toolbar { ion-buttons {position: absolute; right: 10px} } } ion-searchbar { --background: black; .searchbar-input { background: white; color: black; box-shadow: unset; } .searchbar-search-icon { color: black; } .searchbar-clear-button { color: black; } } ion-footer { background: var(--ion-color-dark); ion-toolbar { --background: var(--ion-color-dark); ion-button { display: inline-block !important; --background: var(--ion-color-warning); } } } } } }

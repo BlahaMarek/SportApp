@@ -14,7 +14,7 @@ import { ToastController} from '@ionic/angular';
 import {FirestoreService} from '../../../services/firestore.service';
 import * as firebase from "firebase";
 import {EventService} from "../../../services/event.service";
-
+import {IonicSelectableComponent} from "ionic-selectable";
 
 @Component({
     selector: 'app-activity-new',
@@ -34,6 +34,8 @@ export class ActivityNewComponent implements OnInit {
     maxDate: any;
     year: string;
     user: any = {};
+    internet:boolean;
+    sport: Sport;
     constructor(
         private fireService: FirestoreService,
         public toastController: ToastController,
@@ -81,7 +83,20 @@ export class ActivityNewComponent implements OnInit {
         this.startDate = new Date().toISOString();
         this.minDate = new Date().toISOString();
 
+        this.dataService.internet$.subscribe(int=>{
+            this.internet = int;
+        })
 
+    }
+
+
+    portChange(event: {
+        component: IonicSelectableComponent,
+        value: any
+    }) {
+        // this.fb.control('sport').setValue(event.value.value);
+        console.log(event.value.value);
+        console.log(this.activityForm.get('sport').value.value);
     }
 
     onCancel() {
@@ -114,7 +129,7 @@ export class ActivityNewComponent implements OnInit {
         return {
             // id: this.activityService.allActivitiesCount + 1,
 
-            sport: this.activityForm.get('sport').value,
+            sport: this.activityForm.get('sport').value.value,
             createdBy: this.user.id,
             topActivity: this.activityForm.get('topActivity').value,
             place: this.activityForm.get('place').value,

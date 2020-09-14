@@ -10,7 +10,7 @@
     <ion-title>
       Mapa
     </ion-title>
-      <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
+      <ion-buttons slot="end">
           <ion-img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl != null" class="profile-image" [src]="this.dataService.getSignInUser().photoUrl"> </ion-img>
           <img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl == null" class="profile-image" src="assets/icon/avatar.svg">          <ion-button routerLink="/profile" class="hidden"><ion-icon name="add"></ion-icon></ion-button>
       </ion-buttons>
@@ -25,4 +25,3 @@
     <button (click)="prejdiDoTab1()" id="testButton" class="btn btn-primary" style="display: none">Aktivity</button>
     <button (click)="prejdiDoTab3()" id="testButton3" class="btn btn-primary2" style="display: none">Eventy</button>
 </ion-content>
-

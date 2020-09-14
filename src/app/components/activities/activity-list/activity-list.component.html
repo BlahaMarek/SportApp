@@ -26,7 +26,7 @@
         <img *ngIf="!fromMap && !finishDownloading" id="load" class="loadingImage"  src='assets/logoSportShare/logo%20SportShare/logo/biele/2-01.png' height="150">
 
         <ion-virtual-scroll id="myVirtual"  [items]="filteredList | filter: filterCriteria :segmentValue" approxItemHeight="120px">
-                <ion-item  *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">
+                <ion-item disabled="{{!this.internet}}"  *virtualItem="let activity" lines="none" (click)="onActivityClicked(activity.id)">
                     <div [class]="getCssClass(activity)">
                         <div class="wrapper">
                             <ion-label>

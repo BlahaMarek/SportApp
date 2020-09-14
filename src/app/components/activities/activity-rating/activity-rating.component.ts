@@ -107,7 +107,8 @@ console.log(mojeUsersId)
               this.usersRated[this.usersRated.length - 1].behavior = hodnotenie;
             }
 
-          }else{
+          }else if (this.usersRated.length > 0){
+            console.log(this.usersRated)
             this.usersRated[this.usersRated.length - 1].behavior = 0;
           }
 

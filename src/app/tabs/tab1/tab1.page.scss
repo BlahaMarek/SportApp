@@ -8,6 +8,17 @@ ion-segment {
   width: 40px;
   border-radius: 50% !important;
   overflow: hidden;
+  padding-left: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+#justButt{
+  height: auto;
+  padding-right: 0px;
+  --padding-right: 0px;
+  .button-native{
+    padding-right: 0px;
+  }
 }
 .login{
   text-decoration: underline;

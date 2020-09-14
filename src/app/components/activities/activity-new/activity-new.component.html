@@ -26,19 +26,40 @@
 
             <ion-item>
                 <ion-label position="stacked" >Výber športu *</ion-label>
-                <ion-select formControlName="sport" placeholder="Vyberte šport">
-                    <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
-                        {{ val.label }}
-                    </ion-select-option>
-                </ion-select>
+<!--                <ion-select formControlName="sport" placeholder="Vyberte šport">-->
+<!--                    <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">-->
+<!--                        {{ val.label }}-->
+<!--                    </ion-select-option>-->
+                <ionic-selectable modalCssClass="ionic-selectable-documentation-configuration"
+                        formControlName="sport"
+                        placeholder="Vyberte šport"
+                        [(ngModel)]="sport"
+                        [items]="sportOptions"
+                        itemValueField="label"
+                        itemTextField="label"
+                        [canSearch]="true"
+                        (onChange)="portChange($event)">
+
+                    <ng-template ionicSelectableSearchFailTemplate>
+                        <div padding>
+                            Nebol nájdený šport
+                        </div>
+                    </ng-template>
+
+                    <ng-template ionicSelectableCloseButtonTemplate>
+                        <ion-icon name="close"></ion-icon>
+                    </ng-template>
+                </ionic-selectable>
+<!--                </ion-select>-->
 
             </ion-item>
         </div>
 
+
         <ion-item>
             <ion-label position="stacked" >Počet ľudí? *</ion-label>
             <ion-input
-                    type="pocet"
+                    type="number"
                     text-left
                     formControlName="peopleCount"
                     placeholder="Zadajte počet osôb"
