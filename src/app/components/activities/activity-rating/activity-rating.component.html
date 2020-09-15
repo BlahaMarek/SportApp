@@ -18,10 +18,11 @@
     <ion-avatar (click)="visitProfile(this.creator)" class="creator" *ngIf="creator != undefined">
       <img *ngIf="this.creator.photoUrl != null" src="{{this.creator.photoUrl}}">
       <img *ngIf="this.creator.photoUrl == null" src="assets/icon/avatar.svg" >
+
+        <ion-chip class="creator-button" (click)="visitProfile(this.creator)">
+            <ion-label *ngIf="creator != undefined">{{this.creator.name}}</ion-label>
+        </ion-chip>
     </ion-avatar>
-    <ion-chip class="creator-button" (click)="visitProfile(this.creator)">
-      <ion-label *ngIf="creator != undefined">{{this.creator.name}}</ion-label>
-    </ion-chip>
 
     <p class="centerRat">
     <ionic4-star-rating class="ratingCenter" *ngIf="this.creator !=undefined && !this.overdue" #rating
@@ -67,7 +68,10 @@
 
 
   <ion-list padding >
-    <ion-item *ngFor="let user of this.usersFromDatabase">
+      <ion-label *ngFor="let user of this.usersFromDatabase">
+
+      <ion-item text-wrap >
+
 <!--      <ion-avatar (click)="visitProfile(user)" ><img src="{{user.photoUrl}}"></ion-avatar>-->
 <!--      <ion-button *ngIf="this.dataService.getSignInUser().id == user.id" color="success">{{user.name}}</ion-button>-->
 <!--      <ion-button *ngIf="this.dataService.getSignInUser().id != user.id" (click)="visitProfile(user)" color="danger">{{user.name}}</ion-button>-->
@@ -86,7 +90,9 @@
         </ion-avatar>
         <ion-label color="success">{{user.name}}</ion-label>
       </ion-chip>
-<div>
+
+        <div class="ratingWrapper">
+
       <ionic4-star-rating *ngIf="!this.overdue" #rating
                                                  activeIcon = "ios-star"
                                                  defaultIcon = "ios-star-outline"
@@ -97,7 +103,6 @@
                                                  fontSize = "30px" >
 
     </ionic4-star-rating>
-</div>
       <ionic4-star-rating *ngIf="this.overdue && this.loggedUser.id != user.id" #rating
                           activeIcon = "ios-star"
                           defaultIcon = "ios-star-outline"
@@ -108,8 +113,12 @@
                           fontSize = "30px"
                           (ratingChanged)="logRatingChange(user.id, $event)">
       </ionic4-star-rating>
-      <ion-icon class="close" name="close" *ngIf="createdBy == this.dataService.getSignInUser().id && !overdue" (click)="presentAlertConfirm(user.name,user.id)"  color="medium"></ion-icon>
+</div>
+
+        <ion-icon class="close" name="close" *ngIf="createdBy == this.dataService.getSignInUser().id && !overdue" (click)="presentAlertConfirm(user.name,user.id)"  color="medium"></ion-icon>
     </ion-item>
+      </ion-label>
+
   </ion-list>
 
   <ion-item class="allLogin" *ngIf="this.usersFromDatabase.length==0 && finishDwonloading">
@@ -119,7 +128,9 @@
   <p class="rated" *ngIf="this.usersRated.length >0 && overdue">Ohodnotení používatelia</p>
   <ion-list  padding >
 <!--    toto bude treba klepnut hore, lebo este pri nehranej aktivite to tu je na 2 veci-->
-    <ion-item *ngFor="let user of this.usersRated">
+<!--    <ion-item *ngFor="let user of this.usersRated">-->
+        <div *ngFor="let user of this.usersRated">
+
       <ion-chip (click)="visitProfile(user)">
         <ion-avatar>
           <img *ngIf="user.photoUrl != null" [src]="user.photoUrl" >
@@ -138,7 +149,8 @@
                           fontSize = "30px" >
 
       </ionic4-star-rating>
-    </ion-item>
+        </div>
+<!--    </ion-item>-->
 
   </ion-list>
   </div>

@@ -120,11 +120,13 @@ export class ActivityNewComponent implements OnInit {
 
     assignValueToActivity(): Activity {
         var cas = new Date(this.activityForm.get('time').value);
-
+        cas.setSeconds(0);
         var datum =  new Date(this.activityForm.get('date').value); // toto robimlen preto aby som k datumu pridal rovno cas
         datum.setHours(cas.getHours());                            // a potom ho rovno pri zobrazeni menil na timestamp
         datum.setMinutes(cas.getMinutes());
-
+        datum.setSeconds(cas.getSeconds());
+        console.log(cas.getSeconds())
+        console.log(datum)
         var datum2 = datum.getTime();
         return {
             // id: this.activityService.allActivitiesCount + 1,
@@ -139,8 +141,8 @@ export class ActivityNewComponent implements OnInit {
             comment: this.activityForm.get('comment').value,
             bookedBy: [],
             bookedByNames:[],
-            lattitude : this.lattitudeFirebase,
-            longtitude: this.longtitudeFirebase
+            lattitude : "30",
+            longtitude: "20"
 
         };
     }

@@ -154,12 +154,19 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
         var mesiace = ["Jan","Feb", "Mar", "Apr","Maj","Jun","Jul","Aug","Sep","Okt","Nov","Dec"];
         var dni = ["Nedeľa","Pondelok","Utorok","Streda","Štvrtok","Piatok","Sobota"];
-        this.year = new Date(this.selectedActivity.date).getFullYear();
-        this.date = new Date(this.selectedActivity.date).getDate();
-        this.day = dni[new Date(this.selectedActivity.date).getDay()];
-        this.month = mesiace[new Date(this.selectedActivity.date).getMonth()];
-        this.hours = new Date(this.selectedActivity.date).getHours();
-        this.minutes = new Date(this.selectedActivity.date).getMinutes();
+        var datumik = new Date(this.selectedActivity.date)
+        this.year = datumik.getFullYear();
+        this.date = datumik.getDate();
+        this.day = dni[datumik.getDay()];
+        this.month = mesiace[datumik.getMonth()];
+        this.hours = datumik.getHours();
+        if (datumik.getMinutes() < 10){
+            this.minutes = "0" + datumik.getMinutes()
+        }else{
+            this.minutes = datumik.getMinutes();
+
+        }
+        console.log(datumik.getMinutes())
 
         //komentare k aktivite
         this.commentService.readAllComments(this.selectedActivity.id).subscribe(res => {
