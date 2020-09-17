@@ -66,7 +66,6 @@ console.log(mojeUsersId)
       }
     this.finishDwonloading = false;
     }
-    // this.loggedUser.user.uid
     // 1MUxrZRhP0Wsdad54w83Icw0y3k2
     else {       // ak pridem from da aktivity
       this.ratingService.getRatingsById(this.idAktivity,this.loggedUser.id).pipe(take(1)).subscribe(res => { //nacitam ratingy z aktivity kde je id lognuteho pouzi..
@@ -109,7 +108,7 @@ console.log(mojeUsersId)
 
           }else if (this.usersRated.length > 0){
             console.log(this.usersRated)
-            this.usersRated[this.usersRated.length - 1].behavior = 0;
+            // this.usersRated[this.usersRated.length - 1].behavior = 0;
           }
 
           this.finishDwonloading = false;

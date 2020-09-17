@@ -85,6 +85,9 @@ export class AuthPage implements OnInit {
     ngOnInit(): void {
       if (!this.isConnected) {
           this.presentToast("Žiadne pripojenie k internetu");
+          this.dataService.internet = false;
+      }else{
+          this.dataService.internet = true;
       }
       if (localStorage.getItem('user') && this.isConnected){
           this.dataService.user = JSON.parse(localStorage.getItem('user'));
@@ -126,7 +129,7 @@ export class AuthPage implements OnInit {
         return connectionType && connectionType !== 'unknown' && connectionType !== 'none';
     }
     fakeUser(){
-        this.user.id = 'user.user.uid';
+        this.user.id = '4EZVj6jQdPBKPTtj0LGk';
         this.user.name = 'Lukas';
         this.user.photoUrl = 'https://graph.facebook.com/3118144761533679/picture';
         this.dataService.user = this.user;
@@ -204,8 +207,10 @@ export class AuthPage implements OnInit {
             this.createUserToDataabse();
     }
 
+
     //skontroluje ci je user uz v databaze vytvoreny, ak nie vytvori, ak hej natiahne o nom udaje
     createUserToDataabse(){
+        console.log(this.dataService.getSignInUser())
         this.userService.getOneUser(this.dataService.getSignInUser().id).pipe(take(1)).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
             if (res==undefined){
                 this.user = {
@@ -222,6 +227,7 @@ export class AuthPage implements OnInit {
                 {
                     this.dataService.user.photoUrl = null
                 }
+                this.dataService.user.friends = res.friends;
                 this.userService.updateUser(res.id, this.dataService.getSignInUser());
                 this.dataService.userFromDatabase = res;
                 this.dataService.userO=res;

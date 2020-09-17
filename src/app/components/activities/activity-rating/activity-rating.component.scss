@@ -91,6 +91,16 @@ ion-item, ion-list{
   display: inline-block;
   right: 20px;
 }
+.playerWrapper{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 5px;
+}
+.priatelia{
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 //ionic4-star-rating{
 //  margin-left: auto;
 //  margin-right: auto;

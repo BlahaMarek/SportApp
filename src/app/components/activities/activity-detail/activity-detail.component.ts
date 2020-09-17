@@ -160,13 +160,19 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         this.day = dni[datumik.getDay()];
         this.month = mesiace[datumik.getMonth()];
         this.hours = datumik.getHours();
+
         if (datumik.getMinutes() < 10){
             this.minutes = "0" + datumik.getMinutes()
         }else{
             this.minutes = datumik.getMinutes();
-
         }
-        console.log(datumik.getMinutes())
+
+        if (datumik.getHours() < 10){
+            this.hours = "0" + datumik.getHours()
+        }else{
+            this.hours = datumik.getHours();
+        }
+
 
         //komentare k aktivite
         this.commentService.readAllComments(this.selectedActivity.id).subscribe(res => {

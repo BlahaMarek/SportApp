@@ -68,9 +68,7 @@
 
 
   <ion-list padding >
-      <ion-label *ngFor="let user of this.usersFromDatabase">
-
-      <ion-item text-wrap >
+          <div class="playerWrapper" *ngFor="let user of this.usersFromDatabase">
 
 <!--      <ion-avatar (click)="visitProfile(user)" ><img src="{{user.photoUrl}}"></ion-avatar>-->
 <!--      <ion-button *ngIf="this.dataService.getSignInUser().id == user.id" color="success">{{user.name}}</ion-button>-->
@@ -91,7 +89,7 @@
         <ion-label color="success">{{user.name}}</ion-label>
       </ion-chip>
 
-        <div class="ratingWrapper">
+
 
       <ionic4-star-rating *ngIf="!this.overdue" #rating
                                                  activeIcon = "ios-star"
@@ -113,11 +111,9 @@
                           fontSize = "30px"
                           (ratingChanged)="logRatingChange(user.id, $event)">
       </ionic4-star-rating>
-</div>
+              <ion-icon class="close" name="close" *ngIf="createdBy == this.dataService.getSignInUser().id && !overdue" (click)="presentAlertConfirm(user.name,user.id)"  color="medium"></ion-icon>
+          </div>
 
-        <ion-icon class="close" name="close" *ngIf="createdBy == this.dataService.getSignInUser().id && !overdue" (click)="presentAlertConfirm(user.name,user.id)"  color="medium"></ion-icon>
-    </ion-item>
-      </ion-label>
 
   </ion-list>
 
@@ -129,7 +125,7 @@
   <ion-list  padding >
 <!--    toto bude treba klepnut hore, lebo este pri nehranej aktivite to tu je na 2 veci-->
 <!--    <ion-item *ngFor="let user of this.usersRated">-->
-        <div *ngFor="let user of this.usersRated">
+        <div class="playerWrapper" *ngFor="let user of this.usersRated">
 
       <ion-chip (click)="visitProfile(user)">
         <ion-avatar>
@@ -161,7 +157,7 @@
   <div class="wrapper">
   <ion-list>
 
-    <ion-item padding *ngFor="let user of this.friendsFromProfile">
+    <ion-item class="priatelia" padding *ngFor="let user of this.friendsFromProfile">
       <ion-chip (click)="visitProfile(user)">
         <ion-avatar>
           <img *ngIf="user.photoUrl != null" [src]="user.photoUrl" >

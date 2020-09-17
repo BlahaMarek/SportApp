@@ -141,8 +141,8 @@ export class ActivityNewComponent implements OnInit {
             comment: this.activityForm.get('comment').value,
             bookedBy: [],
             bookedByNames:[],
-            lattitude : "30",
-            longtitude: "20"
+            lattitude : this.lattitudeFirebase,
+            longtitude: this.longtitudeFirebase
 
         };
     }
