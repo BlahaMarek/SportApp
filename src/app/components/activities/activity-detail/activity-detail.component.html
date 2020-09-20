@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title *ngIf="!fromEvent">Aktivita</ion-title>
-        <ion-title *ngIf="fromEvent">Udalosť</ion-title>
+        <ion-title *ngIf="!fromEvent">{{'HEADERS.tab1' | translate}}</ion-title>
+        <ion-title *ngIf="fromEvent">{{'HEADERS.tab3' | translate}}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="onCancel()">
                 <ion-icon name="close"></ion-icon>
@@ -72,33 +72,34 @@
 
         <ion-list style="text-align: center">
             <ion-button disabled="{{!this.internet}}" color="success" *ngIf="!reserved && !overdue" (click)="onFormSubmit()" fill="solid">
-                {{bookable ? "Prihlásiť" : "Upravit"}}
+                {{(bookable ? 'DETAIL.register' : 'DETAIL.update') | translate}}
             </ion-button>
 
 
             <ion-button disabled="{{!this.internet}}" color="danger" *ngIf="!bookable && !overdue"
                         (click)="presentAlertConfirm('Vymazať','Naozaj chcete vymazať aktivitu?','Vymazať', 1,null)" fill="solid">
-                        {{reserved ? "Odhlasiť" : "Vymazat"}}
+                        {{(reserved ? 'DETAIL.unregister' : 'DETAIL.delete') | translate}}
             </ion-button>
 
             <ion-button disabled="{{!this.internet}}" color="success" *ngIf="overdue"  (click)="rateUsers()" expand="block" fill="solid">
-                {{ "Ohodnot spoluhracov"}}
+                {{'DETAIL.rate' | translate}}
             </ion-button>
 
             <ion-button disabled="{{!this.internet}}" *ngIf="!overdue"  (click)="rateUsers()"  fill="solid">
-                {{ "Používatelia: " + this.selectedActivity.bookedBy.length + " z " + this.selectedActivity.peopleCount}}
+                {{ ('DETAIL.users' | translate)+ ": " + this.selectedActivity.bookedBy.length + ('DETAIL.of' | translate) + this.selectedActivity.peopleCount}}
             </ion-button>
 
             <ion-button disabled="{{!this.internet}}" color="danger" *ngIf="bookable && reserved && !overdue"
                         (click)="presentAlertConfirm('Odhlásenie!','Naozaj sa chcete odhlásiť z aktivity?', 'Odhlásiť',2,null)"
                         fill="solid">
-                {{reserved ? "Odhlásiť" : "Vymaz Aktivitu"}}
+                {{(reserved ? 'DETAIL.unregister' : 'DETAIL.delete') | translate}}
             </ion-button>
 
         </ion-list>
 
-        <ion-list>
+        <ion-list class="comments">
             <ion-item disabled="{{!this.internet}}" *ngFor="let item of this.comments">
+
                     <ion-chip>
                         <ion-avatar>
                             <!--                        pocla toho ci ma typek fotku abo ne-->
@@ -111,13 +112,16 @@
 
                 <p>{{item.comment}}</p>
 
-                    <ion-icon class="delete"  name="close"  color="medium" *ngIf="item.userId == this.dataService.getSignInUser().id" (click)="deleteComment(item.id)"></ion-icon>
+                    <ion-icon slot="end" class="delete"  name="close"  color="medium" *ngIf="item.userId == this.dataService.getSignInUser().id" (click)="deleteComment(item.id)"></ion-icon>
 
             </ion-item>
         </ion-list>
-    <ion-button fill="clear" class="addComment" disabled="{{!this.internet}}" (click)="addComment()">
+    <div class="addCommentWrapper">
+        <ion-button fill="clear" class="addComment" disabled="{{!this.internet}}" (click)="addComment()">
 
-        <ion-icon size="large" name="chatboxes"></ion-icon>
-    </ion-button>
+            <ion-icon size="large" name="chatboxes"></ion-icon>
+        </ion-button>
+    </div>
+
 
 </ion-content>

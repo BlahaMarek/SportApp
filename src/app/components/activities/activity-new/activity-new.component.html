@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Nová aktivita/udalosť</ion-title>
+        <ion-title>{{'NEW.title' | translate}}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="onCancel()">
                 <ion-icon name="close"></ion-icon>
@@ -15,8 +15,8 @@
     <form [formGroup]="activityForm">
         <div >
             <ion-item>
-                <ion-label position="stacked" >Aktivita alebo sport?</ion-label>
-                <ion-select formControlName="what" placeholder="Vyberte aktivitu/sport">
+                <ion-label position="stacked" >{{'NEW.aktivita' | translate}}</ion-label>
+                <ion-select formControlName="what" placeholder="{{'NEW.aktivitaSpec' | translate}}">
                     <ion-select-option value="{{val}}" *ngFor="let val of aktivitaOrEvent">
                         {{ val }}
                     </ion-select-option>
@@ -25,14 +25,14 @@
             </ion-item>
 
             <ion-item>
-                <ion-label position="stacked" >Výber športu *</ion-label>
+                <ion-label position="stacked" >{{'NEW.sport' | translate}} *</ion-label>
 <!--                <ion-select formControlName="sport" placeholder="Vyberte šport">-->
 <!--                    <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">-->
 <!--                        {{ val.label }}-->
 <!--                    </ion-select-option>-->
                 <ionic-selectable modalCssClass="ionic-selectable-documentation-configuration"
                         formControlName="sport"
-                        placeholder="Vyberte šport"
+                        placeholder="{{'NEW.sportSpec' | translate}}"
                         [(ngModel)]="sport"
                         [items]="sportOptions"
                         itemValueField="label"
@@ -57,22 +57,22 @@
 
 
         <ion-item>
-            <ion-label position="stacked" >Počet ľudí? *</ion-label>
+            <ion-label position="stacked" >{{'NEW.people' | translate}} *</ion-label>
             <ion-input
                     type="number"
                     text-left
                     formControlName="peopleCount"
-                    placeholder="Zadajte počet osôb"
+                    placeholder="{{'NEW.peopleSpec' | translate}}"
             ></ion-input>
         </ion-item>
 
         <ion-item>
 
-                <ion-label position="stacked" >Kde *</ion-label>
+                <ion-label position="stacked" >{{'NEW.place' | translate}} *</ion-label>
 
                 <ion-input [(ngModel)]="autocomplete.input"
                            (ionInput)="updateSearchResults()"
-                               placeholder="Zadajte miesto"
+                               placeholder="{{'NEW.placeSpec' | translate}}"
                                type="miesto"
                                formControlName="place"
                                text-left>
@@ -85,34 +85,34 @@
             </ion-list>
         </ion-item>
         <ion-item>
-            <ion-label position="stacked" >Kedy? *</ion-label>
-            <ion-datetime displayFormat="MM/DD/YYYY" [min]="minDate" [(ngModel)]="startDate" placeholder="Zadajte dátum" formControlName="date"></ion-datetime>
+            <ion-label position="stacked" >{{'NEW.date' | translate}} *</ion-label>
+            <ion-datetime displayFormat="MM/DD/YYYY" [min]="minDate" [(ngModel)]="startDate" placeholder="{{'NEW.dateSpec' | translate}}" formControlName="date"></ion-datetime>
         </ion-item>
 
         <ion-item>
-            <ion-label position="stacked">Čas *</ion-label>
-            <ion-datetime displayFormat="HH:mm" placeholder="Zadajte čas" formControlName="time"></ion-datetime>
+            <ion-label position="stacked">{{'NEW.time' | translate}} *</ion-label>
+            <ion-datetime displayFormat="HH:mm" placeholder="{{'NEW.timeSpec' | translate}}" formControlName="time"></ion-datetime>
         </ion-item>
 
         <ion-item>
-            <ion-label position="stacked" >Topovať aktivitu?</ion-label>
+            <ion-label position="stacked" >{{'NEW.top' | translate}}</ion-label>
             <ion-toggle
                     formControlName="topActivity"
                     text-left
             ></ion-toggle>
         </ion-item>
         <ion-item>
-            <ion-label position="stacked" >Komentár</ion-label>
+            <ion-label position="stacked" >{{'NEW.comment' | translate}}</ion-label>
             <ion-input
                     type="koemnt"
                     text-left
                     formControlName="comment"
-                    placeholder="Zadajte komentár..."
+                    placeholder="{{'NEW.commentSpec' | translate}}"
             ></ion-input>
         </ion-item>
     </form>
     <ion-button color="success" class="ion-margin-top" (click)="onFormSubmit()" expand="block"  disabled="{{!activityForm.valid}}">
-        Pridaj aktivitu
+        {{'NEW.add' | translate}}
     </ion-button>
     </div>
 </ion-content>

@@ -4,11 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Udalosti
+      {{'HEADERS.tab3' | translate}}
     </ion-title>
 <!--    TODO: vymazat logged in ako v tab1-->
 <!--    TODO: zamysliet sa, ci tento header nespravime ako komponent, aby sme ho plen prepouzili, pretoze ho mame na milion miestach-->
-    <ion-buttons slot="end" *ngIf="this.dataService.logged != false">
+    <ion-buttons slot="end">
       <ion-img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl != null" class="profile-image" [src]="this.dataService.getSignInUser().photoUrl"> </ion-img>
       <img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl == null" class="profile-image" src="assets/icon/avatar.svg">      <ion-button (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
     </ion-buttons>

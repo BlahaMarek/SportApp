@@ -11,6 +11,7 @@ import {AppModule} from "../../app.module";
 import {FilterPipe} from "../../pipes/filter.pipe";
 import {VisitUserProfileComponent} from "../../pages/visit-user-profile/visit-user-profile.component";
 import {IonicSelectableModule} from "ionic-selectable";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import {IonicSelectableModule} from "ionic-selectable";
         FormsModule,
         ReactiveFormsModule,
         IonicSelectableModule,
+        TranslateModule,
     ],
     exports: [
         ActivityDetailComponent,

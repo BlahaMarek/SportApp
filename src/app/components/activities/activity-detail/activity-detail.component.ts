@@ -30,6 +30,7 @@ import {EventService} from "../../../services/event.service";
 import {FirestoreService} from "../../../services/firestore.service";
 import {CommentService} from "../../../services/comment.service";
 import {take} from "rxjs/operators";
+import {LanguageService} from "../../../services/language.service";
 
 
 @Component({
@@ -89,7 +90,8 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         private localNotification: LocalNotifications,
         private socialSharing: SocialSharing,
         private commentService: CommentService,
-        public alertController: AlertController
+        public alertController: AlertController,
+        private languageService: LanguageService
     ) {
         if (this.dataService)
         // @ts-ignore
@@ -154,6 +156,11 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
 
         var mesiace = ["Jan","Feb", "Mar", "Apr","Maj","Jun","Jul","Aug","Sep","Okt","Nov","Dec"];
         var dni = ["Nedeľa","Pondelok","Utorok","Streda","Štvrtok","Piatok","Sobota"];
+        if (this.languageService.getLang == 'en'){
+            dni = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            mesiace = ["Jan","Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        }
+
         var datumik = new Date(this.selectedActivity.date)
         this.year = datumik.getFullYear();
         this.date = datumik.getDate();

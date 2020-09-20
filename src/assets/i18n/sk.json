@@ -6,5 +6,59 @@
     "tab1": "Sporty",
     "tab2": "Mapa aktivít",
     "tab3": "Udalosti"
+  },
+  "TABS": {
+    "tab1": "Aktivity",
+    "tab2": "Mapa",
+    "tab3": "Udalosti"
+  },
+  "STATISTICS": {
+  },
+  "PROFILE": {
+    "ratings": "Počet hodnotení",
+    "friends": "Priatelia"
+  },
+  "FILTER": {
+    "sport": "Vyberte šport",
+    "dateOf": "Vyber dátum - od",
+    "dateTo": "Vyber dátum - po"
+  },
+
+
+  "SEGMENTS": {
+    "all": "Všetky",
+    "mine": "Moje",
+    "assigned": "Prihlásený"
+  },
+  "DETAIL": {
+    "register": "Prihlásiť",
+    "unregister": "Odhlásiť",
+    "rate": "Ohodnoť spoluhráčov",
+    "users": "Pouzívatelia",
+    "of": " z ",
+
+    "update": "Upraviť",
+    "delete": "Vymazať"
+  },
+  "NEW": {
+    "title": "Nová aktivita/udalosť",
+
+    "aktivita": "Aktivita alebo udalosť?",
+    "aktivitaSpec": "Vyberte aktivitu alebo udalosť",
+    "sport": "Výber športu",
+    "sportSpec": "Vyberte šport",
+
+    "people": "Počet ľudí?",
+    "peopleSpec": "Zadajte počet ľudí",
+    "place": "Kde?",
+    "placeSpec": "Zadajte miesto",
+    "date": "Kedy_",
+    "time": "Čas",
+    "timeSpec": "Zadajte čas",
+    "top": "Topovať aktivitu?",
+    "comment": "Komentár",
+    "commentSpec": "Zadajte komentár",
+    "add": "Pridaj"
+
   }
 }

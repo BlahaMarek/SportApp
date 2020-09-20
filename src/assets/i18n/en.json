@@ -6,5 +6,58 @@
     "tab1": "Sport offers",
     "tab2": "Map of activities",
     "tab3": "Events"
+  },
+  "TABS": {
+    "tab1": "Activities",
+    "tab2": "Map",
+    "tab3": "Events"
+  },
+  "STATISTICS": {
+  },
+  "PROFILE": {
+    "ratings": "Number of ratings",
+    "friends": "Friends"
+  },
+
+  "FILTER": {
+    "sport": "Choose sport",
+    "dateOf": "Choose date - from",
+    "dateTo": "Choose date - until"
+  },
+
+
+
+  "SEGMENTS": {
+    "all": "All",
+    "mine": "My",
+    "assigned": "Registered"
+  },
+    "DETAIL": {
+    "register": "Register",
+      "unregister": "Unregister",
+      "rate": "Rate users",
+      "users": "Users",
+      "update": "Update",
+      "delete": "Delete",
+      "of": " of "
+  },
+  "NEW": {
+    "title": "New activiti/event",
+    "aktivita": "Activietie or event?",
+    "aktivitaSpec": "Choose activitie or event",
+    "sport": "Choose sport",
+    "sportSpec": "Select sport",
+
+    "people": "Number of poeple?",
+    "peopleSpec": "Insert number of people",
+    "place": "Where?",
+    "placeSpec": "Insert place",
+    "date": "Date",
+    "time": "Time",
+    "timeSpec": "Choose time",
+    "top": "Top it?",
+    "comment": "Comment",
+    "commentSpec": "Insert Comment",
+    "add": "Add"
   }
 }

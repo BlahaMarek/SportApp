@@ -1,7 +1,7 @@
 <form [formGroup]="activityForm">
   <div class="search">
     <div class="item-wrapper">
-        <ion-select multiple="true" formControlName="sport" placeholder="Vyberte šport" class="opacity">
+        <ion-select multiple="true" formControlName="sport" placeholder="{{'FILTER.sport' | translate}}" class="opacity">
           <ion-select-option value="{{val.value}}" *ngFor="let val of sportOptions">
             {{ val.label }}
           </ion-select-option>
@@ -37,10 +37,10 @@
         <ion-toggle disabled="true"  (click)="presentToast('Filtrovanie podla priateľov je')" class="togle22" formControlName="friends" color="success"></ion-toggle>
       </p>
 
-      <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="Vyberte dátum - od"></ion-input>
+      <ion-input class="opacity" formControlName="date" (click)="openDatePicker()" placeholder="{{'FILTER.dateOf' | translate}}"></ion-input>
     </div>
     <div class="item-wrapper">
-      <ion-input class="opacity" formControlName="toDate" (click)="openDatePicker2()" placeholder="Vyberte dátum - po"></ion-input>
+      <ion-input class="opacity" formControlName="toDate" (click)="openDatePicker2()" placeholder="{{'FILTER.dateTo' | translate}}"></ion-input>
     </div>
   </div>
 </form>

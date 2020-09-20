@@ -8,7 +8,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Mapa
+        {{'HEADERS.tab2' | translate}}
     </ion-title>
       <ion-buttons slot="end">
           <ion-img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl != null" class="profile-image" [src]="this.dataService.getSignInUser().photoUrl"> </ion-img>

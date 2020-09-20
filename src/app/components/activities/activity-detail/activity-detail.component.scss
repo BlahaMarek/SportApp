@@ -29,6 +29,10 @@
   //text-align: center;
 }
 
+.comments{
+  padding-bottom: 8%;
+}
+
 
 
 .label{
@@ -79,6 +83,9 @@
 
 ion-content{
   overflow: auto;
+}
+ion-chip{
+  flex-shrink: 0;
 }
 
 .sport{
@@ -131,18 +138,21 @@ font-weight: 600;
     margin-top: 5px;
   }
 }
+.addCommentWrapper{
+  display: flex;
+  position: fixed;
+  bottom: 0px;
+  justify-content: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .addComment{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
   --background: none;
   --border: none;
   --box-shadow: none;
 }
 .delete{
-  position: absolute;
-  right: 10px;
   --background: none;
   --border: none;
   --box-shadow: none;

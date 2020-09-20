@@ -18,7 +18,7 @@
   <div>
 
       <ion-button *ngIf="this.dataService.getUserFromDatabase().friends!= undefined" style="--background:#00008b" class="friends" (click)="friends()" expand="block" fill="solid">
-          {{ "Priatelia: " + this.dataService.getUserFromDatabase().friends.length}}
+          {{ ('PROFILE.friends' | translate)+ " : " + this.dataService.getUserFromDatabase().friends.length}}
       </ion-button>
 
       <div class="card">
@@ -37,7 +37,7 @@
 </p>
 
 
-      <p class="rating" *ngIf="this.ratings!= undefined">Počet hodnotení</p>
+      <p class="rating" *ngIf="this.ratings!= undefined">{{'PROFILE.ratings' | translate}}</p>
 
       <p *ngIf="this.ratings != undefined" class="playerName">
           {{this.ratings.length}}

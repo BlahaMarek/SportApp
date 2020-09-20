@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ProfilePage } from './profile.page';
 import {StarRatingModule} from "ionic4-star-rating";
+import {TranslateModule} from "@ngx-translate/core";
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
         FormsModule,
         IonicModule,
         RouterModule.forChild(routes),
-        StarRatingModule
+        StarRatingModule,
+        TranslateModule
     ],
   declarations: [ProfilePage]
 })

@@ -27,6 +27,9 @@ export class LanguageService {
   get getLangKey() {
     return this.LNG_KEY;
   }
+  get getLang() {
+    return this.selected;
+  }
 
   setLanguage(lang) {
     this.translate.use(lang);
