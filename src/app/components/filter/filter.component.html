@@ -6,6 +6,32 @@
             {{ val.label }}
           </ion-select-option>
         </ion-select>
+
+<!--      <ion-item>-->
+
+<!--        <ion-label position="stacked" >Kde *</ion-label>-->
+
+<!--        <ion-input #inputik [(ngModel)]="this.input"-->
+<!--                   (ionInput)="updateSearchResults()"-->
+<!--                   placeholder="Zadajte miesto"-->
+<!--                   type="miesto"-->
+<!--                   formControlName="sport"-->
+<!--                   text-left>-->
+
+<!--        </ion-input>-->
+
+<!--&lt;!&ndash;        <ion-list [hidden]="autocompleteItems.length == 0">&ndash;&gt;-->
+<!--&lt;!&ndash;          <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">&ndash;&gt;-->
+<!--&lt;!&ndash;            {{ item.description}}&ndash;&gt;-->
+<!--&lt;!&ndash;          </ion-item>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ion-list>&ndash;&gt;-->
+
+<!--                <ion-list *ngIf="this.jeOpen">-->
+<!--                  <ion-item *ngFor="let item of this.dataService.getSportsSk()" tappable (click)="selectSearchResult(item)">-->
+<!--                    {{ item.label}}-->
+<!--                  </ion-item>-->
+<!--                </ion-list>-->
+<!--      </ion-item>-->
     </div>
     <div class="icon-wrapper">
       <p *ngIf="this.user.friends !=undefined && this.user.friends.length > 0 "  style="display: inline"  (click)="presentToast('Filtrovanie podla priateľov je')">

@@ -74,7 +74,7 @@ export class DataService {
                 label: 'Florbal',
                 value: 5,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'floorball',
             },
             {
                 label: 'Hokej',
@@ -86,7 +86,7 @@ export class DataService {
                 label: 'Volejbal',
                 value: 7,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'volejbal',
             },
             {
                 label: 'Turistika',
@@ -98,7 +98,7 @@ export class DataService {
                 label: 'Basketball',
                 value: 8,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'basketball',
             },
             {
                 label: 'Fitness',
@@ -110,20 +110,20 @@ export class DataService {
                 label: 'Americký fotbal',
                 value: 10,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'football',
             },
 
             {
                 label: 'Baseball',
                 value: 12,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'baseball',
             },
             {
                 label: 'Frisbee',
                 value: 13,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'frisbee',
             },
             {
                 label: 'Hádzaná',
@@ -136,38 +136,38 @@ export class DataService {
                 label: 'Bojové športy',
                 value: 17,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'fighting',
             },
             {
                 label: 'Zimné športy',
                 value: 18,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'winter',
             },
             {
                 label: 'Vodné športy',
                 value: 22,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'water',
             },
             {
                 label: 'Cyklistika',
                 value: 20,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'cycling',
             },
             {
                 label: 'Stolný futbal',
                 value: 21,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'kalceto',
             },
 
             {
                 label: 'Motoristika',
                 value: 24,
                 tag: 1,
-                icon: 'tennisball',
+                icon: 'motoristic',
             },
         ];
     }

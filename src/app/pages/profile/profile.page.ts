@@ -125,6 +125,7 @@ export class ProfilePage implements OnInit {
   }
 
   get userPhoto() {
-    return this.user.photoUrl + "?type=large";
+    console.log(this.user.photoUrl)
+    return this.user.photoUrl + ".type(large)";
   }
 }

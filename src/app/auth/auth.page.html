@@ -1,7 +1,7 @@
 <img [@openClose]="isOpen ? 'open2' : 'closed'" src="../../assets/login/top1.svg" alt="no1">
 <h1 [@openClose]="isOpen ? 'open3' : 'closed2'" >SportShare</h1>
 <div class="login-wrap">
-    <span [@openClose]="isOpen ? 'open' : 'closed'" ><ion-icon (click)="facebookLogin()" name="logo-facebook"></ion-icon></span>
+    <span [@openClose]="isOpen ? 'open' : 'closed'" ><ion-icon (click)="fbLogin()" name="logo-facebook"></ion-icon></span>
     <span [@openClose]="isOpen ? 'open1' : 'closed'"><ion-icon (click)="googleSignIn()" name="logo-google"></ion-icon></span>
     <ion-button (click)="fakeUser()"></ion-button>
 </div>

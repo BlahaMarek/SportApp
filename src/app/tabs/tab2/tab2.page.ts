@@ -138,7 +138,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
                     }
                 }
 
-                if (vsetkyRovnake == true) { //ked su v klastri len eventy/aktivitz
+                if (vsetkyRovnake == true) { //ked su v klastri len eventy/aktivity
                     if (!style && feature.values_.features[0].values_.zdroj == 'aktivita') {
                         style = new Style({
                             image: new CircleStyle({
@@ -185,7 +185,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
                                 color: '#8959A8',
                                 crossOrigin: 'anonymous',
                                 src: 'assets/sports/multisport.png',
-                                scale: 0.1
+                                scale: 0.03
 
                             }),
                             text: new Text({
@@ -201,24 +201,29 @@ export class Tab2Page implements OnInit, AfterViewInit {
             }
         });
 
+        var mapa = document.getElementById('map');
+        mapa.setAttribute("style","touch-action: none");
         this.map = new Map({
             layers: [
                 new TileLayer({
                     source: new OSM()
                 }), clusters],
-            target: document.getElementById('map'),
+            target: mapa,
 
             view: new View({
                 center: [0, 0],
                 zoom: 8
             })
         });
+        if (document.getElementById('popover')!=null)
+        document.getElementById('popover').style.background = 'blue';
         const popup = new Overlay({
             element: document.getElementById('popup'),
             positioning: 'bottom-center',
             stopEvent: false,
-            offset: [0, -50]
+            offset: [0, -50],
         });
+
 
 
         this.map.addOverlay(popup);
@@ -379,18 +384,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
         });
 
         this.map.on('pointermove',  (e) => {
-            if (e.dragging && e.cancelable) {
-                e.preventDefault();
-
-                // swiping = true;
-                console.log("eeeeee")
                 idDoButtonu = [];
                 idDoButtonuEvent = [];
                 $(document.getElementById('popup')).popover('destroy');
                 document.getElementById('testButton').style.display = "none";
                 document.getElementById('testButton3').style.display = "none";
-                return;
-            }
+
             const pixel = this.map.getEventPixel(e.originalEvent);
             const hit = this.map.hasFeatureAtPixel(pixel);
             this.map.getTarget().style.cursor = hit ? 'pointer' : '';
@@ -427,49 +426,50 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }
 
     pridanieMarkerov() {
-
+        var actualDate = new Date()
         if (this.dataService.getEvent() != null) {
 
             const resEvent = Array.from(Object.values(this.dataService.getEvent()), //eventy
-                ({lattitude, longtitude, sport, id, peopleCount,place}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place]);
+                ({lattitude, longtitude, sport, id, peopleCount,place, date}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place, date]);
 
             for (let o = 0; o < resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
-                if (resEvent[o][5].toString().length > 12){
-                    resEvent[o][5] = resEvent[o][5].toString().substring(0,12) + "..."
+                if (resEvent[o][6] > actualDate.getTime()) {
+                    if (resEvent[o][5].toString().length > 12) {
+                        resEvent[o][5] = resEvent[o][5].toString().substring(0, 12) + "..."
+                    }
+                    markiza = new Feature({                 //uz nie lebo som to upravil na klastre, pro
+                        geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
+                        name: this.dataService.getSportNameByValue(Number(resEvent[o][2])),
+                        id: resEvent[o][3],
+                        zdroj: 'event',
+                        place: resEvent[o][5],
+                        peopleCount: resEvent[o][4]
+                    });
+                    markres.push(markiza);
                 }
-                markiza = new Feature({                 //uz nie lebo som to upravil na klastre, pro
-                    geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
-                    name: this.dataService.getSportNameByValue(Number(resEvent[o][2])),
-                    id: resEvent[o][3],
-                    zdroj: 'event',
-                    place: resEvent[o][5],
-                    peopleCount: resEvent[o][4]
-                });
-                markres.push(markiza);
-
 
             }
         }
         const res = Array.from(Object.values(this.dataService.getAktivitz()), //aktivity
-            ({lattitude, longtitude, sport, id, peopleCount,place}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place]);
+            ({lattitude, longtitude, sport, id, peopleCount,place, date}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place, date]);
 
 
 
         for (let o = 0; o < res.length; o++) {
-            if (res[o][5].toString().length > 12){
-                res[o][5] = res[o][5].toString().substring(0,12) + "..."
+            if (res[o][6] > actualDate.getTime()) {
+                if (res[o][5].toString().length > 12) {
+                    res[o][5] = res[o][5].toString().substring(0, 12) + "..."
+                }
+                markiza = new Feature({
+                    geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
+                    name: this.dataService.getSportNameByValue(Number(res[o][2])),
+                    id: res[o][3],
+                    zdroj: 'aktivita',
+                    place: res[o][5],
+                    peopleCount: res[o][4]
+                });
+                markres.push(markiza);
             }
-            markiza = new Feature({
-                geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
-                name: this.dataService.getSportNameByValue(Number(res[o][2])),
-                id: res[o][3],
-                zdroj: 'aktivita',
-                place: res[o][5],
-                peopleCount: res[o][4]
-            });
-            markres.push(markiza);
-
-
         }
     }
 

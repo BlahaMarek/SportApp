@@ -78,8 +78,11 @@ export class ActivityService {
     addBookerToActivity(sport: Activity) {
         let activity: Activity = this.getActivityById(sport.id);
         activity.bookedBy.push(this.user.id);
-        return this.sportsCollection.doc(sport.id).update(activity);
+        return this.sportsCollection.doc(sport.id).update(activity).then(result =>{
+            console.log("podarilo se" + result)
+        , err=>(err)
 
+        });
     }
 
     // update activity

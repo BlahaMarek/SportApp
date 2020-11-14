@@ -1,10 +1,11 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild, ViewChildren} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {Sport} from "../../models/sport";
 import {DataService} from "../../data/data.service";
 import { DatePicker } from '@ionic-native/date-picker/ngx';
 import {Platform, ToastController} from '@ionic/angular';
 import {SlideInOutAnimation} from '../../animations/filterAnimation';
+import {NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-geocoder";
 
 @Component({
   selector: 'app-filter',
@@ -15,6 +16,10 @@ import {SlideInOutAnimation} from '../../animations/filterAnimation';
 export class FilterComponent implements OnInit {
   animationState = 'out';
   @Output() onSearchClicked = new EventEmitter();
+
+  @ViewChildren('inputik') myInput ;
+  jeOpen:boolean;
+
   sportOptions: Sport[] = [];
   minDate: any;
   friends: boolean = false;
@@ -34,6 +39,8 @@ export class FilterComponent implements OnInit {
       console.log(this.user.friends)
     });
   }
+  input: string;
+  autocompleteItems: any[];
 user:any
   activityForm = this.fb.group({
     place: [''],
@@ -54,6 +61,38 @@ user:any
 
 
   }
+
+  selectSearchResult(item) {
+    // let place: google.maps.places.PlaceResult = this.GoogleAutocomplete.getPlacePredictions();
+    console.log(item);
+    this.input = item
+    this.jeOpen = false;
+    // this.location = item;
+    // this.placeid = this.location.place_id;
+    // //console.log(this.placeid);
+    // JSON.stringify(item);   // tu potrebujem priradit vyber mesta po kliknuti, v iteme je object a ja potrebujem item.description
+    // this.autocomplete.input = JSON.stringify(item, ['description']);
+    // this.objekt = JSON.parse(this.autocomplete.input);
+    // this.autocomplete.input = this.objekt.description;
+    // //console.log('toto je mesto omg' + this.autocomplete.input);
+    // for (let i = 0; i < 6; i++) {
+    //   this.autocompleteItems.pop();
+    }
+
+    updateSearchResults() {
+      if (this.input === '') {
+        this.autocompleteItems = [];
+        return;
+      }
+      this.jeOpen = true;
+      console.log(this.input);
+
+    }
+
+    //console.log('kurwa co to nejde');
+    // this.nativeGeocoder.reverseGeocode(52.5072095, 13.1452818, options)
+    //     .then((result: NativeGeocoderReverseResult[]) => console.log(JSON.stringify(result[0])))
+    //     .catch((error: any) => console.log(error));
 
 
   openDatePicker() {

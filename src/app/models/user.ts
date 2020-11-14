@@ -7,5 +7,6 @@ export class User {
     behavior?: number;
     behaviorCount?: number;
     friends?: string[];
+    email?: string;
 
 }

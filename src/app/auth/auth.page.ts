@@ -97,7 +97,7 @@ export class AuthPage implements OnInit {
 
     }
     fbLogin() {
-        this.facebook.login(['public_profile', 'user_friends', 'email'])
+        this.facebook.login(['public_profile', 'email'])
             .then(res => {
                 if (res.status === 'connected') {
                     this.getUserDetail(res.authResponse.userID);
@@ -114,6 +114,7 @@ export class AuthPage implements OnInit {
                 console.log(res);
                 this.setDataserviceUserFb2(res);
                 this.createUserToDataabse();
+                this.router.navigateByUrl('/tabs/tabs/tab1');
             })
             .catch(e => {
                 console.log(e);
@@ -145,6 +146,7 @@ export class AuthPage implements OnInit {
           firebase.auth().signInWithCredential(facebookCredential)
               .then((user) => {
                 this.setDataserviceUserFb(user);
+                console.log(user)
                 this.router.navigateByUrl('/tabs/tabs/tab1');
               })
               .catch((error) => {
@@ -167,6 +169,7 @@ export class AuthPage implements OnInit {
 
     //aby sme ukladali usera v normalnom formate do dateservisu
     setDataserviceUserFb(user){
+        console.log(user)
         this.user.id = user.user.uid;
         this.user.name = user.additionalUserInfo.profile.first_name;
         this.user.photoUrl = user.user.photoURL;
@@ -174,18 +177,22 @@ export class AuthPage implements OnInit {
     }
 
     setDataserviceUserFb2(user){
-        return new Promise((resolve, reject) => {
+        // return new Promise((resolve, reject) => {
         this.user.id = user.id;
         this.user.name = user.name;
         this.user.photoUrl = user.picture.data.url;
+        // this.user.email = user.email;
         this.dataService.user = this.user;
-        });
+        // });
     }
 
+
     setDataserviceUserGoogle(user){
+        console.log(user)
         this.user.id = user.userId;
         this.user.name = user.givenName;
         this.user.photoUrl = user.imageUrl;
+        this.user.email = user.email;
         this.dataService.user = this.user;
 
         // "113961267337708956071"
@@ -213,12 +220,25 @@ export class AuthPage implements OnInit {
         console.log(this.dataService.getSignInUser())
         this.userService.getOneUser(this.dataService.getSignInUser().id).pipe(take(1)).subscribe(res=>{  //ak nenajde usera v databaze vytvori ho...
             if (res==undefined){
-                this.user = {
-                    id: this.dataService.getSignInUser().id,
-                    name: this.dataService.getSignInUser().name,
-                    photoUrl: this.dataService.getSignInUser().photoUrl,
-                    friends: [],
-                };
+                if (this.dataService.getSignInUser().photoUrl == undefined){
+                    this.user = {
+                        id: this.dataService.getSignInUser().id,
+                        name: this.dataService.getSignInUser().name,
+                        photoUrl: null,
+                        email: this.dataService.getSignInUser().email,
+                        friends: [],
+                    };
+                }
+                else{
+                    this.user = {
+                        id: this.dataService.getSignInUser().id,
+                        name: this.dataService.getSignInUser().name,
+                        photoUrl: this.dataService.getSignInUser().photoUrl,
+                        email: this.dataService.getSignInUser().email,
+                        friends: [],
+                    };
+                }
+
                 this.firestore.createUser(this.user);
                 this.dataService.userFromDatabase = this.user;
             }
