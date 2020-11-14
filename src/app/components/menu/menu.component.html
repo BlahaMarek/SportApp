@@ -10,19 +10,19 @@
             <ion-menu-toggle auto-hide="true">
                 <ion-item [routerLink]="'/profile'" lines="none">
                     <ion-icon name="person" slot="start"></ion-icon>
-                    <ion-label>Profil</ion-label>
+                    <ion-label>{{'SIDEMENU.profile' | translate}}</ion-label>
                 </ion-item>
             </ion-menu-toggle>
             <ion-menu-toggle auto-hide="true">
                 <ion-item [routerLink]="'/stats'" lines="none">
                     <ion-icon name="stats" slot="start"></ion-icon>
-                    <ion-label>Štatistiky</ion-label>
+                    <ion-label>{{'SIDEMENU.stats' | translate}}</ion-label>
                 </ion-item>
             </ion-menu-toggle>
             <ion-menu-toggle auto-hide="true">
                 <ion-item [routerLink]="'/messages'" lines="none">
                     <ion-icon name="chatboxes" slot="start"></ion-icon>
-                    <ion-label>Správy</ion-label>
+                    <ion-label>{{'SIDEMENU.messages' | translate}}</ion-label>
                 </ion-item>
             </ion-menu-toggle>
             <ion-menu-toggle auto-hide="true">
@@ -32,7 +32,7 @@
                 </ion-item>
             </ion-menu-toggle>
             <ion-item lines="none">
-                <ion-button class="logout" size="medium" (click)="onLogout()" expand="block" fill="outline">Odhlásiť
+                <ion-button class="logout" size="medium" (click)="onLogout()" expand="block" fill="outline">{{'SIDEMENU.logout' | translate}}
                 </ion-button>
             </ion-item>
         </ion-list>

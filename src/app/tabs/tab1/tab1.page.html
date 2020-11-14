@@ -8,20 +8,11 @@
 
 <!--        TODO: toto sa prerobi ked budeme mat auth guarda-->
         <ion-buttons slot="end">
-
-            <!--            <ion-button fill="clear" disabled="{{!this.internet}}">-->
-            <ion-button disabled="{{!this.internet}}" fill="clear"  id="justButt">
-                <ion-img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl != null" class="profile-image" [src]="this.dataService.getSignInUser().photoUrl"> </ion-img>
-                <img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl == null" class="profile-image" src="assets/icon/avatar.svg">
-
+            <ion-img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl != null" class="profile-image" [src]="this.dataService.getSignInUser().photoUrl"> </ion-img>
+            <img routerLink="/profile" *ngIf="this.dataService.getUserFromDatabase().photoUrl == null" class="profile-image" src="assets/icon/avatar.svg">
+            <ion-button (click)="presentModal()">
+                <ion-icon name="add"></ion-icon>
             </ion-button>
-<!--            </ion-button>-->
-<!--            <ion-button fill="clear">-->
-                <ion-button disabled="{{!this.internet}}" (click)="presentModal()"><ion-icon name="add"></ion-icon></ion-button>
-
-<!--            </ion-button>-->
-
-
         </ion-buttons>
 
     </ion-toolbar>

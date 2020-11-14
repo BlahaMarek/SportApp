@@ -59,5 +59,11 @@
     "comment": "Comment",
     "commentSpec": "Insert Comment",
     "add": "Add"
+  },
+  "SIDEMENU": {
+    "profile": "Profile",
+    "stats": "Statistics",
+    "messages": "Messages",
+    "logout": "Logout"
   }
 }

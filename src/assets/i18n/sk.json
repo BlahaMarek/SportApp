@@ -3,7 +3,7 @@
     "profile": "Profil SK"
   },
   "HEADERS": {
-    "tab1": "Sporty",
+    "tab1": "Aktivity",
     "tab2": "Mapa aktivít",
     "tab3": "Udalosti"
   },
@@ -60,5 +60,13 @@
     "commentSpec": "Zadajte komentár",
     "add": "Pridaj"
 
-  }
+  },
+
+  "SIDEMENU": {
+  "profile": "Profil",
+    "stats": "Štatistiky",
+    "messages": "Správy",
+    "logout": "Logout"
+}
+
 }
