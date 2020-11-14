@@ -25,7 +25,7 @@
           <div class="header">
               <div class="avatar">
                   <ion-avatar>
-                      <ion-img *ngIf="this.user.photoUrl != null"  [src]="userPhoto"> </ion-img>
+                      <ion-img *ngIf="this.user.photoUrl != null"  [src]="this.user.photoUrl"> </ion-img>
                       <img class="avatar2" *ngIf="this.userFromTable.photoUrl == null" src="assets/icon/avatar.svg">
                   </ion-avatar>
               </div>

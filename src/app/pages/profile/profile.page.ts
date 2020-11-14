@@ -7,6 +7,7 @@ import {UserService} from "../../services/user.service";
 import {ActivityRatingComponent} from "../../components/activities/activity-rating/activity-rating.component";
 import {ModalController} from "@ionic/angular";
 import {RatingService} from "../../services/rating.service";
+import {Facebook} from "@ionic-native/facebook/ngx";
 
 @Component({
   selector: 'app-profile',
@@ -40,7 +41,8 @@ export class ProfilePage implements OnInit {
               private userService: UserService,
               private formBuilder: FormBuilder,
               private modalController: ModalController,
-              private ratingService: RatingService) { }
+              private ratingService: RatingService,
+              ) { }
 
   ngOnInit() {
     this.user = this.dataService.getSignInUser();
@@ -74,7 +76,6 @@ export class ProfilePage implements OnInit {
           return modalEl.onDidDismiss();
         })
         .then(result => {
-
         });
   }
 

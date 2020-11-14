@@ -22,7 +22,7 @@
             <ion-icon *ngIf="checkFriends()" (click)="deleteFriend()" class="addPlayer minus" color="danger" name="remove"></ion-icon>
 
             <ion-avatar>
-              <ion-img *ngIf="this.user.photoUrl != null"  [src]="userPhoto"> </ion-img>
+              <ion-img *ngIf="this.user.photoUrl != null"  [src]="this.profilePhoto"> </ion-img>
               <img class="avatar2" *ngIf="this.user.photoUrl == null" src="assets/icon/avatar.svg">
             </ion-avatar>
           </div>

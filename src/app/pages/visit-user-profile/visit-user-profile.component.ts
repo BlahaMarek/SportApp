@@ -4,6 +4,7 @@ import {ModalController} from "@ionic/angular";
 import {DataService} from "../../data/data.service";
 import {UserService} from "../../services/user.service";
 import {RatingService} from "../../services/rating.service";
+import {Facebook} from "@ionic-native/facebook/ngx";
 
 @Component({
   selector: 'app-visit-user-profile',
@@ -24,11 +25,20 @@ export class VisitUserProfileComponent implements OnInit {
   ratingSport10:number[] = [];
 
   allRatings:any;
-
-  constructor(private ratingService: RatingService, private userService: UserService,private dataService: DataService, private modalController: ModalController) { }
+  profilePhoto;
+  constructor(private facebook: Facebook, private ratingService: RatingService, private userService: UserService,private dataService: DataService, private modalController: ModalController) { }
 
   ngOnInit() {
     this.getRatings();
+    this.facebook.api('/' + this.user.id + '/?fields=picture.width(720).as(picture)', ['public_profile'])
+        .then(res => {
+          console.log(res);
+          this.profilePhoto = res.picture.data.url
+        })
+        .catch(e => {
+          this.user.photoUrl = null; //
+          console.log(e);
+        });
   }
 
   onCancel() {
@@ -101,8 +111,5 @@ export class VisitUserProfileComponent implements OnInit {
     this.userService.removeFriend(this.user.id);
   }
 
-  get userPhoto() {
-    return this.user.photoUrl + "?type=large";
-  }
 
 }

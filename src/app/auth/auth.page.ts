@@ -109,7 +109,7 @@ export class AuthPage implements OnInit {
     }
 
     getUserDetail(userid: any) {
-        this.facebook.api('/' + userid + '/?fields=id,email,name,picture', ['public_profile'])
+        this.facebook.api('/' + userid + '/?fields=id,email,name,picture.width(720).as(picture)', ['public_profile'])
             .then(res => {
                 console.log(res);
                 this.setDataserviceUserFb2(res);
@@ -178,6 +178,7 @@ export class AuthPage implements OnInit {
 
     setDataserviceUserFb2(user){
         // return new Promise((resolve, reject) => {
+        console.log(user)
         this.user.id = user.id;
         this.user.name = user.name;
         this.user.photoUrl = user.picture.data.url;
