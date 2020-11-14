@@ -24,7 +24,6 @@
     "dateTo": "Vyber dátum - po"
   },
 
-
   "SEGMENTS": {
     "all": "Všetky",
     "mine": "Moje",
@@ -63,10 +62,10 @@
   },
 
   "SIDEMENU": {
-  "profile": "Profil",
+    "profile": "Profil",
     "stats": "Štatistiky",
     "messages": "Správy",
-    "logout": "Logout"
+    "logout": "Odhlásiť"
 }
 
 }
