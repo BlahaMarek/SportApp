@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ActivityService} from '../../../services/activity.service';
 import {Activity} from '../../../models/activity';
 import {ModalController, ToastController} from '@ionic/angular';
@@ -30,6 +30,9 @@ export class ActivityListComponent implements OnInit {
     virtualIndex = 1;
 
     internet:boolean;
+
+
+    @ViewChild('assigned', {static: false}) myDiv: ElementRef;
 
     constructor(
         private activityService: ActivityService,
@@ -71,6 +74,8 @@ export class ActivityListComponent implements OnInit {
                 })
                 .then(modalEl => {
                     modalEl.present();
+                    const data = modalEl.onDidDismiss();
+                    console.log(data);
                     return modalEl.onDidDismiss();
                 });
         }else {
@@ -93,17 +98,39 @@ export class ActivityListComponent implements OnInit {
                     })
                     .then(modalEl => {
                         modalEl.present();
+                        modalEl.onDidDismiss().then(data => {
+                            //animacia na tlacitku ,,elementhref mi nechcel ist preto cez id, asi som lama
+                            if (data.data.message == 'add'){
+                                    document.getElementById("prihlaseny").classList.add("blick")
+                            }else if(data.data.message == 'remove'){
+                                document.getElementById("vsetky").classList.add("blick")
+                            }
+
+                            setTimeout(() => {
+                                document.getElementById("prihlaseny").classList.remove("blick")
+                                document.getElementById("vsetky").classList.remove("blick")
+                            }, 1500);
+                        });
                         return modalEl.onDidDismiss();
                     });
         }
     }
 
+
+
     //ak pridem z mapy filitrujem len tie aktivity
     filterActivitiesByIdFromMap(){
+        console.log(this.idSportsFromMap)
         if (this.aktivita) {
-            this.filteredList = this.dataService.getAktivitz().filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
-        }else
-            this.filteredList = this.dataService.getEvent().filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
+            this.activityService.activities$.subscribe(aktivity => {
+                this.filteredList = aktivity.filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
+            });
+
+        }else{
+            this.eventService.activities$.subscribe(events => {
+                this.filteredList = events.filter(aktivita => this.idSportsFromMap.includes(aktivita.id));
+            });
+        }
     }
 
     getCssClass(activity: Activity) {

@@ -17,9 +17,9 @@
 
     <app-filter (onSearchClicked)="onSearchClicked($event)"></app-filter>
     <ion-segment [(ngModel)]="segmentValue" >
-        <ion-segment-button #others value="others" checked>{{'SEGMENTS.all' | translate}}</ion-segment-button>
-        <ion-segment-button value="mine">{{'SEGMENTS.mine' | translate}}</ion-segment-button>
-        <ion-segment-button value="registered">{{'SEGMENTS.assigned' | translate}}</ion-segment-button>
+        <ion-segment-button id="vsetky" #others value="others" checked>{{'SEGMENTS.all' | translate}}</ion-segment-button>
+        <ion-segment-button id="moje" value="mine">{{'SEGMENTS.mine' | translate}}</ion-segment-button>
+        <ion-segment-button  id="prihlaseny" #assigned value="registered">{{'SEGMENTS.assigned' | translate}}</ion-segment-button>
     </ion-segment>
     </div>
     <div class="wrapper">

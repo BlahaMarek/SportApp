@@ -26,6 +26,7 @@ import {forEach} from "@angular-devkit/schematics";
 import {isBoolean} from "util";
 import {ActivityRatingComponent} from "../../components/activities/activity-rating/activity-rating.component";
 import {ActivityListComponent} from "../../components/activities/activity-list/activity-list.component";
+import {EventService} from "../../services/event.service";
 
 
 declare var ol: any;
@@ -51,7 +52,6 @@ let markre: [];
 const pomoc: number[] = []; // do pola zapisem hodnoty ktore sa rovnaju, a potom na konci ich budem kontrolovat ci uz nahodou neboli pridane
 let rovnaky = false;
 let k = 0;
-const markres = [];
 const markresEvent = [];
 pocet = 0;
 declare var $: any;
@@ -76,7 +76,18 @@ export class Tab2Page implements OnInit, AfterViewInit {
     private win: any = window;
     activityList: Activity[];
     result: any = [[]];
+    clustre;
 
+    vectorLayer;
+
+    vectorSourceMarkrov;
+
+    clusterSource;
+
+    activityAndMarkers;
+
+    markresActiviti = [];
+    markresEvents = [];
     // // @ts-ignore
     // @ViewChild('mapElement') mapElement;
 
@@ -84,6 +95,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         private router: Router,
         private authService: AuthService,
         private activityService: ActivityService,
+        private eventService: EventService,
         private modalController: ModalController,
         private geolocation: Geolocation,
         public toastController: ToastController,
@@ -100,114 +112,13 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-
-
-        this.pridanieMarkerov();
-        if (a1 == null) {
-            this.locate();
-        } else {
-        }
-
-
-
-        var source = new VectorSource({
-            features: markres
-        });
-
-        var clusterSource = new Cluster({
-            distance: parseInt("20", 10),
-            source: source
-        });
-
-
-        var styleCache = {};
-        var clusters = new VectorLayer({
-            source: clusterSource,
-            style: function (feature) {
-                var size = feature.get('features').length;
-                var style = styleCache[size];
-                var coordinates = feature.getGeometry().getCoordinates();
-                var vsetkyRovnake = true;
-                if (feature.get('features').length > 1) {
-                    var prvy = feature.values_.features[0].values_.zdroj;
-                    for (var i = 1; i < feature.get('features').length; i++) {
-                        if (prvy != feature.values_.features[i].values_.zdroj) {
-                            vsetkyRovnake = false;
-                            break
-                        }
-                    }
-                }
-
-                if (vsetkyRovnake == true) { //ked su v klastri len eventy/aktivity
-                    if (!style && feature.values_.features[0].values_.zdroj == 'aktivita') {
-                        style = new Style({
-                            image: new CircleStyle({
-                                radius: 10,
-                                stroke: new Stroke({
-                                    color: '#fff'
-                                }),
-                                fill: new Fill({
-                                    color: '#0000FF'
-                                })
-                            }),
-                            text: new Text({
-                                text: size.toString(),
-                                fill: new Fill({
-                                    color: '#fff'
-                                })
-                            })
-                        });
-                    }
-                    if (!style && feature.values_.features[0].values_.zdroj == 'event') {
-                        style = new Style({
-                            image: new CircleStyle({
-                                radius: 10,
-                                stroke: new Stroke({
-                                    color: '#fff'
-                                }),
-                                fill: new Fill({
-                                    color: '#6D0DAF'
-                                })
-                            }),
-                            text: new Text({
-                                text: size.toString(),
-                                fill: new Fill({
-                                    color: '#fff'
-                                })
-                            })
-                        });
-                    }
-                    return style;
-                } else { // ked je v klastri aj aktivita aj event
-                    if (!style) {
-                        style = new Style({
-                            image: new Icon({
-                                color: '#8959A8',
-                                crossOrigin: 'anonymous',
-                                src: 'assets/sports/multisport.png',
-                                scale: 0.03
-
-                            }),
-                            text: new Text({
-                                text: size.toString(),
-                                fill: new Fill({
-                                    color: '#fff'
-                                })
-                            })
-                        });
-                    }
-                    return style;
-                }
-            }
-        });
-
         var mapa = document.getElementById('map');
         mapa.setAttribute("style","touch-action: none");
         this.map = new Map({
             layers: [
                 new TileLayer({
                     source: new OSM()
-                }), clusters],
+                })],
             target: mapa,
 
             view: new View({
@@ -319,7 +230,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
                         document.getElementById('testButton').style.display = "block";
                         document.getElementById('testButton').style.position = "absolute";
                         document.getElementById('testButton').style.top = rect.top - 55 + "px";
-                        document.getElementById('testButton').style.left = rect.left - 75 + "px";
+                        document.getElementById('testButton').style.left = rect.left - 88 + "px";
 
 
                         document.getElementById('testButton3').style.display = "block";
@@ -397,6 +308,13 @@ export class Tab2Page implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.map.updateSize();
         }, 500);
+
+        this.skuskaAsync();
+        if (a1 == null) {
+            this.locate();
+        } else {
+        }
+
     }
 
     ionViewDidEnter(){
@@ -425,52 +343,171 @@ export class Tab2Page implements OnInit, AfterViewInit {
         this.filteredActivitiesList(this.dataService.getidEventZMapy(), false); //false eventy
     }
 
-    pridanieMarkerov() {
-        var actualDate = new Date()
-        if (this.dataService.getEvent() != null) {
+   async pridanieMarkerov(activiti, events) {
+       var actualDate = new Date()
+        if (events != null) {
+            const resEvent = Array.from(Object.values(events), //eventy
+                ({lattitude, longtitude, sport, id, peopleCount,place, date}) =>
+                    [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place, date]);
 
-            const resEvent = Array.from(Object.values(this.dataService.getEvent()), //eventy
-                ({lattitude, longtitude, sport, id, peopleCount,place, date}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place, date]);
+                        for (let o = 0; o < resEvent.length; o++) {
+                            if (resEvent[o][6] > actualDate.getTime()) {
+                                if (resEvent[o][5].toString().length > 12) {
+                                    resEvent[o][5] = resEvent[o][5].toString().substring(0, 12) + "..."
+                                }
+                                markiza = new Feature({
+                                    geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
+                                    name: this.dataService.getSportNameByValue(Number(resEvent[o][2])),
+                                    id: resEvent[o][3],
+                                    zdroj: 'event',
+                                    place: resEvent[o][5],
+                                    peopleCount: resEvent[o][4]
+                                });
+                                this.markresEvents.push(markiza);
+                            }
+                        }
+        }
 
-            for (let o = 0; o < resEvent.length; o++) {  // ked som sa na toto pozrel po dlhsom case, bol som z roho v riti ako to vlastne funguje
-                if (resEvent[o][6] > actualDate.getTime()) {
-                    if (resEvent[o][5].toString().length > 12) {
-                        resEvent[o][5] = resEvent[o][5].toString().substring(0, 12) + "..."
+       if (activiti != null){
+            const res = Array.from(Object.values(activiti), //aktivity
+            ({lattitude, longtitude, sport, id, peopleCount,place, date}) =>
+                [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place, date]);
+
+                    for (let o = 0; o < res.length; o++) {
+                        if (res[o][6] > actualDate.getTime()) {
+                            if (res[o][5].toString().length > 12) {
+                                res[o][5] = res[o][5].toString().substring(0, 12) + "..."
+                            }
+                            markiza = new Feature({
+                                geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
+                                name: this.dataService.getSportNameByValue(Number(res[o][2])),
+                                id: res[o][3],
+                                zdroj: 'aktivita',
+                                place: res[o][5],
+                                peopleCount: res[o][4]
+                            });
+                            this.markresActiviti.push(markiza);
+                        }
                     }
-                    markiza = new Feature({                 //uz nie lebo som to upravil na klastre, pro
-                        geometry: new Point(fromLonLat([resEvent[o][0], resEvent[o][1]])),
-                        name: this.dataService.getSportNameByValue(Number(resEvent[o][2])),
-                        id: resEvent[o][3],
-                        zdroj: 'event',
-                        place: resEvent[o][5],
-                        peopleCount: resEvent[o][4]
-                    });
-                    markres.push(markiza);
+        }
+
+       this.activityAndMarkers = this.markresEvents.concat(this.markresActiviti);
+
+       this.vectorSourceMarkrov = new VectorSource({
+           features: this.activityAndMarkers
+       })
+    }
+
+    skuskaAsync(){
+        this.activityService.activities$.subscribe(aktivity => {
+            this.markresActiviti = [];
+            this.pridanieMarkerov(aktivity, null).then((value) => this.createClusters())
+        });
+
+        this.eventService.activities$.subscribe(events => {
+            this.markresEvents = [];
+            this.pridanieMarkerov(null, events).then((value) => this.createClusters())
+        })
+    }
+
+    createClusters(){
+        if (this.clusterSource != undefined)
+        this.clusterSource.clear();
+        this.clusterSource = new Cluster({
+            distance: parseInt("20", 10),
+            source: this.vectorSourceMarkrov
+        });
+
+
+        var styleCache = {};
+        if (this.clustre != undefined && this.map != undefined){
+        }
+
+        if (this.clustre != undefined){
+            this.map.removeLayer(this.clustre);
+        }
+
+        this.clustre = new VectorLayer({
+            source: this.clusterSource,
+            style: function (feature) {
+                var size = feature.get('features').length;
+                var style = styleCache[size];
+                var coordinates = feature.getGeometry().getCoordinates();
+                var vsetkyRovnake = true;
+                if (feature.get('features').length > 1) {
+                    var prvy = feature.values_.features[0].values_.zdroj;
+                    for (var i = 1; i < feature.get('features').length; i++) {
+                        if (prvy != feature.values_.features[i].values_.zdroj) {
+                            vsetkyRovnake = false;
+                            break
+                        }
+                    }
                 }
 
-            }
-        }
-        const res = Array.from(Object.values(this.dataService.getAktivitz()), //aktivity
-            ({lattitude, longtitude, sport, id, peopleCount,place, date}) => [parseFloat(longtitude), parseFloat(lattitude), sport, id,peopleCount,place, date]);
+                if (vsetkyRovnake == true) { //ked su v klastri len eventy/aktivity
+                    if (!style && feature.values_.features[0].values_.zdroj == 'aktivita') {
+                        style = new Style({
+                            image: new CircleStyle({
+                                radius: 10,
+                                stroke: new Stroke({
+                                    color: '#fff'
+                                }),
+                                fill: new Fill({
+                                    color: '#0000FF'
+                                })
+                            }),
+                            text: new Text({
+                                text: size.toString(),
+                                fill: new Fill({
+                                    color: '#fff'
+                                })
+                            })
+                        });
+                    }
+                    if (!style && feature.values_.features[0].values_.zdroj == 'event') {
+                        style = new Style({
+                            image: new CircleStyle({
+                                radius: 10,
+                                stroke: new Stroke({
+                                    color: '#fff'
+                                }),
+                                fill: new Fill({
+                                    color: '#6D0DAF'
+                                })
+                            }),
+                            text: new Text({
+                                text: size.toString(),
+                                fill: new Fill({
+                                    color: '#fff'
+                                })
+                            })
+                        });
+                    }
+                    return style;
+                } else { // ked je v klastri aj aktivita aj event
+                    if (!style) {
+                        style = new Style({
+                            image: new Icon({
+                                color: '#8959A8',
+                                crossOrigin: 'anonymous',
+                                src: 'assets/sports/multisport.png',
+                                scale: 0.03
 
-
-
-        for (let o = 0; o < res.length; o++) {
-            if (res[o][6] > actualDate.getTime()) {
-                if (res[o][5].toString().length > 12) {
-                    res[o][5] = res[o][5].toString().substring(0, 12) + "..."
+                            }),
+                            text: new Text({
+                                text: size.toString(),
+                                fill: new Fill({
+                                    color: '#fff'
+                                })
+                            })
+                        });
+                    }
+                    return style;
                 }
-                markiza = new Feature({
-                    geometry: new Point(fromLonLat([res[o][0], res[o][1]])),
-                    name: this.dataService.getSportNameByValue(Number(res[o][2])),
-                    id: res[o][3],
-                    zdroj: 'aktivita',
-                    place: res[o][5],
-                    peopleCount: res[o][4]
-                });
-                markres.push(markiza);
             }
-        }
+        });
+
+        this.map.addLayer(this.clustre);
     }
 
     locate() {

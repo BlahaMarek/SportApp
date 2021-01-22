@@ -15,7 +15,7 @@ import {DataService} from "../data/data.service";
 })
 export class ActivityService {
     private sportsCollection: AngularFirestoreCollection<Activity>;
-    private sports: Observable<Activity[]>;
+    private sports: Activity[];
     activity: Activity;
     sports2: any[] =[];routes;
     sports3: any[] =[];
@@ -26,15 +26,15 @@ export class ActivityService {
         this.sportsCollection = this.afs.collection<any>('sports');
 
         //  neviem na co to tu bolo
-        this.sports = this.sportsCollection.snapshotChanges().pipe(
-            map(actions => {
-                return actions.map(a => {
-                    const data = a.payload.doc.data();
-                    const id = a.payload.doc.id;
-                    return {id, ...data};
-                });
-            })
-        );
+        // this.sports = this.sportsCollection.snapshotChanges().pipe(
+        //     map(actions => {
+        //         return actions.map(a => {
+        //             const data = a.payload.doc.data();
+        //             const id = a.payload.doc.id;
+        //             return {id, ...data};
+        //         });
+        //     })
+        // );
 
         this.user = this.dataService.getSignInUser();
 
@@ -43,10 +43,14 @@ export class ActivityService {
             this.sports2 = res;
 
             console.log("this is res")
-            this.activities = this.sports2[0].concat(this.sports2[1], this.sports2[2]); // 3 queriny into 1 array..lebo firebase
-            this.dataService.setAktivity(this.activities);
+            // this.activities = this.sports2[0].concat(this.sports2[1], this.sports2[2]); // 3 queriny into 1 array..lebo firebase
+            this.sports = this.sports2[0].concat(this.sports2[1], this.sports2[2]);
+            this.activities = this.sports;
+            // this.dataService.setAktivity(this.activities);
+
 
         })
+
 
 
     }
@@ -63,6 +67,7 @@ export class ActivityService {
     get activities(): Activity[] {
         return this._activities.getValue();
     }
+
 
     // set activity list
     set activities(activities: Activity[]) {
@@ -112,9 +117,9 @@ export class ActivityService {
         return this._activities.getValue().find(activity => activity.id === id);
     }
 
-    getActivity() {
-        return this.sports
-    }
+    // getActivity(): Observable<Activity[]> {
+    //     return this.sports
+    // }
     getActivities(id){
 
         return this.sportsCollection.doc<Activity>(id).valueChanges();

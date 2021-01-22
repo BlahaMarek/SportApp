@@ -82,12 +82,24 @@ export class Tab1Page implements OnInit {
             .create({component: ActivityNewComponent})
             .then(modalEl => {
                 modalEl.present();
+
+                modalEl.onDidDismiss().then(data => {
+                    //animacia na tlacitku ,,elementhref mi nechcel ist preto cez id, asi som lama
+                    if (data.role == 'add') {
+                        document.getElementById("moje").classList.add("blick")
+                    }
+                    setTimeout(() => {
+                        document.getElementById("moje").classList.remove("blick")
+                    }, 1500);
+                });
+
                 return modalEl.onDidDismiss();
             })
             .then(result => {
                 if (result.role !== 'cancel') {
                     this.presentToast();
                 }
+
             });
     }
 

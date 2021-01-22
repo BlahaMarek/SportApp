@@ -25,15 +25,15 @@ export class EventService {
   ) {
 
     this.eventsCollection = this.afs.collection<any>('events');
-    this.events = this.eventsCollection.snapshotChanges().pipe(
-        map(actions => {
-          return actions.map(a => {
-            const data = a.payload.doc.data();
-            const id = a.payload.doc.id;
-            return {id, ...data};
-          });
-        })
-    );
+    // this.events = this.eventsCollection.snapshotChanges().pipe(
+    //     map(actions => {
+    //       return actions.map(a => {
+    //         const data = a.payload.doc.data();
+    //         const id = a.payload.doc.id;
+    //         return {id, ...data};
+    //       });
+    //     })
+    // );
 
     this.user = this.dataService.getSignInUser();
 
