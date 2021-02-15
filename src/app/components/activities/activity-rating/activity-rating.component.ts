@@ -52,6 +52,7 @@ console.log(mojeUsersId)
       //stahujem creatora aktivity
       this.userService.getOneUser(this.createdBy).pipe(take(1)).subscribe(res => {
         this.creator = res;
+        if (this.creator != undefined)
         this.findUserBehavior();
         // this.usersId.push(this.creator.id);
       });
@@ -73,6 +74,7 @@ console.log(mojeUsersId)
       });
       for (var i = 0; i < mojeUsersId.length; i++) {
         this.userService.getOneUser(mojeUsersId[i]).pipe(take(1)).subscribe(res => {
+          console.log(res)
           if (this.ratingsFromAktivity.length > 0) {
             var bolHodnoteny = this.ratingsFromAktivity.filter(rat => rat.idHraca.includes(res.id))
             if (bolHodnoteny.length == 0) { //zistim ci ho uz pred tym hodnotil
@@ -94,8 +96,15 @@ console.log(mojeUsersId)
           hodnotenie = hodnotenie / res.length;
 
           if (!this.overdue) {
-          var nehodnoteny = this.usersFromDatabase.filter(user => user.id == mojeUsersId[i]);
-          var hodnoteny = this.usersRated.filter(user => user.id == mojeUsersId[i]);
+
+          var nehodnoteny = this.usersFromDatabase.filter(user => {
+            if (user != undefined)
+            user.id == mojeUsersId[i]
+          });
+          var hodnoteny = this.usersRated.filter(user =>{
+            if (user != undefined)
+           user.id == mojeUsersId[i]
+          });
 
 
             if (nehodnoteny.length > 0) {
@@ -105,12 +114,12 @@ console.log(mojeUsersId)
             if (hodnoteny.length > 0) {
               this.usersRated[this.usersRated.length - 1].behavior = hodnotenie;
             }
+            this.finishDwonloading = false;
 
           }else if (this.usersRated.length > 0){
             console.log(this.usersRated)
             // this.usersRated[this.usersRated.length - 1].behavior = 0;
           }
-
           this.finishDwonloading = false;
         });
 
@@ -234,6 +243,33 @@ console.log(mojeUsersId)
     await alert.present();
   }
 
+  async deleteUndefinedUser(index) {
+    var idOfUndefined = this.usersId[index];
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Odstránenie!',
+      message: 'Naozaj chcete odstrániť používateľa z aktivity?',
+      buttons: [
+        {
+          text: 'Zrušiť',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+
+          }
+        }, {
+          text: 'Odstrániť',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.deteleUser(idOfUndefined);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 
   addFriend(friend){
     this.dataService.getUserFromDatabase().friends.push(friend);
@@ -250,7 +286,11 @@ console.log(mojeUsersId)
     for (var i = 0 ; i< updated.bookedBy.length ; i++){
       if (updated.bookedBy[i] == playerId){
         updated.bookedBy.splice(i,1);
-        this.usersFromDatabase = this.usersFromDatabase.filter(user => user.id != playerId);
+        this.usersFromDatabase = this.usersFromDatabase.filter(user =>{
+          if (user != undefined){
+            user.id != playerId
+          }
+        });
         break;
       }
     }
@@ -264,6 +304,17 @@ console.log(mojeUsersId)
     this.userService.removeFriend(friendId);
     for (var i= 0 ; i<this.friendsFromProfile.length;i++){
       if (this.friendsFromProfile[i].id == friendId){
+        this.friendsFromProfile.splice(i,1);
+        break;
+      }
+    }
+  }
+
+  deleteUndefinedFriendFomFriendList(friendIndex){ // toto mam pre vymazanie z priatela profilu...aby aj zmizol z listu
+    var friendId = this.usersId[friendIndex]
+    this.userService.removeFriend(friendId);
+    for (var i= 0 ; i<this.friendsFromProfile.length;i++){
+      if (this.friendsFromProfile[i] == undefined){
         this.friendsFromProfile.splice(i,1);
         break;
       }

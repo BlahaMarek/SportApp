@@ -172,18 +172,24 @@ export class EventDetailComponent implements OnInit {
   }
 
   onFormSubmit() {
+    const data = {message: ''};
+
     if (!this.bookable && !this.reserved) {
       this.eventService.updateActivity(this.selectedActivity, this.assignValueToActivity()).then(()=>{
+        data.message = 'update';
     this.presentToast("Aktivita bola upravena");
       });
       console.log("upravujem aktivitu");
     } else if (this.bookable && !this.reserved) {
       this.eventService.addBookerToActivity(this.selectedActivity).then(()=>{
+        data.message = 'add';
+        this.presentToast("Uspesne si sa prihlasil");
+
       });
-      this.presentToast("Uspesne si sa prihlasil");
     }
     else if (this.reserved) {
       this.eventService.removeBookerFromActivity(this.selectedActivity).then(()=>{
+        data.message = 'remove';
       });
       this.presentToast("Uspesne si sa odhlasil");
       console.log("som pri prvom resrvede");
@@ -195,14 +201,15 @@ export class EventDetailComponent implements OnInit {
       console.log("som pri druhom resrvede");
 
     }
-    const data = {message: 'Add new activity!'};
-    if (this.bookable) {
-      console.log(this.selectedActivity.id);
-      console.log(this.authService.userIdAuth);
-      data.message = 'Booked activity';
 
-
-    }
+    // const data = {message: 'Add new activity!'};
+    // if (this.bookable) {
+    //   console.log(this.selectedActivity.id);
+    //   console.log(this.authService.userIdAuth);
+    //   data.message = 'Booked activity';
+    //
+    //
+    // }
     console.log(this.selectedActivity.id);
     console.log(this.authService.userIdAuth);
     this.modalController.dismiss(data, 'add');
@@ -216,6 +223,8 @@ export class EventDetailComponent implements OnInit {
     toast.present();
   }
   onFormSubmitDelete() {
+    const data = {message: ''};
+
 
     if (!this.reserved) {
       this.eventService.deleteEvent(this.selectedActivity).then(()=>{
@@ -223,13 +232,10 @@ export class EventDetailComponent implements OnInit {
       console.log("deletujem");
     }
 
-    const data = {message: 'Add new activity!'};
     if (this.bookable) {
       console.log(this.selectedActivity.id);
       console.log(this.authService.userIdAuth);
       data.message = 'Booked activity';
-
-
     }
     console.log(this.selectedActivity.id);
     console.log(this.authService.userIdAuth);

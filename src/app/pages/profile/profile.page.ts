@@ -52,12 +52,14 @@ export class ProfilePage implements OnInit {
     this.getRatings();
   }
 
-  logout() {
+  deleteUserAndLogout() {
+    this.userService.deleteUser(this.dataService.user);
     localStorage.clear();
-    this.router.navigate(['login']);
     this.dataService.user = {};
     this.dataService.userFromDatabase = {};
+    this.router.navigate(['login']);
   }
+
 
   login() {
     this.router.navigateByUrl('/login');

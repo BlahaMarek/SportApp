@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ModalController, ToastController} from '@ionic/angular';
 import {ActivityNewComponent} from '../../components/activities/activity-new/activity-new.component';
 import {LanguageService} from '../../services/language.service';
@@ -20,6 +20,8 @@ export class Tab1Page implements OnInit {
     latitude = null;
     longitude = null;
     internet:boolean;
+
+    @ViewChild('mine', {static: false, read: ElementRef }) buttonMoje: ElementRef;
 
     constructor(
         private modalController: ModalController,
@@ -84,6 +86,8 @@ export class Tab1Page implements OnInit {
                 modalEl.present();
 
                 modalEl.onDidDismiss().then(data => {
+                    console.log(this.buttonMoje)
+
                     //animacia na tlacitku ,,elementhref mi nechcel ist preto cez id, asi som lama
                     if (data.role == 'add') {
                         document.getElementById("moje").classList.add("blick")

@@ -182,7 +182,7 @@ export class AuthPage implements OnInit {
         this.user.id = user.id;
         this.user.name = user.name;
         this.user.photoUrl = user.picture.data.url;
-        // this.user.email = user.email;
+        this.user.email = user.email;
         this.dataService.user = this.user;
         // });
     }
@@ -239,7 +239,7 @@ export class AuthPage implements OnInit {
                         friends: [],
                     };
                 }
-
+                    console.log(this.user)
                 this.firestore.createUser(this.user);
                 this.dataService.userFromDatabase = this.user;
             }

@@ -31,7 +31,6 @@ export class UserService {
 
 
   getOneUser(id){
-
     return this.usersCollection.doc<User>(id).valueChanges();
   }
   updateUser(id, newUser){
@@ -45,8 +44,6 @@ export class UserService {
   }
   removeFriend(friend: string) {
     var loggedUser = this.dataService.getUserFromDatabase();
-console.log("toto je logged user ");
-      console.log(loggedUser);
     for (var i = 0 ; i< loggedUser.friends.length ; i++){
       if (loggedUser.friends[i] == friend){
         loggedUser.friends.splice(i,1);
@@ -58,5 +55,9 @@ console.log("toto je logged user ");
     return this.usersCollection.doc(loggedUser.id).update(loggedUser);
 
   }
+
+    deleteUser(user: User) {
+        return this.usersCollection.doc(user.id).delete();
+    }
 
 }

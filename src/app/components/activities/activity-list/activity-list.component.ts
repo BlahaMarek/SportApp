@@ -32,7 +32,10 @@ export class ActivityListComponent implements OnInit {
     internet:boolean;
 
 
-    @ViewChild('assigned', {static: false}) myDiv: ElementRef;
+    @ViewChild('others', {static: false, read: ElementRef }) buttonVsetky: ElementRef;
+    @ViewChild('mine', {static: false, read: ElementRef }) buttonMoje: ElementRef;
+    @ViewChild('assigned', {static: false, read: ElementRef }) buttonPrihl: ElementRef;
+
 
     constructor(
         private activityService: ActivityService,
@@ -52,10 +55,13 @@ export class ActivityListComponent implements OnInit {
             this.internet = int;
         })
     }
+    ngAfterViewInit () {
+
+    }
 
     onActivityClicked(id: string) {
         this.user= this.dataService.getSignInUser();
-
+        // console.log(this.buttonVsetky)
         var logged= this.dataService.getSignInUser();
         if (this.fromEvent){
             var eventik = this.eventService.getEventById(id);
@@ -74,8 +80,20 @@ export class ActivityListComponent implements OnInit {
                 })
                 .then(modalEl => {
                     modalEl.present();
-                    const data = modalEl.onDidDismiss();
-                    console.log(data);
+                    modalEl.onDidDismiss().then(data => {
+                        //animacia na tlacitku ,,elementhref mi nechcel ist preto cez id, asi som lama
+                        if (data.data.message == 'add'){
+                            this.buttonPrihl.nativeElement.classList.add("blick")
+
+                        }else if(data.data.message == 'remove'){
+                            this.buttonVsetky.nativeElement.classList.add("blick")
+                        }
+
+                        setTimeout(() => {
+                            this.buttonVsetky.nativeElement.classList.remove("blick")
+                            this.buttonPrihl.nativeElement.classList.remove("blick")
+                        }, 1500);
+                    });
                     return modalEl.onDidDismiss();
                 });
         }else {
@@ -101,14 +119,15 @@ export class ActivityListComponent implements OnInit {
                         modalEl.onDidDismiss().then(data => {
                             //animacia na tlacitku ,,elementhref mi nechcel ist preto cez id, asi som lama
                             if (data.data.message == 'add'){
-                                    document.getElementById("prihlaseny").classList.add("blick")
+                                this.buttonPrihl.nativeElement.classList.add("blick")
                             }else if(data.data.message == 'remove'){
-                                document.getElementById("vsetky").classList.add("blick")
+                                this.buttonVsetky.nativeElement.classList.add("blick")
+
                             }
 
                             setTimeout(() => {
-                                document.getElementById("prihlaseny").classList.remove("blick")
-                                document.getElementById("vsetky").classList.remove("blick")
+                                this.buttonVsetky.nativeElement.classList.remove("blick")
+                                this.buttonPrihl.nativeElement.classList.remove("blick")
                             }, 1500);
                         });
                         return modalEl.onDidDismiss();

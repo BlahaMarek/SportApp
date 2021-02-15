@@ -249,22 +249,26 @@ export class ActivityDetailComponent implements OnInit, AfterViewInit {
         }else{
             if (!this.bookable && !this.reserved) {
                 this.updateActivity();
+                data.message = 'update';
 
             } else if (this.bookable && !this.reserved) {
                 this.eventService.addBookerToActivity(this.selectedActivity).then(() => {
+                    data.message = 'add';
                 });
                 this.scheduleNotification();
             } else if (this.reserved) {
                 this.eventService.removeBookerFromActivity(this.selectedActivity).then(() => {
+                    data.message = 'remove';
+
                 });
             } else if (!this.reserved) {
                 this.eventService.deleteEvent(this.selectedActivity).then(() => {
                 });
             }
-            const data = {message: 'Add new activity!'};
-            if (this.bookable) {
-                data.message = 'Booked activity';
-            }
+            // const data = {message: 'Add new activity!'};
+            // if (this.bookable) {
+            //     data.message = 'Booked activity';
+            // }
             this.modalController.dismiss(data, 'add');
         }
     }

@@ -143,8 +143,5 @@ export class ActivityService {
     // delete existing activity
     deleteActivity(sport: Activity) {
         return this.sportsCollection.doc(sport.id).delete();
-        //this.activities = this.activities.filter(activity => activity.id !== id);
-
-
     }
 }

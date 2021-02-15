@@ -19,7 +19,7 @@
 
     <div style="position: absolute; left: 50%">
 <!-- aby si mohol kliknut na tvorcu a na seba nie,ked tak mozeme upravit ze zo seba ta to hodi na profil svoj       -->
-            <ion-chip *ngIf="selectedActivity.createdBy != this.dataService.getSignInUser().id" (click)="visitCreatorProfile()" class="ion-margin-start creatorPhoto">
+            <ion-chip *ngIf="this.userFromTable != undefined && selectedActivity.createdBy != this.dataService.getSignInUser().id" (click)="visitCreatorProfile()" class="ion-margin-start creatorPhoto">
                 <ion-avatar>
                     <img *ngIf="this.userFromTable.photoUrl != null" [src]="this.userFromTable.photoUrl" >
                     <img *ngIf="this.userFromTable.photoUrl == null"  src="assets/icon/avatar.svg" >
@@ -27,14 +27,22 @@
                 <ion-label>{{this.userFromTable.name}}</ion-label>
             </ion-chip>
 
-            <ion-chip *ngIf="selectedActivity.createdBy == this.dataService.getSignInUser().id" class="ion-margin-start creatorPhoto">
+            <ion-chip *ngIf="this.userFromTable != undefined && selectedActivity.createdBy == this.dataService.getSignInUser().id" class="ion-margin-start creatorPhoto">
                 <ion-avatar>
                     <img *ngIf="this.userFromTable.photoUrl != null" [src]="this.userFromTable.photoUrl" >
                     <img *ngIf="this.userFromTable.photoUrl == null"  src="assets/icon/avatar.svg" >
                 </ion-avatar>
                 <ion-label>{{this.userFromTable.name}}</ion-label>
             </ion-chip>
+
+        <ion-chip *ngIf="this.userFromTable == undefined" class="ion-margin-start creatorPhoto">
+            <ion-avatar>
+                <img src="assets/icon/avatar.svg" >
+            </ion-avatar>
+            <ion-label>Používateľ nenájdený</ion-label>
+        </ion-chip>
     </div>
+
 
 <!--share buttony-->
         <ul class="share">
